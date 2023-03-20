@@ -1,0 +1,165 @@
+digraph {
+	graph [rankdir=LR size="8,8!"]
+	N313 [label="DeclarativeChain (313)
+State: finished
+Exit Code: 0" fillcolor="#e38851ff" penwidth=0 shape=rectangle style=filled]
+	N69 [label="UpfData (69)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N95 [label="UpfData (95)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N124 [label="InstalledCode (124)
+pw" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N312 [label="SinglefileData (312)
+6_1.yaml" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N320 [label="RemoteData (320)
+@localhost" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N325 [label="Dict (325)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N326 [label="KpointsData (326)
+(Path of 27 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N327 [label="StructureData (327)
+Ni2O2" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N328 [label="PwCalculation (328)
+State: finished
+Exit Code: 0" fillcolor="#de707fff" penwidth=0 shape=rectangle style=filled]
+	N329 [label="RemoteData (329)
+@localhost" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N330 [label="FolderData (330)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N331 [label="BandsData (331)
+(Path of 27 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N332 [label="TrajectoryData (332)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N333 [label="Dict (333)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N334 [label="Dict (334)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N335 [label="KpointsData (335)
+(Path of 27 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N336 [label="StructureData (336)
+Ni2O2" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N337 [label="PwCalculation (337)
+State: finished
+Exit Code: 0" fillcolor="#de707fff" penwidth=0 shape=rectangle style=filled]
+	N338 [label="RemoteData (338)
+@localhost" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N339 [label="FolderData (339)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N340 [label="BandsData (340)
+(Path of 27 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N341 [label="TrajectoryData (341)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N342 [label="Dict (342)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N343 [label="StructureData (343)
+Ni2O2" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N344 [label="Float (344)
+value: 0.01" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N345 [label="seekpath_structure_analysis (345)
+State: finished
+Exit Code: 0" fillcolor="#de707f77" penwidth=0 shape=rectangle style=filled]
+	N346 [label="Dict (346)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N347 [label="KpointsData (347)
+(Path of 737 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N348 [label="StructureData (348)
+Ni2O2" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N349 [label="StructureData (349)
+Ni6O6" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N350 [label="Dict (350)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N351 [label="StructureData (351)
+Ni2O2" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N352 [label="PwCalculation (352)
+State: finished
+Exit Code: 0" fillcolor="#de707fff" penwidth=0 shape=rectangle style=filled]
+	N353 [label="RemoteData (353)
+@localhost" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N354 [label="FolderData (354)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N355 [label="BandsData (355)
+(Path of 737 kpts)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N356 [label="TrajectoryData (356)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N357 [label="Dict (357)" fillcolor="#8cd499ff" penwidth=0 shape=ellipse style=filled]
+	N335 -> N337 [label="INPUT_CALC
+kpoints" color="#000000" style=solid]
+	N334 -> N337 [label="INPUT_CALC
+parameters" color="#000000" style=solid]
+	N328 -> N333 [label="CREATE
+output_parameters" color="#000000" style=solid]
+	N328 -> N332 [label="CREATE
+output_trajectory" color="#000000" style=solid]
+	N95 -> N337 [label="INPUT_CALC
+pseudos__Ni" color="#000000" style=solid]
+	N313 -> N337 [label="CALL_CALC
+CALL" color="#000000" style=dotted]
+	N352 -> N355 [label="CREATE
+output_band" color="#000000" style=solid]
+	N312 -> N313 [label="INPUT_WORK
+workchain_specification" color="#000000" style=dashed]
+	N326 -> N328 [label="INPUT_CALC
+kpoints" color="#000000" style=solid]
+	N124 -> N337 [label="INPUT_CALC
+code" color="#000000" style=solid]
+	N352 -> N357 [label="CREATE
+output_parameters" color="#000000" style=solid]
+	N352 -> N356 [label="CREATE
+output_trajectory" color="#000000" style=solid]
+	N69 -> N337 [label="INPUT_CALC
+pseudos__O" color="#000000" style=solid]
+	N328 -> N329 [label="CREATE
+remote_folder" color="#000000" style=solid]
+	N95 -> N328 [label="INPUT_CALC
+pseudos__Ni" color="#000000" style=solid]
+	N69 -> N328 [label="INPUT_CALC
+pseudos__O" color="#000000" style=solid]
+	N320 -> N352 [label="INPUT_CALC
+parent_folder" color="#000000" style=solid]
+	N328 -> N331 [label="CREATE
+output_band" color="#000000" style=solid]
+	N345 -> N349 [label="CREATE
+conv_structure" color="#000000" style=solid]
+	N350 -> N352 [label="INPUT_CALC
+parameters" color="#000000" style=solid]
+	N337 -> N342 [label="CREATE
+output_parameters" color="#000000" style=solid]
+	N95 -> N352 [label="INPUT_CALC
+pseudos__Ni" color="#000000" style=solid]
+	N337 -> N341 [label="CREATE
+output_trajectory" color="#000000" style=solid]
+	N69 -> N352 [label="INPUT_CALC
+pseudos__O" color="#000000" style=solid]
+	N337 -> N339 [label="CREATE
+retrieved" color="#000000" style=solid]
+	N343 -> N345 [label="INPUT_CALC
+structure" color="#000000" style=solid]
+	N124 -> N328 [label="INPUT_CALC
+code" color="#000000" style=solid]
+	N345 -> N348 [label="CREATE
+primitive_structure" color="#000000" style=solid]
+	N352 -> N353 [label="CREATE
+remote_folder" color="#000000" style=solid]
+	N344 -> N345 [label="INPUT_CALC
+reference_distance" color="#000000" style=solid]
+	N352 -> N354 [label="CREATE
+retrieved" color="#000000" style=solid]
+	N327 -> N328 [label="INPUT_CALC
+structure" color="#000000" style=solid]
+	N313 -> N345 [label="CALL_CALC
+CALL" color="#000000" style=dotted]
+	N328 -> N330 [label="CREATE
+retrieved" color="#000000" style=solid]
+	N345 -> N347 [label="CREATE
+explicit_kpoints" color="#000000" style=solid]
+	N320 -> N328 [label="INPUT_CALC
+parent_folder" color="#000000" style=solid]
+	N313 -> N328 [label="CALL_CALC
+CALL" color="#000000" style=dotted]
+	N337 -> N338 [label="CREATE
+remote_folder" color="#000000" style=solid]
+	N347 -> N352 [label="INPUT_CALC
+kpoints" color="#000000" style=solid]
+	N336 -> N337 [label="INPUT_CALC
+structure" color="#000000" style=solid]
+	N320 -> N337 [label="INPUT_CALC
+parent_folder" color="#000000" style=solid]
+	N337 -> N340 [label="CREATE
+output_band" color="#000000" style=solid]
+	N325 -> N328 [label="INPUT_CALC
+parameters" color="#000000" style=solid]
+	N313 -> N352 [label="CALL_CALC
+CALL" color="#000000" style=dotted]
+	N351 -> N352 [label="INPUT_CALC
+structure" color="#000000" style=solid]
+	N345 -> N346 [label="CREATE
+parameters" color="#000000" style=solid]
+	N124 -> N352 [label="INPUT_CALC
+code" color="#000000" style=solid]
+}

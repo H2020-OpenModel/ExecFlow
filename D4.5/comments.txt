@@ -1,0 +1,8 @@
+- deleting value from dict? Maybe jinja?
+
+- node thing -> if ability to engage caching this would be handled automatically
+- calcjob -> consistency: calcjobs calcfunction and workchain would all be handled identically
+ --> maybe use "process" or something similar to capture everything
+- look at ansible to see how they handle while loops
+- Potentially add some context stuff into the error message. 
+- Some error code handling logic? Could probably be done already with current primitives
