@@ -4,7 +4,7 @@ data:
 setup:
   - "{{ 1 | to_ctx('nscf_count') }}"
 steps:
-- workflow: basic.declarative
+- workflow: execflow.declarative
   inputs:
     workchain_specification: "/home/lponet/Software/pythondev/Demo/6_2.yaml"
   postprocess:
