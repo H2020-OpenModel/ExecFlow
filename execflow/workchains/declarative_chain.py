@@ -69,6 +69,9 @@ schema = {
                 "calculation": {
                     "type": "string"
                 },
+                "calcfunction": {
+                    "type": "string"
+                },
                 "workflow": {
                     "type": "string"
                 },
