@@ -303,7 +303,7 @@ class DeclarativeChain(WorkChain):
 
         ext = splitext(self.inputs['workchain_specification'].filename)[1]
         with self.inputs['workchain_specification'].open(mode="r") as f:
-            if ext == ".yaml":
+            if ext in (".yaml", ".yml"):
                 tspec = YAML(typ="safe").load(f)
             else:
                 spec = jsonref.load(f)
