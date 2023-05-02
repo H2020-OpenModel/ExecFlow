@@ -13,7 +13,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from aiida.orm import Dict
     from oteapi.interfaces import IFilterStrategy
 
-    from execflow.wrapper.data.filterconfig import FilterConfigData
+    from execflow.data.oteapi.filterconfig import FilterConfigData
 
 
 @calcfunction

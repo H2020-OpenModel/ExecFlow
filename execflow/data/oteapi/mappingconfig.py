@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from oteapi.models import MappingConfig
 
-from execflow.wrapper.data.genericconfig import GenericConfigData
+from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union

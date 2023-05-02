@@ -15,7 +15,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from oteapi.interfaces import ITransformationStrategy
     from oteapi.models import TransformationStatus
 
-    from execflow.wrapper.data.transformationconfig import TransformationConfigData
+    from execflow.data.oteapi.transformationconfig import TransformationConfigData
 
 
 @workfunction

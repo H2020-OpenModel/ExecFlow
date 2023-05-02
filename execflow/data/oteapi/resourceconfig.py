@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 from aiida.common.exceptions import ValidationError
 from oteapi.models import ResourceConfig
 
-from execflow.wrapper.data.genericconfig import GenericConfigData
-from execflow.wrapper.data.secretconfig import SecretConfigData
+from execflow.data.oteapi.genericconfig import GenericConfigData
+from execflow.data.oteapi.secretconfig import SecretConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union

@@ -11,10 +11,10 @@ if TYPE_CHECKING:  # pragma: no cover
 
     from aiida import orm
 
-    from execflow.wrapper.data.declarative_pipeline import (
+    from execflow.data.oteapi.declarative_pipeline import (
         OTEPipelineData as ExecFlowOTEPipelineData,
     )
-    from execflow.wrapper.data.genericconfig import GenericConfigData
+    from execflow.data.oteapi.genericconfig import GenericConfigData
 
 
 @calcfunction

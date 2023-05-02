@@ -7,7 +7,7 @@ from aiida.engine import run, run_get_node, while_
 from aiida.engine.processes.workchains.workchain import WorkChain
 from aiida.plugins import CalculationFactory, WorkflowFactory
 
-from execflow.wrapper.data.declarative_pipeline import OTEPipelineData
+from execflow.data.oteapi.declarative_pipeline import OTEPipelineData
 
 if TYPE_CHECKING:  # pragma: no cover
     from aiida.engine.processes.workchains.workchain import WorkChainSpec
@@ -18,7 +18,7 @@ class OTEPipeline(WorkChain):
 
     Inputs:
         - **pipeline**
-          (:py:class:`~execflow.wrapper.data.declarative_pipeline.OTEPipelineData`,
+          (:py:class:`~execflow.data.oteapi.declarative_pipeline.OTEPipelineData`,
           :py:class:`aiida.orm.Dict`, :py:class:`aiida.orm.SinglefileData`,
           :py:class:`aiida.orm.Str`) -- The declarative pipeline as an AiiDA-valid
           type. Either as a path to a YAML file or the explicit content of the YAML
@@ -32,14 +32,14 @@ class OTEPipeline(WorkChain):
           running the pipeline.
 
     Outline:
-        - :py:meth:`~execflow.wrapper.workflows.pipeline.OTEPipeline.setup`
+        - :py:meth:`~execflow.workchains.oteapi_pipeline.OTEPipeline.setup`
         - while
-          :py:meth:`~execflow.wrapper.workflows.pipeline.OTEPipeline.not_finished`:
+          :py:meth:`~execflow.workchains.oteapi_pipeline.OTEPipeline.not_finished`:
 
-          - :py:meth:`~execflow.wrapper.workflows.pipeline.OTEPipeline.submit_next`
-          - :py:meth:`~execflow.wrapper.workflows.pipeline.OTEPipeline.process_current`
+          - :py:meth:`~execflow.workchains.oteapi_pipeline.OTEPipeline.submit_next`
+          - :py:meth:`~execflow.workchains.oteapi_pipeline.OTEPipeline.process_current`
 
-        - :py:meth:`~execflow.wrapper.workflows.pipeline.OTEPipeline.finalize`
+        - :py:meth:`~execflow.workchains.oteapi_pipeline.OTEPipeline.finalize`
 
     Exit Codes:
         - **2** (*ERROR_SUBPROCESS*) -- A subprocess has failed.
@@ -57,10 +57,11 @@ class OTEPipeline(WorkChain):
             required=True,
         )
         spec.input("run_pipeline", valid_type=orm.Str, required=False)
-
+        spec.inputs.dynamic = True
+        spec.outputs.dynamic = True
         # Outputs
         spec.output("session", valid_type=orm.Dict)
-
+        spec.output_namespace('results', dynamic=True)
         # Outline
         spec.outline(
             cls.parse_pipeline,
@@ -137,6 +138,10 @@ class OTEPipeline(WorkChain):
         self.ctx.strategies = strategies
 
         self.ctx.ote_session = orm.Dict()
+        # Add all the input nodes to ote_session
+        for k in self.inputs:
+            if isinstance(self.inputs[k], orm.Data):
+                self.ctx.ote_session[k] = self.inputs[k].id
 
     def not_finished(self) -> bool:
         """Determine whether or not the WorkChain is finished.
@@ -200,3 +205,18 @@ class OTEPipeline(WorkChain):
         Set the 'session' output.
         """
         self.out("session", self.ctx.ote_session)
+
+        if 'to_results' in self.ctx.ote_session:
+            results = dict()
+            for k in self.ctx.ote_session['to_results']:
+                results[k] = orm.load_node(self.ctx.ote_session['to_results'][k])
+
+            self.out("results", results)
+
+        if 'collection_id' in self.inputs:
+            self.out('collection_id', self.inputs['collection_id'])
+
+        elif 'collection_id' in self.ctx.ote_session:
+            coll_id = orm.Str(self.ctx.ote_session['collection_id'])
+            coll_id.store()
+            self.out('collection_id', coll_id)

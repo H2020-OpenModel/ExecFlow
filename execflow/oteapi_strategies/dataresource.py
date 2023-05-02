@@ -12,7 +12,7 @@ from oteapi.plugins import create_strategy, load_strategies
 if TYPE_CHECKING:  # pragma: no cover
     from aiida.orm import Dict
 
-    from execflow.wrapper.data.resourceconfig import ResourceConfigData
+    from execflow.data.oteapi.resourceconfig import ResourceConfigData
 
 
 @calcfunction

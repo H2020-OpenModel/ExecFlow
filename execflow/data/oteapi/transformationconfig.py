@@ -7,9 +7,9 @@ from oteapi.models.transformationconfig import (
     TransformationStatus,
 )
 
-from execflow.wrapper.data.base import ExtendedData
-from execflow.wrapper.data.genericconfig import GenericConfigData
-from execflow.wrapper.data.secretconfig import SecretConfigData
+from execflow.data.oteapi.base import ExtendedData
+from execflow.data.oteapi.genericconfig import GenericConfigData
+from execflow.data.oteapi.secretconfig import SecretConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from datetime import datetime

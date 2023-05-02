@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from oteapi.models import SecretConfig
 
-from execflow.wrapper.data.base import ExtendedData
+from execflow.data.oteapi.base import ExtendedData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union

@@ -4,11 +4,10 @@ from typing import TYPE_CHECKING
 
 from oteapi.models import FilterConfig
 
-from execflow.wrapper.data.genericconfig import GenericConfigData
+from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union
-
 
 class FilterConfigData(GenericConfigData):
     """Filter Strategy Data Configuration.
