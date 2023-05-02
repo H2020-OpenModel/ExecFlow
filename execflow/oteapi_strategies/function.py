@@ -19,12 +19,12 @@ if TYPE_CHECKING:  # pragma: no cover
 @workfunction
 def init_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
     """Initialize an OTE Function strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IFunctionStrategy" = create_strategy("function", config.get_dict())
     updates_for_session = strategy.initialize(session.get_dict())
 
-    return CalculationFactory("execflow.update_session")(
+    return CalculationFactory("execflow.update_oteapi_session")(
         session=session,
         updates=DataFactory("core.dict")(updates_for_session),
     )
@@ -33,12 +33,12 @@ def init_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
 @workfunction
 def get_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
     """Get/Execute an OTE Function strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IFunctionStrategy" = create_strategy("function", config.get_dict())
     updates_for_session = strategy.get(session.get_dict())
 
-    return CalculationFactory("execflow.update_session")(
+    return CalculationFactory("execflow.update_oteapi_session")(
         session=session,
         updates=DataFactory("core.dict")(updates_for_session),
     )

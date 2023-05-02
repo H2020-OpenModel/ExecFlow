@@ -76,7 +76,7 @@ class OTEPipeline(WorkChain):
     def parse_pipeline(self) -> None:
         """Parse the pipeline input."""
         result = run(
-            CalculationFactory("execflow.parse_pipeline"),
+            CalculationFactory("execflow.parse_oteapi_pipeline"),
             pipeline_input=self.inputs.pipeline,
         )
         self.ctx.pipeline = result["result"]

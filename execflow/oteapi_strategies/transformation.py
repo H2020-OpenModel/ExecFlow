@@ -28,7 +28,7 @@ def init_transformation(config: "TransformationConfigData", session: "Dict") -> 
     )
     updates_for_session = strategy.initialize(session.get_dict())
 
-    return CalculationFactory("execflow.update_session")(
+    return CalculationFactory("execflow.update_oteapi_session")(
         session=session,
         updates=DataFactory("core.dict")(updates_for_session),
     )
@@ -79,7 +79,7 @@ def get_transformation(config: "TransformationConfigData", session: "Dict") -> "
 
     updates_for_session = strategy.get(session.get_dict())
 
-    return CalculationFactory("execflow.update_session")(
+    return CalculationFactory("execflow.update_oteapi_session")(
         session=session,
         updates=DataFactory("core.dict")(updates_for_session),
     )
