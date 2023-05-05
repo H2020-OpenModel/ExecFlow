@@ -47,12 +47,12 @@ Source = 'https://github.com/H2020-OpenModel/ExecFlow'
 
 [project.entry-points.'aiida.calculations']
 'execflow.data.CUDS2DataNode' = 'execflow.data.cuds:CUDS2DataNode'
-'execflow.dataresource_init'  = 'execflow.oteapi.strategies.dataresource:init_dataresource'
-'execflow.dataresource_get'   = 'execflow.oteapi.strategies.dataresource:get_dataresource'
-'execflow.filter_init'        = 'execflow.oteapi.strategies.filter:init_filter'
-'execflow.filter_get'         = 'execflow.oteapi.strategies.filter:get_filter'
-'execflow.mapping_init'       = 'execflow.oteapi.strategies.mapping:init_mapping'
-'execflow.mapping_get'        = 'execflow.oteapi.strategies.mapping:get_mapping'
+'execflow.dataresource_init'  = 'execflow.oteapi_strategies.dataresource:init_dataresource'
+'execflow.dataresource_get'   = 'execflow.oteapi_strategies.dataresource:get_dataresource'
+'execflow.filter_init'        = 'execflow.oteapi_strategies.filter:init_filter'
+'execflow.filter_get'         = 'execflow.oteapi_strategies.filter:get_filter'
+'execflow.mapping_init'       = 'execflow.oteapi_strategies.mapping:init_mapping'
+'execflow.mapping_get'        = 'execflow.oteapi_strategies.mapping:get_mapping'
 'execflow.parse_oteapi_pipeline'     = 'execflow.calculations.parse_oteapi_pipeline:parse_oteapi_pipeline'
 'execflow.update_oteapi_session'     = 'execflow.calculations.update_oteapi_session:update_oteapi_session'
 

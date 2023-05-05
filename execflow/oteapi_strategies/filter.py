@@ -19,7 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
 @calcfunction
 def init_filter(config: "FilterConfigData", session: "Dict") -> "Dict":
     """Initialize an OTE Filter strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IFilterStrategy" = create_strategy("filter", config.get_dict())
     updated_session = session.get_dict()
@@ -30,7 +30,7 @@ def init_filter(config: "FilterConfigData", session: "Dict") -> "Dict":
 @calcfunction
 def get_filter(config: "FilterConfigData", session: "Dict") -> "Dict":
     """Get/Execute an OTE Filter strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IFilterStrategy" = create_strategy("filter", config.get_dict())
     updated_session = session.get_dict()

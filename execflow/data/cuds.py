@@ -1,6 +1,7 @@
 from aiida.plugins import DataFactory
 from aiida.plugins.entry_point import get_entry_point_from_class
-from aiida.orm import load_code, load_node
+from aiida.common.exceptions import MissingEntryPointError
+from aiida.orm import load_code, load_node, Dict
 import dlite
 import numpy as np
 import inspect
@@ -207,7 +208,11 @@ def CUDS2DataNode(cuds):
     # This complication is necessary because sometimes AiiDA DataNodes can not be
     # instantiated as empty, so we try to figure out what the arguments are, look
     # them up in the dlite Instance and fill them out.
-    d = DataFactory(cuds.meta.name)
+    try:
+        d = DataFactory(cuds.meta.name)
+    except MissingEntryPointError:
+        d = DataFactory('core.dict')
+
     argspec = inspect.getfullargspec(d)
     nargs = len(argspec.args)
     ndef = 0 if argspec.defaults is None else len(argspec.defaults)
@@ -219,6 +224,9 @@ def CUDS2DataNode(cuds):
         t = d(*args)
     else:
         t = d()
+
+    if isinstance(t, Dict):
+        t['meta'] = cuds.meta.uri
 
     # Now we fill in the dlite Instance data into the datanode.
     for name in att:
