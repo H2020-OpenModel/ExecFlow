@@ -59,6 +59,8 @@ Source = 'https://github.com/H2020-OpenModel/ExecFlow'
 [project.entry-points.'oteapi.function']
 'execflow.aiidacuds/cuds2datanode' = 'execflow.data.cuds:CUDS2DataNodeStrategy'
 'execflow.aiidacuds/datanode2cuds' = 'execflow.data.cuds:DataNode2CUDSStrategy'
+'execflow.aiidacuds/file2datanode' = 'execflow.data.file2datanode:File2DataNodeStrategy'
+
 
 [project.entry-points.'aiida.workflows']
 'execflow.declarative'         = 'execflow.workchains.declarative_chain:DeclarativeChain'
@@ -110,4 +112,3 @@ disable = [
     'too-many-locals',
     'use-dict-literal',
 ]
-
