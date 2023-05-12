@@ -282,6 +282,10 @@ def set_dot2index(d, key, val):
 
         return set_dot2index(d[t], key[1:], val)
 
+
+
+
+
 class DeclarativeChain(WorkChain):
 
     @classmethod
@@ -362,7 +366,6 @@ class DeclarativeChain(WorkChain):
 
             elif "calcjob" in step or "workflow" in step or "calculation" in step:
                 # This needs to happen because no dict 2 node for now.
-                inputs = dict()
                 if "calcjob" in step:
                     cjob = CalculationFactory(step['calcjob'])
                 elif "calculation" in step:
@@ -373,43 +376,75 @@ class DeclarativeChain(WorkChain):
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
-                for k in step['inputs']:
-                    valid_type = None
-                    if k in spec_inputs:
-                        i = spec_inputs.get(k)
-                        valid_type = i.valid_type
 
-                    d = step['inputs'][k]
-                    if isinstance(d, dict):
-                        if 'type' in d:
-                            valid_type = DataFactory(d.pop('type'))
-
-                        if 'value' in d:
-                            val = d['value']
-                        else:
-                            val = d
-                    else:
-                        val = d
-
-                    if isinstance(val, str):
-                        val = self.eval_template(val)
-
-                    if valid_type is not None and not isinstance(val, valid_type):
-                        valid_type = valid_type[0] if isinstance(valid_type, tuple) else valid_type
-                        if k in spec_inputs:
-                            val = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
-                        else:
-                            val = dict2datanode(val, valid_type)
-                    elif k != 'metadata' and not isinstance(val, orm.Data):
-                        val = orm.to_aiida_type(val)
-
-                    set_dot2index(inputs, k, val)
-                # print(cjob)
+                inputs = self.resolve_inputs(step['inputs'], spec_inputs)
                 if is_process_function(cjob):
                     return ToContext(current = run_get_node(cjob, **inputs)[1])
                 else:
                     return ToContext(current=self.submit(cjob, **inputs))
                     
+
+    def resolve_inputs(self, inputs, spec_inputs):
+        out = dict()
+        for k in inputs:
+
+            # First resolve enforced types with 'type' and 'value', and dereference ctx vars
+            val = self.resolve_input(inputs[k])
+            # Now we resolve potential required types of the calcjob
+            valid_type = None
+            if k in spec_inputs:
+                i = spec_inputs.get(k)
+                valid_type = i.valid_type
+
+                if valid_type is None:
+                    set_dot2index(out, k, orm.to_aiida_type(val) if not (isinstance(val, orm.Data) or k == 'metadata') else val)
+                    continue
+
+
+                if isinstance(val, valid_type):
+                    set_dot2index(out, k, val)
+                    continue
+
+                if isinstance(valid_type, tuple):
+                    inval = None
+                    c = 0
+                    while inval is None and c < len(valid_type):
+                        try:
+                            inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+                        except:
+                            inval = None
+                        c += 1
+
+                    if inval is None:
+                        ValueError(f"Couldn't resolve type of input {k}")
+                else:
+                    inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+
+                set_dot2index(out, k, inval)
+
+            else:
+                set_dot2index(out, k, orm.to_aiida_type(val) if not isinstance(val, orm.Data) else val)
+
+        return out
+
+    def resolve_input(self, input):
+
+        if isinstance(input, dict):
+            # If 'value' and 'type' are in dict we assume lowest level, otherwise recurse
+            if 'value' in input and 'type' in input:
+                try:
+                    valid_type = DataFactory(input['type'])
+                except:
+                    valid_type = eval(input['type']) # Other classes
+
+                return dict2datanode(self.eval_template(input['value']), valid_type)
+            # Normal dict, recurse
+            for k in input:
+                input[k] = self.resolve_input(input[k])
+            return input
+
+        # not a dict, just a value so let's just dereference and retur
+        return self.eval_template(input)
 
     def process_current(self):
         step = self.ctx.steps[self.ctx.current_id]
@@ -430,7 +465,9 @@ class DeclarativeChain(WorkChain):
 
     # Jinja evaluation
     def eval_template(self, s):
-        return self.env.from_string(s).render(ctx=self.ctx)
+        if isinstance(s, str) and '{{' in s and '}}' in s:
+            return self.env.from_string(s).render(ctx=self.ctx)
+        return s
 
     # Jinja Filters
     def to_ctx(self, value, key):

@@ -138,6 +138,7 @@ class OTEPipeline(WorkChain):
         self.ctx.strategies = strategies
 
         self.ctx.ote_session = orm.Dict()
+
         # Add all the input nodes to ote_session
         for k in self.inputs:
             if isinstance(self.inputs[k], orm.Data):

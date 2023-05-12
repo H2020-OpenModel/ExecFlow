@@ -47,13 +47,14 @@ class CUDS2DataNodeStrategy:
 
         cache = DataCache()
 
-        if 'collection_id' not in session:
-            coll_id_node = load_node(session['collection_uuid'])
-            id_ = coll_id_node.value
-            coll = dlite.Collection.from_json(cache.get(id_), id=id_)
+        # This doesn't work
+        # if 'collection_id' not in session:
+        coll_id_node = load_node(session['collection_uuid'])
+        id_ = coll_id_node.value
+        coll = dlite.Collection.from_json(cache.get(id_), id=id_)
 
-        else:
-            coll = get_collection(session)
+        # else:
+        #     coll = get_collection(session)
 
         names = load_node(session[self.config.configuration['names']])
         update = DLiteSessionUpdate(collection_id = coll.uuid)
@@ -225,7 +226,7 @@ def CUDS2DataNode(cuds):
     else:
         t = d()
 
-    if isinstance(t, Dict):
+    if isinstance(t, Dict) and cuds.meta.name != 'core.dict':
         t['meta'] = cuds.meta.uri
 
     # Now we fill in the dlite Instance data into the datanode.
