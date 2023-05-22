@@ -273,7 +273,7 @@ def CUDS2DataNode(cuds):
     else:
         t = d()
 
-    if isinstance(t, Dict):
+    if isinstance(t, Dict) and cuds.meta.name != 'core.dict':
         t["meta"] = cuds.meta.uri
 
     # Now we fill in the dlite Instance data into the datanode.
