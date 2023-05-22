@@ -370,7 +370,7 @@ class DeclarativeChain(WorkChain):
                 except:
                     valid_type = eval(input['type']) # Other classes
 
-                return dict2datanode(self.eval_template(input['value']), valid_type)
+                return dict2datanode(self.resolve_input(input['value']), valid_type)
             # Normal dict, recurse
             for k in input:
                 input[k] = self.resolve_input(input[k])
