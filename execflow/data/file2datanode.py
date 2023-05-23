@@ -5,10 +5,10 @@ import dlite
 from oteapi.datacache import DataCache
 from oteapi.models import AttrDict, DataCacheConfig, FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
-from oteapi_dlite.utils import get_collection
+from oteapi_dlite.utils import get_collection, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
-
+from .cuds import DataNode2CUDS
 # TODO also report uuid of cuds not just labels
 
 
@@ -52,9 +52,24 @@ class File2DataNodeStrategy:
     def get(self, session=None):
 
         cache = DataCache()
+
+        coll = get_collection(session)
+        
         config = self.function_config.configuration
 
         node = SinglefileData(config.path)
         node.store()
+        print('*', node)
+        print('**', config.label)
+        inst = DataNode2CUDS(node)
+        coll.add(config.label, inst)
 
-        return SessionUpdate(**{config.label: node.id})
+        print(coll)
+        update_collection(coll)
+        results = session.get("to_results", dict())
+        results[config.label] = node.id
+        print('PPPP', results)
+
+
+
+        return SessionUpdate(**{"to_results": results})#**{config.label: node.id})

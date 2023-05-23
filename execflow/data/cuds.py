@@ -32,8 +32,9 @@ class DataNode2CUDSStrategy:
         for n in names_list:
             i = DataNode2CUDS(load_node(session[n]))
             coll.add(n, i)
-
+        print(coll.asjson())
         update_collection(coll)
+        #print(coll.as_json())
 
         return DLiteSessionUpdate(collection_id=coll.uuid)
 
@@ -67,12 +68,21 @@ class CUDS2DataNodeStrategy:
             coll = get_collection(session)
 
         names = load_node(session[self.config.configuration["names"]])
+        print('QQQQ', names)
         results = session.get("to_results", dict())
+        print('RRRR', results)
         for n in names:
+            print('sss', n)
             i = coll[n]
+            print('inst', i)
             d = CUDS2DataNode(i)
+            print('d', d, type(d))
+            print(dir(d))
             d.store()
+            print('it is stored')
             results[n] = d.id
+            print('SSSS',results[n])
+        print(coll)
 
         update_collection(coll)
         return SessionUpdate(**{"to_results": results})
@@ -236,6 +246,7 @@ def CUDS2DataNode(cuds):
     #
     # TODO: There should probably be a global map from name to converting function to which
     # users can add things for other specific cases.
+    print('aaa', cuds, cuds.meta.name)
     if cuds.meta.name == "core.code":
         return load_code(cuds.properties["label"])
     if cuds.meta.name == "pseudo.upf":
@@ -244,15 +255,18 @@ def CUDS2DataNode(cuds):
         return UpfData.get_or_create(cuds.properties["filename"])[0]
 
     # Instantiate the nested datastructure as a basic dict for later use
+    print('bbbb')
     att = {}
     for name in cuds.properties:
         construct_attributes(att, name, cuds.properties[name])
 
+
+    print('cccc')
     # Here we handle the pipe debacle.
     to_node = {}
     for name in att:
         to_node[name.replace("__", "|")] = att[name]
-
+    print('dddd')
     # This complication is necessary because sometimes AiiDA DataNodes can not be
     # instantiated as empty, so we try to figure out what the arguments are, look
     # them up in the dlite Instance and fill them out.
@@ -260,7 +274,7 @@ def CUDS2DataNode(cuds):
         d = DataFactory(cuds.meta.name)
     except MissingEntryPointError:
         d = DataFactory("core.dict")
-
+    print('eeee')
     argspec = inspect.getfullargspec(d)
     nargs = len(argspec.args)
     ndef = 0 if argspec.defaults is None else len(argspec.defaults)
@@ -281,7 +295,7 @@ def CUDS2DataNode(cuds):
         t.set_attribute(
             name.replace("__", "|"), att[name]
         )  # The replace here is done because dlite doesn't like pipe
-
+    print('fff')
     return t
 
 
