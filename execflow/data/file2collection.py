@@ -12,7 +12,7 @@ from .cuds import DataNode2CUDS
 # TODO also report uuid of cuds not just labels
 
 
-class File2DataNodeConfig(AttrDict):
+class File2CollectionConfig(AttrDict):
     """Configuration for a function that casts a file into an AiiDA datanode.
     The AiiDA datanode is then stored in the session.
 
@@ -23,8 +23,8 @@ class File2DataNodeConfig(AttrDict):
     )
 
     label: Optional[str] = Field(
-        "aiidafilenode",
-        description="Label of the datanode????.",
+        "filename",
+        description="Label of the file.",
     )
     datacache_config: Optional[DataCacheConfig] = Field(
         None,
@@ -32,18 +32,18 @@ class File2DataNodeConfig(AttrDict):
     )
 
 
-class File2DataNodeFunctionConfig(FunctionConfig):
+class File2CollectionFunctionConfig(FunctionConfig):
     """DLite function strategy config."""
 
-    configuration: File2DataNodeConfig = Field(
+    configuration: File2CollectionConfig = Field(
         ..., description="DLite function strategy-specific configuration."
     )
 
 
 @dataclass
-class File2DataNodeStrategy:
+class File2CollectionStrategy:
     "Strategy for casting a file into an Aiida SinglefileDataNode"
-    function_config: File2DataNodeFunctionConfig
+    function_config: File2CollectionFunctionConfig
 
     def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
         """Initialize strategy."""
@@ -57,19 +57,12 @@ class File2DataNodeStrategy:
         
         config = self.function_config.configuration
 
-        node = SinglefileData(config.path)
-        node.store()
-        print('*', node)
-        print('**', config.label)
-        inst = DataNode2CUDS(node)
+        meta = dlite.get_instance('onto-ns.com/meta/1.0/core.str')
+        inst = meta()
+        inst.value = config.path
         coll.add(config.label, inst)
 
-        print(coll)
         update_collection(coll)
-        results = session.get("to_results", dict())
-        results[config.label] = node.id
-        print('PPPP', results)
 
 
-
-        return SessionUpdate(**{"to_results": results})#**{config.label: node.id})
+        return SessionUpdate()#**{"to_results": results})#**{config.label: node.id})
