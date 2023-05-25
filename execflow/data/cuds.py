@@ -49,21 +49,7 @@ class CUDS2DataNodeStrategy:
 
         cache = DataCache()
 
-        # Choose to use collection defined by node first
-        if "collection_uuid" in session:
-            coll_id_node = load_node(
-                session["collection_uuid"]
-            )  # This should be e.g. collection_node_PK
-            id_ = coll_id_node.value
-            coll = dlite.Collection.from_json(cache.get(id_), id=id_)
-        # If there is a collection in the session, use it
-        # Problm: we add a collection but then cannot access it?
-        # elif 'collection_id' in session:
-        #    coll = dlite.get_instance(session.get("collection_id"))
-        #    #coll = dlite.get_instance(session['collection_id'])
-        #    #coll = dlite.get_collection(id=session['collection_id'])
-        else:
-            coll = get_collection(session)
+        coll = get_collection(session)
         names = load_node(session[self.config.configuration["names"]])
         results = session.get("to_results", dict())
         for n in names:
