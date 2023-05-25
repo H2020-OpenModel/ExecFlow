@@ -16,7 +16,7 @@ def graph_node(node):
         origin_style=None,
         include_process_inputs=True,
         annotate_links="both",
-        link_types=('input_work', 'input_calc', 'call_calc', 'create')
+        # link_types=('input_work', 'input_calc', 'call_calc', 'create')
     )
     graph.graphviz.render("out")
 
