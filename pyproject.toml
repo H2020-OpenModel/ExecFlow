@@ -30,7 +30,9 @@ dependencies = [
 	'jsonref',
     'pyyaml',
 	'ruamel.yaml',
-    'cachecontrol'
+    'cachecontrol',
+    'chevron',
+    'aiida-shell'
 ]
 
 [project.urls]
@@ -65,6 +67,7 @@ Source = 'https://github.com/H2020-OpenModel/ExecFlow'
 [project.entry-points.'aiida.workflows']
 'execflow.declarative'         = 'execflow.workchains.declarative_chain:DeclarativeChain'
 'execflow.oteapipipeline'      = 'execflow.workchains.oteapi_pipeline:OTEPipeline'
+'execflow.exec_wrapper'        = 'execflow.workchains.exec_wrapper:ExecWrapper'
 'execflow.function_init'       = 'execflow.oteapi_strategies.function:init_function'
 'execflow.function_get'        = 'execflow.oteapi_strategies.function:get_function'
 'execflow.transformation_init' = 'execflow.oteapi_strategies.transformation:init_transformation'
