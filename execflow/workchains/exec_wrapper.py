@@ -44,7 +44,7 @@ class ExecWrapper(WorkChain):
         self.ctx.filenodes = dict()
         self.ctx.filenames = dict()
         for k, f in self.inputs.files.items():
-            self.ctx.filenodes[k] = fill_template(SinglefileData(f['template']), f['parameters'])
+            self.ctx.filenodes[k] = fill_template(SinglefileData(f['template']), f.get('parameters', Dict()))
             self.ctx.filenames[k] = f['filename']
 
     def register_code(self):
