@@ -26,7 +26,7 @@ class ExecWrapper(WorkChain):
     def define(cls, spec):
         super().define(spec)
 
-        spec.input("files", valid_type=Dict)
+        spec.input("files", valid_type=(Dict, dict),is_metadata=True)
         spec.input("command", valid_type = Str)
         spec.expose_inputs(ShellJob, exclude=['nodes', 'filenames', 'code', 'metadata'])
 
@@ -37,7 +37,6 @@ class ExecWrapper(WorkChain):
             cls.finalize
         )
 
-       # spec.output_namespace("outputs", dynamic=True)
         spec.outputs.dynamic=True
 
     def setup(self):
@@ -45,7 +44,10 @@ class ExecWrapper(WorkChain):
         self.ctx.filenodes = dict()
         self.ctx.filenames = dict()
         for k, f in self.inputs.files.items():
-            self.ctx.filenodes[k] = fill_template(SinglefileData(f['template']), f.get('parameters', Dict()))
+            if 'node' in f:
+                self.ctx.filenodes[k] = f['node']
+            else:
+                self.ctx.filenodes[k] = fill_template(SinglefileData(f['template']), f.get('parameters', Dict()))
             self.ctx.filenames[k] = f['filename']
 
     def register_code(self):
