@@ -37,7 +37,8 @@ class ExecWrapper(WorkChain):
             cls.finalize
         )
 
-        spec.expose_outputs(ShellJob)
+       # spec.output_namespace("outputs", dynamic=True)
+        spec.outputs.dynamic=True
 
     def setup(self):
 
@@ -64,6 +65,7 @@ class ExecWrapper(WorkChain):
         return ToContext(shell=shell)
 
     def finalize(self):
-        self.out_many(self.exposed_outputs(self.ctx.shell, ShellJob))
+        for k in self.ctx.shell.outputs:
+            self.out(f"{k}",self.ctx.shell.outputs[k])
 
 
