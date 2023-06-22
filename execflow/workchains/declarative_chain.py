@@ -1,7 +1,7 @@
 from os.path import splitext
 from pathlib import Path
 from urllib.parse import urlsplit
-
+from aiida.plugins import DataFactory
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
@@ -15,7 +15,7 @@ from jsonschema import validate
 import plumpy
 import requests
 from ruamel.yaml import YAML
-
+import pdb
 # Copied from https://github.com/aiidalab/aiidalab/blob/90b334e6a473393ba22b915fdaf85d917fd947f4/aiidalab/registry/yaml.py
 # licensed under the MIT license
 REQUESTS = cachecontrol.CacheControl(requests.Session())
@@ -164,8 +164,21 @@ def dict2kpoints(d):
         kpoints.set_kpoints_mesh(d)
     return kpoints
 
+def dict2AsxData(d):
+    AsxData=DataFactory("aspherix.parameters")
+    aspherix_data = AsxData(shape=d['shape'], 
+                            domain=d['domain'],
+                            mat_prop=d['materials_list'],
+                            meshes_list=d['mesh_list'],
+                            part_temp_dict=d['particle_template_list'],
+                            particle_distribution=d['particle_distribution'],
+                            insertion_par=d['insertion_parameters'])
+    return aspherix_data
+
 
 def dict2datanode(dat, typ, dynamic=False):
+    AsxData=DataFactory("aspherix.parameters")
+    #pdb.set_trace()
     # Resolve recursively
     if dynamic:
         out = dict()
@@ -177,7 +190,6 @@ def dict2datanode(dat, typ, dynamic=False):
     # If node is specified, just load node
     if dat is dict and "node" in dat:
         return load_node(dat["node"])
-
     # More than one typ possible
     if isinstance(typ, tuple):
         for t in typ:
@@ -190,6 +202,9 @@ def dict2datanode(dat, typ, dynamic=False):
         return dict2code(dat)
     elif typ is orm.StructureData:
         return dict2structure(dat)
+    elif typ is AsxData:
+        return dict2AsxData(dat)
+    
     elif typ is UpfData or typ is orm.nodes.data.upf.UpfData:
         return dict2upf(dat)
     elif typ is orm.KpointsData:
@@ -230,7 +245,6 @@ class DeclarativeChain(WorkChain):
         super().define(spec)
         spec.input("workchain_specification", valid_type=SinglefileData)
         spec.exit_code(2, "ERROR_SUBPROCESS", message="A subprocess has failed.")
-
         spec.outline(
             cls.setup,
             while_(cls.not_finished)(cls.submit_next, cls.process_current),
@@ -313,14 +327,16 @@ class DeclarativeChain(WorkChain):
                 spec_inputs = cjob.spec().inputs
                 
                 inputs = self.resolve_inputs(step['inputs'], spec_inputs)
+                
                 if is_process_function(cjob):
                     return ToContext(current=run_get_node(cjob, **inputs)[1])
                 else:
                     return ToContext(current=self.submit(cjob, **inputs))
     def resolve_inputs(self, inputs, spec_inputs):
         out = dict()
+        
         for k in inputs:
-
+            
             # First resolve enforced types with 'type' and 'value', and dereference ctx vars
             val = self.resolve_input(inputs[k])
             # Now we resolve potential required types of the calcjob
@@ -375,7 +391,11 @@ class DeclarativeChain(WorkChain):
             for k in input:
                 input[k] = self.resolve_input(input[k])
             return input
-
+        if isinstance(input, list):
+            list_s=[]
+            for element in input:
+                list_s.append(self.resolve_input(element))
+            return list_s
         # not a dict, just a value so let's just dereference and retur
         return self.eval_template(input)
 
