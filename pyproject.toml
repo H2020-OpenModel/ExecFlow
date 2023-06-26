@@ -21,15 +21,16 @@ classifiers = [
 requires-python = '>=3.8'
 
 dependencies = [
-	'aiida-core',
-	'aiida-pseudo',
-	'pydantic',
-	'oteapi-core',
-	'oteapi-dlite',
-	'jsonschema',
-	'jsonref',
+    'aiida-core==2.3.1',
+    'aiida-pseudo',
+    'pydantic',
+    'oteapi-core==0.4.1',
+    'oteapi-dlite',
+    'DLite-Python',
+    'jsonschema',
+    'jsonref',
     'pyyaml',
-	'ruamel.yaml',
+    'ruamel.yaml',
     'cachecontrol',
     'chevron',
     'aiida-shell==0.3.0'
