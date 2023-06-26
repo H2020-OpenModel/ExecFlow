@@ -26,7 +26,7 @@ dependencies = [
     'pydantic',
     'oteapi-core==0.4.1',
     'oteapi-dlite',
-    'DLite-Python',
+    'DLite-Python==0.3.20',
     'jsonschema',
     'jsonref',
     'pyyaml',
