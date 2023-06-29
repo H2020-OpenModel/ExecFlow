@@ -5,7 +5,7 @@ from aiida.plugins import DataFactory
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, load_code, load_group, load_node
+from aiida.orm import Dict, List, SinglefileData,FolderData, load_code, load_group, load_node
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -166,13 +166,25 @@ def dict2kpoints(d):
 
 def dict2AsxData(d):
     AsxData=DataFactory("aspherix.parameters")
-    aspherix_data = AsxData(shape=d['shape'], 
-                            domain=d['domain'],
-                            mat_prop=d['materials_list'],
-                            meshes_list=d['mesh_list'],
-                            part_temp_dict=d['particle_template_list'],
-                            particle_distribution=d['particle_distribution'],
-                            insertion_par=d['insertion_parameters'])
+    if 'mesh_list' in d:
+        aspherix_data = AsxData(shape=d['shape'], 
+                                domain=d['domain'],
+                                mat_prop=d['materials_list'],
+                                meshes_list=d['mesh_list'],
+                                part_temp_dict=d['particle_template_list'],
+                                particle_distribution=d['particle_distribution'],
+                                insertion_par=d['insertion_parameters'])
+    else:
+        aspherix_data = AsxData(shape=d['shape'], 
+                                domain=d['domain'],
+                                mat_prop=d['materials_list'],
+                                meshes_list=[],
+                                part_temp_dict=d['particle_template_list'],
+                                particle_distribution=d['particle_distribution'],
+                                insertion_par=d['insertion_parameters'])
+
+
+
     return aspherix_data
 
 
@@ -213,6 +225,8 @@ def dict2datanode(dat, typ, dynamic=False):
         return Dict(dict=dat)
     elif typ is List:
         return List(list=dat)
+    elif typ is FolderData:
+        return FolderData(tree=dat)
     else:
         return typ(dat)
 
@@ -391,6 +405,7 @@ class DeclarativeChain(WorkChain):
             for k in input:
                 input[k] = self.resolve_input(input[k])
             return input
+        
         if isinstance(input, list):
             list_s=[]
             for element in input:
