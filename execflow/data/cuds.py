@@ -13,6 +13,7 @@ from oteapi_dlite.utils import get_collection, get_driver, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 from typing import Optional, Any
+from io import StringIO
 
 # TODO also report uuid of cuds not just labels
 @dataclass
@@ -226,6 +227,11 @@ def CUDS2DataNode(cuds):
         from aiida.orm import UpfData
 
         return UpfData.get_or_create(cuds.properties["filename"])[0]
+
+    if cuds.meta.name == "core.singlefile":
+        from aiida.orm import SinglefileData
+        with open(cuds.properties["filename"], "r") as f:
+            return SinglefileData(StringIO(f.read()))
 
     # Instantiate the nested datastructure as a basic dict for later use
     att = {}

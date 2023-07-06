@@ -57,9 +57,9 @@ class File2CollectionStrategy:
         
         config = self.function_config.configuration
 
-        meta = dlite.get_instance('onto-ns.com/meta/1.0/core.str')
+        meta = dlite.get_instance('onto-ns.com/meta/1.0/core.singlefile')
         inst = meta()
-        inst.value = config.path
+        inst.filename = config.path
         coll.add(config.label, inst)
 
         update_collection(coll)
