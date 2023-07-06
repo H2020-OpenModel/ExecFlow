@@ -1,0 +1,16 @@
+{
+    "uuid": "1bf9a6ab-6a26-5a33-bdeb-213647a59c59",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.singlefile",
+    "name": "core.singlefile",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 2ea67bb8-4f10-45fb-9e0d-43ce18be6e1c of type SinglefileData",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "filename",
+            "type": "string"
+        }
+    ]
+}
