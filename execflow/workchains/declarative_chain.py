@@ -339,7 +339,7 @@ class DeclarativeChain(WorkChain):
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
-                
+
                 inputs = self.resolve_inputs(step['inputs'], spec_inputs)
                 
                 if is_process_function(cjob):

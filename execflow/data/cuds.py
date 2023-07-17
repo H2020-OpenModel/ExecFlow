@@ -228,7 +228,8 @@ def CUDS2DataNode(cuds):
         return UpfData.get_or_create(cuds.properties["filename"])[0]
 
     # Instantiate the nested datastructure as a basic dict for later use
-    att = {}
+    att = {'type':cuds.meta.name}
+
     for name in cuds.properties:
         construct_attributes(att, name, cuds.properties[name])
 
@@ -269,22 +270,33 @@ def CUDS2DataNode(cuds):
 
 def construct_attributes(attributes, propertyname, property):
     sname = propertyname.split("_dict_")
-    if len(sname) == 1:
-        if isinstance(property, np.ndarray):
-            attributes[propertyname] = property.tolist()
-        else:
-            attributes[propertyname] = property
+    try :
+        toc=property[0]
+    except:
+        toc=property
+    if type(toc)==dlite.dlite.Instance:
+        #consider an array of same instances (ie a bunch of points/faces)
+        attributes[propertyname]=[]
+        for elem in property:
+            for name in elem.properties:
+                attributes[propertyname].append(elem.properties[name])
     else:
-        if isinstance(property, list) or isinstance(property, np.ndarray):
-            if sname[0] not in attributes:
-                attributes[sname[0]] = [{} for p in property]
-
-            for (i, p) in enumerate(property):
-                construct_attributes(attributes[sname[0]][i], "_".join(sname[1:]), p)
+        if len(sname) == 1:
+            if isinstance(property, np.ndarray):
+                attributes[propertyname] = property.tolist()
+            else:
+                attributes[propertyname] = property
         else:
-            if sname[0] not in attributes:
-                attributes[sname[0]] = {}
+            if isinstance(property, list) or isinstance(property, np.ndarray):
+                if sname[0] not in attributes:
+                    attributes[sname[0]] = [{} for p in property]
 
-            construct_attributes(attributes[sname[0]], "_".join(sname[1:]), property)
+                for (i, p) in enumerate(property):
+                    construct_attributes(attributes[sname[0]][i], "_".join(sname[1:]), p)
+            else:
+                if sname[0] not in attributes:
+                    attributes[sname[0]] = {}
+
+                construct_attributes(attributes[sname[0]], "_".join(sname[1:]), property)
 
     return attributes
