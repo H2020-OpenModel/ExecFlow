@@ -116,3 +116,9 @@ disable = [
     'too-many-locals',
     'use-dict-literal',
 ]
+
+[tool.setuptools.package-data]
+execflow = [
+    "entities/*.json"
+]
+
