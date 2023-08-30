@@ -21,7 +21,7 @@ if TYPE_CHECKING:  # pragma: no cover
 @workfunction
 def init_transformation(config: "TransformationConfigData", session: "Dict") -> "Dict":
     """Initialize an OTE Transformation strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "ITransformationStrategy" = create_strategy(
         "transformation", config.get_dict()
@@ -51,7 +51,7 @@ def get_transformation(config: "TransformationConfigData", session: "Dict") -> "
         However, this is to be implemented in OTEAPI Core.
 
     """
-    load_strategies()
+    load_strategies(False)
 
     strategy: "ITransformationStrategy" = create_strategy(
         "transformation", config.get_dict()

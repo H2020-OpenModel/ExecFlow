@@ -1,0 +1,123 @@
+
+[build-system]
+requires = ['flit_core >=3.4,<4']
+build-backend = 'flit_core.buildapi'
+
+[project]
+name = 'execflow'
+dynamic = ['version']
+authors = [{name = 'louisponet', email = 'louisponet@epfl.ch'}]
+readme = 'README.md'
+license = {file = 'LICENSE'}
+description = "openmodel execflow"
+classifiers = [
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+requires-python = '>=3.8'
+
+dependencies = [
+	'aiida-core',
+	'aiida-pseudo',
+	'pydantic',
+	'oteapi-core',
+	'oteapi-dlite',
+	'jsonschema',
+	'jsonref',
+    'pyyaml',
+	'ruamel.yaml',
+    'cachecontrol',
+    'chevron',
+    'aiida-shell==0.3.0'
+]
+
+[project.urls]
+Home = 'https://github.com/H2020-OpenModel/ExecFlow'
+Source = 'https://github.com/H2020-OpenModel/ExecFlow'
+
+[project.entry-points.'aiida.data']
+'execflow.oteapi_pipeline'      = 'execflow.data.oteapi.declarative_pipeline:OTEPipelineData'
+'execflow.dataresourceconfig'   = 'execflow.data.oteapi.resourceconfig:ResourceConfigData'
+'execflow.filterconfig'         = 'execflow.data.oteapi.filterconfig:FilterConfigData'
+'execflow.functionconfig'       = 'execflow.data.oteapi.functionconfig:FunctionConfigData'
+'execflow.mappingconfig'        = 'execflow.data.oteapi.mappingconfig:MappingConfigData'
+'execflow.transformationconfig' = 'execflow.data.oteapi.transformationconfig:TransformationConfigData'
+
+[project.entry-points.'aiida.calculations']
+'execflow.data.CUDS2DataNode' = 'execflow.data.cuds:CUDS2DataNode'
+'execflow.dataresource_init'  = 'execflow.oteapi_strategies.dataresource:init_dataresource'
+'execflow.dataresource_get'   = 'execflow.oteapi_strategies.dataresource:get_dataresource'
+'execflow.filter_init'        = 'execflow.oteapi_strategies.filter:init_filter'
+'execflow.filter_get'         = 'execflow.oteapi_strategies.filter:get_filter'
+'execflow.mapping_init'       = 'execflow.oteapi_strategies.mapping:init_mapping'
+'execflow.mapping_get'        = 'execflow.oteapi_strategies.mapping:get_mapping'
+'execflow.parse_oteapi_pipeline'     = 'execflow.calculations.parse_oteapi_pipeline:parse_oteapi_pipeline'
+'execflow.update_oteapi_session'     = 'execflow.calculations.update_oteapi_session:update_oteapi_session'
+
+[project.entry-points.'oteapi.function']
+'execflow.aiidacuds/cuds2datanode' = 'execflow.data.cuds:CUDS2DataNodeStrategy'
+'execflow.aiidacuds/datanode2cuds' = 'execflow.data.cuds:DataNode2CUDSStrategy'
+'execflow.aiidacuds/file2collection' = 'execflow.data.file2collection:File2CollectionStrategy'
+
+
+[project.entry-points.'aiida.workflows']
+'execflow.declarative'         = 'execflow.workchains.declarative_chain:DeclarativeChain'
+'execflow.oteapipipeline'      = 'execflow.workchains.oteapi_pipeline:OTEPipeline'
+'execflow.exec_wrapper'        = 'execflow.workchains.exec_wrapper:ExecWrapper'
+'execflow.function_init'       = 'execflow.oteapi_strategies.function:init_function'
+'execflow.function_get'        = 'execflow.oteapi_strategies.function:get_function'
+'execflow.transformation_init' = 'execflow.oteapi_strategies.transformation:init_transformation'
+'execflow.transformation_get'  = 'execflow.oteapi_strategies.transformation:get_transformation'
+
+[tool.flit.module]
+name = 'execflow'
+
+[tool.flynt]
+line-length = 120
+fail-on-change = true
+
+[tool.isort]
+force_sort_within_sections = true
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3  # this configuration is compatible with yapf
+
+[tool.pydocstyle]
+ignore = [
+    'D104',
+    'D202',
+    'D203',
+    'D213'
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.tool-check]
+generated-members = 'self.exit_codes.*'
+
+[tool.pylint.messages_control]
+disable = [
+    'duplicate-code',
+    'fixme',
+    'inconsistent-return-statements',
+    'import-outside-toplevel',
+    'locally-disabled',
+    'logging-format-interpolation',
+    'no-else-raise',
+    'too-many-arguments',
+    'too-many-ancestors',
+    'too-many-branches',
+    'too-many-locals',
+    'use-dict-literal',
+]
+
+[tool.setuptools.package-data]
+execflow = [
+    "entities/*.json"
+]
+

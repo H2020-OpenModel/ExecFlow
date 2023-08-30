@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 from aiida.engine import calcfunction
 from aiida.plugins import DataFactory
 from oteapi.plugins import create_strategy, load_strategies
-
 if TYPE_CHECKING:  # pragma: no cover
     from aiida.orm import Dict
 
@@ -18,7 +17,7 @@ if TYPE_CHECKING:  # pragma: no cover
 @calcfunction
 def init_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
     """Initialize an OTE Data Resource strategy."""
-    load_strategies()
+    load_strategies(False)
 
     if config.downloadUrl and config.mediaType:
         # Download strategy
@@ -51,7 +50,7 @@ def init_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
 @calcfunction
 def get_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
     """Get/Execute an OTE Data Resource strategy."""
-    load_strategies()
+    load_strategies(False)
 
     if config.downloadUrl and config.mediaType:
         # Download strategy

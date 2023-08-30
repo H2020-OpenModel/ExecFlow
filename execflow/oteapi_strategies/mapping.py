@@ -19,7 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
 @calcfunction
 def init_mapping(config: "MappingConfigData", session: "Dict") -> "Dict":
     """Initialize an OTE Mapping strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IMappingStrategy" = create_strategy("mapping", config.get_dict())
     updated_session = session.get_dict()
@@ -30,7 +30,7 @@ def init_mapping(config: "MappingConfigData", session: "Dict") -> "Dict":
 @calcfunction
 def get_mapping(config: "MappingConfigData", session: "Dict") -> "Dict":
     """Get/Execute an OTE Mapping strategy."""
-    load_strategies()
+    load_strategies(False)
 
     strategy: "IMappingStrategy" = create_strategy("mapping", config.get_dict())
     updated_session = session.get_dict()
