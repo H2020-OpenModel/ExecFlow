@@ -22,7 +22,7 @@ requires-python = '>=3.8'
 
 dependencies = [
     'aiida-core==2.3.1',
-    'aiida-pseudo',
+    'aiida-pseudo>=0.8.0,<2',
     'pydantic',
     'oteapi-core==0.4.1',
     'oteapi-dlite',
