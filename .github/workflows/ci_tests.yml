@@ -35,7 +35,7 @@ jobs:
       build_cmd: "python -m build"
 
       # Build documentation
-      run_build_docs: true
+      run_build_docs: false
       python_version_docs: "3.9"
       update_python_api_ref: true
       update_docs_landing_page: true
