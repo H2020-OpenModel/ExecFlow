@@ -21,18 +21,15 @@ classifiers = [
 requires-python = '>=3.8'
 
 dependencies = [
-    'aiida-core==2.3.1',
+    'aiida-core>=2.1.0<3',
     'aiida-pseudo>=0.8.0,<2',
-    'pydantic',
-    'oteapi-core==0.4.1',
-    'oteapi-dlite',
-    'DLite-Python==0.3.20',
-    'jsonschema',
+    'oteapi-core>=0.4.1,<0.4.4',
+    'oteapi-dlite>=0.1.4,<0.1.5',
+    'DLite-Python>=0.3.20,<0.4.1',
     'jsonref',
-    'pyyaml',
-    'ruamel.yaml',
-    'cachecontrol',
-    'chevron',
+    'ruamel.yaml>=0.17.23,<0.17.33',
+    'cachecontrol>=0.13.1,<0.13.2',
+    'chevron>=0.14.0,<0.14.1',
     'aiida-shell==0.3.0'
 ]
 
@@ -121,4 +118,3 @@ disable = [
 execflow = [
     "entities/*.json"
 ]
-
