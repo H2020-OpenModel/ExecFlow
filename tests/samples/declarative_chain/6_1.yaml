@@ -1,0 +1,66 @@
+---
+data:
+  "$ref": "file:///home/lponet/Software/pythondev/Demo/data.yaml"
+setup:
+  - "{{ 1 | to_ctx('nscf_count') }}"
+steps:
+- workflow: execflow.declarative
+  inputs:
+    workchain_specification: "/home/lponet/Software/pythondev/Demo/6_2.yaml"
+  postprocess:
+    - "{{ ctx.current.outputs['results']['workdir']|to_ctx('scf_dir') }}"
+- while: "{{ ctx.nscf_count < 3 }}"
+  steps:
+  - calcjob: quantumespresso.pw
+    inputs:
+      parameters:
+        "$ref": "#/data/pw_parameters"
+      parameters.CONTROL.calculation: nscf
+      metadata:
+        "$ref": "#/data/metadata"
+      code: pw-6.8@localhost
+      kpoints:
+        "$ref": "#/data/kpoints_mesh"
+      pseudos:
+        "$ref": "#/data/pseudos"
+      structure:
+        "$ref": "#/data/structure"
+      parent_folder: "{{ ctx.scf_dir }}"
+    postprocess:
+      - "{{ (ctx.nscf_count + 1) | to_ctx('nscf_count')}}"
+      - "{{ (ctx.nscf_count + 1) | to_results('nscf_count')}}"
+- calcjob: quantumespresso.seekpath_structure_analysis
+  inputs:
+    structure:
+      type: core.structure
+      value:
+        "$ref": "#/data/structure"
+    reference_distance:
+      type: core.float
+      value: 0.01
+  postprocess:
+      - "{{ ctx.current.outputs['primitive_structure'] | to_ctx('current_structure') }}"
+      - "{{ ctx.current.outputs['explicit_kpoints'] | to_ctx('bands_kpoints') }}"
+
+- if: "{{ ctx.nscf_count == 3 }}"
+  calcjob: quantumespresso.pw
+  inputs:
+    parameters:
+      "$ref": "#/data/pw_parameters"
+    parameters.CONTROL.calculation: bands
+    metadata:
+      "$ref": "#/data/metadata"
+    code: pw-6.8@localhost
+    kpoints: "{{ ctx.bands_kpoints }}"
+    pseudos:
+      "$ref": "#/data/pseudos"
+    structure:
+      "$ref": "#/data/structure"
+    parent_folder: "{{ ctx.scf_dir }}"
+  postprocess:
+    - "{{ ctx.current.outputs['output_parameters']|to_results('band_parameters') }}"
+    - "{{ ctx.current.outputs['output_band']|to_results('band_structure') }}"
+  error:
+    code: 1234
+    message: Final bands step errored
+

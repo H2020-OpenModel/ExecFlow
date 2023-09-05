@@ -1,0 +1,19 @@
+---
+data:
+  "$ref": "file:///home/lponet/Software/pythondev/Demo/data.yaml"
+steps:
+- calcjob: quantumespresso.pw
+  inputs:
+    parameters:
+      "$ref": "#/data/pw_parameters"
+    metadata:
+      "$ref": "#/data/metadata"
+    code: pw-6.8@localhost
+    kpoints:
+    - 4
+    - 4
+    - 4
+    pseudos:
+      "$ref": "#/data/pseudos"
+    structure:
+      "$ref": "#/data/structure"

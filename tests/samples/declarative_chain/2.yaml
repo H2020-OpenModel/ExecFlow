@@ -1,0 +1,78 @@
+---
+data:
+  pw_parameters:
+    CONTROL:
+      verbosity: high
+      restart_mode: from_scratch
+      calculation: scf
+    SYSTEM:
+      ecutwfc: 30
+      occupations: smearing
+      smearing: mv
+      degauss: 0.002
+    ELECTRONS:
+      electron_maxstep: 100
+      conv_thr: 1.0e-04
+  metadata:
+    options:
+      withmpi: true
+      resources:
+        num_machines: 1
+        num_mpiprocs_per_machine: 14
+  pseudos:
+    Ni:
+      group: SSSP/1.1/PBE/efficiency
+      element: Ni
+    O:
+      group: SSSP/1.1/PBE/efficiency
+      element: O
+  structure:
+    atoms:
+    - symbols: Ni
+      position:
+      - 0
+      - 0
+      - 0
+    - symbols: Ni
+      name: Ni
+      position:
+      - 4.17
+      - 4.17
+      - 4.17
+    - symbols: O
+      position:
+      - 2.0866
+      - 2.0866
+      - 2.0866
+    - symbols: O
+      position:
+      - 6.26
+      - 6.26
+      - 6.26
+    cell:
+    - - 4.17737
+      - 2.08464
+      - 2.08464
+    - - 2.08464
+      - 4.17737
+      - 2.08464
+    - - 2.08464
+      - 2.08464
+      - 4.17737
+
+steps:
+- calcjob: quantumespresso.pw
+  inputs:
+    parameters:
+      "$ref": "#/data/pw_parameters"
+    metadata:
+      "$ref": "#/data/metadata"
+    code: pw-6.8@localhost
+    kpoints:
+    - 4
+    - 4
+    - 4
+    pseudos:
+      "$ref": "#/data/pseudos"
+    structure:
+      "$ref": "#/data/structure"
