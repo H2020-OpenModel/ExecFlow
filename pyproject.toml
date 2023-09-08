@@ -118,3 +118,6 @@ disable = [
 execflow = [
     "entities/*.json"
 ]
+
+[project.optional-dependencies]
+tests = ["pytest~=7.0"]
