@@ -57,6 +57,7 @@ Source = 'https://github.com/H2020-OpenModel/ExecFlow'
 'execflow.mapping_get'        = 'execflow.oteapi_strategies.mapping:get_mapping'
 'execflow.parse_oteapi_pipeline'     = 'execflow.calculations.parse_oteapi_pipeline:parse_oteapi_pipeline'
 'execflow.update_oteapi_session'     = 'execflow.calculations.update_oteapi_session:update_oteapi_session'
+'execflow.fake_qe_pw' = 'execflow.calculations.fake:FakeQEPW'
 
 [project.entry-points.'oteapi.function']
 'execflow.aiidacuds/cuds2datanode' = 'execflow.data.cuds:CUDS2DataNodeStrategy'
