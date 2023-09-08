@@ -1,3 +1,5 @@
+from execflow.calculations.fake import FakeQEPW
+
 def test_qe(generate_declarative_workchain, generate_calcjob_node, samples):
     process = generate_declarative_workchain(samples / "declarative_chain" / "1.yaml")
     # if we got to this point that means that all validation on schema (which are not complete) was successful
@@ -5,11 +7,10 @@ def test_qe(generate_declarative_workchain, generate_calcjob_node, samples):
     assert len(process.ctx.steps) == 1
 
     # TODO: Don't depend on aiida-qe
-    from aiida_quantumespresso.calculations.pw import PwCalculation
 
     cjob, inputs = process.next_step()
 
-    assert cjob == PwCalculation
+    assert cjob == FakeQEPW
 
     # test that InputData is put in the right DataNodes and contains the right data
     assert inputs["code"] is None

@@ -1,6 +1,6 @@
 ---
 steps:
-- calcjob: quantumespresso.pw
+- calcjob: execflow.fake_qe_pw
   inputs:
     code: pw-6.8@localhost
     parameters:
