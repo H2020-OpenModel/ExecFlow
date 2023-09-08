@@ -15,7 +15,7 @@ from aiida_shell import ShellJob
 import chevron
 
 @calcfunction
-def fill_template(template: SingleFileData, parameters: Dict):
+def fill_template(template: SinglefileData, parameters: Dict):
     content =  template.get_content()
     out = chevron.render(content, parameters.get_dict())
     return SinglefileData(StringIO(out))

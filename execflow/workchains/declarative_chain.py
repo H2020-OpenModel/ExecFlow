@@ -5,7 +5,7 @@ from urllib.parse import urlsplit
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, load_code, load_group, load_node
+from aiida.orm import Dict, List, SinglefileData, Node, load_code, load_group, load_node
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -32,7 +32,7 @@ def my_fancy_loader(uri):
             content = response.content
         return YAML(typ="safe").load(content)
     else:
-        return jsonref.load_uri(uri, **kwargs)
+        return jsonref.load_uri(uri)
 
 
 # from jinja2.nativetypes import NativeEnvironment
@@ -266,12 +266,25 @@ class DeclarativeChain(WorkChain):
         return self.ctx.current_id < len(self.ctx.steps)
 
     def submit_next(self):
+        n = self.next_step()
+
+        if isinstance(n, Node):
+            self.ctx.current = n
+        else:
+            cjob, inputs = n
+            if is_process_function(cjob):
+                return ToContext(current=run_get_node(cjob, **inputs)[1])
+            else:
+                return ToContext(current=self.submit(cjob, **inputs))
+
+    def next_step(self):
 
         id = self.ctx.current_id
         step = self.ctx.steps[id]
+
         if "if" in step and not self.eval_template(step["if"]):
             self.ctx.current_id += 1
-            return self.submit_next()
+            return self.next_step()
 
         elif "while" in step:
             if self.eval_template(step["while"]):
@@ -292,31 +305,30 @@ class DeclarativeChain(WorkChain):
                 self.ctx.steps = self.ctx.steps[0 : -len(step["steps"])]
                 self.ctx.current_id += 1
 
-            return self.submit_next()
+            return self.next_step()
 
         else:
             if "node" in step:
-                self.ctx.current = load_node(step["node"])
+                return load_node(step["node"])
 
-            elif "calcjob" in step or "workflow" in step or "calculation" in step:
+            elif "calcjob" in step or "workflow" in step or "calculation" in step or "calcfunction" in step:
                 # This needs to happen because no dict 2 node for now.
                 #M inputs = dict()
                 if "calcjob" in step:
                     cjob = CalculationFactory(step["calcjob"])
+                elif "calcfunction" in step:
+                    cjob = CalculationFactory(step["calcfunction"])
                 elif "calculation" in step:
-                    cjob = WorkflowFactory(step["calculation"])
+                    cjob = CalculationFactory(step["calculation"])
                 elif "workflow" in step:
                     cjob = WorkflowFactory(step["workflow"])
                 else:
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
-                
                 inputs = self.resolve_inputs(step['inputs'], spec_inputs)
-                if is_process_function(cjob):
-                    return ToContext(current=run_get_node(cjob, **inputs)[1])
-                else:
-                    return ToContext(current=self.submit(cjob, **inputs))
+                return cjob, inputs
+
     def resolve_inputs(self, inputs, spec_inputs):
         out = dict()
         for k in inputs:
