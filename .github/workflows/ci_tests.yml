@@ -1,0 +1,155 @@
+name: CI - Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+      - 'push-action/**'  # Allow pushing to protected branches (using CasperWA/push-protected)
+
+jobs:
+  basic_tests:
+    name: External
+    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.5.1
+    with:
+      # pre-commit
+      run_pre-commit: true
+      python_version_pre-commit: "3.9"
+      install_extras: "[dev]"
+      skip_pre-commit_hooks: pylint,pylint-strategies,pylint-tests
+
+      # pylint & safety
+      python_version_pylint_safety: "3.9"
+
+      run_pylint: true
+      pylint_runs: |
+              #--rcfile=pyproject.toml --ignore-paths=oteapi/strategies/,tests/ --extension-pkg-whitelist='pydantic' *.py oteapi
+              #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=R,C oteapi/strategies
+              #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=C0415,W0621,import-error --recursive=yes tests
+
+      run_safety: true
+
+      # Build package
+      run_build_package: true
+      python_version_package: "3.9"
+      build_cmd: "python -m build"
+
+      # Build documentation
+      run_build_docs: false
+      python_version_docs: "3.9"
+      update_python_api_ref: true
+      update_docs_landing_page: true
+      package_dirs: execflow
+      full_docs_dirs: models
+      landing_page_replacements:
+      warnings_as_errors: true
+
+  pytest-linux:
+    name: pytest (linux-py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version}}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version}}
+
+    - name: Install system dependencies
+      run: sudo apt update && sudo apt install -y ghostscript
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install -U pip
+        pip install -U setuptools wheel
+        pip install -e .
+
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
+            pre_commit="${line}"
+          fi
+        done < requirements_dev.txt
+
+
+
+    - name: Test with pytest
+      run: pytest -vvv --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
+      uses: codecov/codecov-action@v3
+      with:
+        files: coverage.xml
+        flags: linux
+
+    - name: Test with optional libs
+      run: |
+        pip install ase numpy
+        pytest -vvv --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
+      uses: codecov/codecov-action@v3
+      with:
+        files: coverage.xml
+        flags: linux-extra_libs
+
+  pytest-win:
+    name: pytest (windows-py${{ matrix.python-version }})
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version}}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version}}
+
+    - name: Install system dependencies
+      run: |
+        $url = "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9550/gs9550w64.exe"
+        $outpath = "${{ github.workspace }}\ghostscript.exe"
+        Invoke-WebRequest -Uri $url -OutFile $outpath
+        $args = @("/S")
+        Start-Process -Filepath $outpath -ArgumentList $args
+      shell: powershell
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install -U pip
+        pip install -U setuptools wheel
+        pip install -e .[dev]
+
+    - name: Test with pytest
+      run: pytest -vvv --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
+      uses: codecov/codecov-action@v3
+      with:
+        files: coverage.xml
+        flags: windows
+
+    - name: Test with optional libs
+      run: |
+        pip install ase numpy
+        pytest -vvv --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
+      uses: codecov/codecov-action@v3
+      with:
+        files: coverage.xml
+        flags: windows-extra_libs
