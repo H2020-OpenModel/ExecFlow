@@ -95,6 +95,9 @@ jobs:
           fi
         done < requirements_dev.txt
 
+    - name: Setup environment
+      run: .github/workflows/setup.sh
+
     - name: Test with pytest
       run: tests/tests.sh
 
@@ -148,6 +151,9 @@ jobs:
         python -m pip install -U pip
         pip install -U setuptools wheel
         pip install -e .[dev]
+
+    - name: Setup environment
+      run: .github/workflows/setup.sh
 
     - name: Test with pytest
       run: tests/tests.sh
