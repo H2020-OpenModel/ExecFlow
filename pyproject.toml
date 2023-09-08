@@ -30,6 +30,7 @@ dependencies = [
     'cachecontrol>=0.13.1,<0.13.2',
     'chevron>=0.14.0,<0.14.1',
     'aiida-shell==0.3.0'
+    'aiida-pseudo>=0.8.0,<2'
 ]
 
 [project.urls]
