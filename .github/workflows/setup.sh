@@ -9,3 +9,4 @@ verdi setup --non-interactive --config "${CONFIG}/profile.yaml"
 verdi computer setup --non-interactive --config "${CONFIG}/localhost.yaml"
 verdi computer configure core.local localhost --config "${CONFIG}/localhost-config.yaml"
 verdi computer test localhost
+verdi daemon start 4
