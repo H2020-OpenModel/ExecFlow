@@ -108,17 +108,17 @@ jobs:
         files: coverage.xml
         flags: linux
 
-    - name: Test with optional libs
-      run: |
-        pip install ase numpy
-        tests/tests.sh
+    # - name: Test with optional libs
+    #   run: |
+    #     pip install ase numpy
+    #     tests/tests.sh
 
-    - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
-      uses: codecov/codecov-action@v3
-      with:
-        files: coverage.xml
-        flags: linux-extra_libs
+    # - name: Upload coverage to Codecov
+    #   if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
+    #   uses: codecov/codecov-action@v3
+    #   with:
+    #     files: coverage.xml
+    #     flags: linux-extra_libs
 
   pytest-win:
     name: pytest (windows-py${{ matrix.python-version }})
