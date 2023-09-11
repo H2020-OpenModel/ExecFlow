@@ -1,0 +1,17 @@
+---
+steps:
+  - calcfunction: core.arithmetic.add
+    inputs:
+      x: 4
+      y: 5
+      code: bash@localhost
+    postprocess:
+      - "{{ ctx.current.outputs['sum']|to_ctx('sum') }}"
+      - "{{ ctx.current.outputs['sum']|to_results('sum_1') }}"
+  - calcfunction: core.arithmetic.add
+    inputs:
+      x: "{{ctx.sum}}"
+      y: 5
+      code: bash@localhost
+    postprocess:
+      - "{{ ctx.current.outputs['sum'] | to_results('sum_2') }}"
