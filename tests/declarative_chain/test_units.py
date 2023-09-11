@@ -1,7 +1,7 @@
 from execflow.calculations.fake import FakeQEPW
 
 def test_qe(generate_declarative_workchain, generate_calcjob_node, samples):
-    process = generate_declarative_workchain(samples / "declarative_chain" / "1.yaml")
+    process = generate_declarative_workchain(samples / "declarative_chain" / "qe_basic.yaml")
     # if we got to this point that means that all validation on schema (which are not complete) was successful
     process.setup()
     assert len(process.ctx.steps) == 1
