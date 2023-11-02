@@ -1,0 +1,8 @@
+setup:
+  - "{{ 3 | to_ctx('sum')}}"
+steps:
+  - workflow: execflow.exec_wrapper
+    inputs:
+      x:
+        - "{{ ctx.sum}}"
+        - "{{ ctx.sum }}"

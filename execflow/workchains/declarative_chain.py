@@ -388,6 +388,12 @@ class DeclarativeChain(WorkChain):
                 input[k] = self.resolve_input(input[k])
             return input
 
+        if isinstance(input, list):
+            list_s = []
+            for element in input:
+                list_s.append(self.resolve_input(element))
+
+            return list_s
         # not a dict, just a value so let's just dereference and retur
         return self.eval_template(input)
 
