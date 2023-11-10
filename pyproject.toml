@@ -23,8 +23,8 @@ requires-python = '>=3.8'
 dependencies = [
     'aiida-core>=2.1.0,<3',
     'oteapi-core>=0.4.1,<0.4.5',
-    'oteapi-dlite>=0.1.4,<0.1.5',
-    'DLite-Python>=0.3.20,<0.4.1',
+    'oteapi-dlite>=0.1.4,<0.1.7',
+    'DLite-Python>=0.3.20,<0.4.6',
     'jsonref>=1.1.0,<1.1.1',
     'ruamel.yaml>=0.17.23,<0.17.33',
     'cachecontrol>=0.13.1,<0.13.2',
