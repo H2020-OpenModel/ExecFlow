@@ -10,7 +10,7 @@ from aiida.common.datastructures import CalcInfo, CodeInfo
 from aiida.common.folders import Folder
 from aiida.engine import CalcJob, CalcJobProcessSpec
 from aiida.orm import Data, Dict, List, SinglefileData, to_aiida_type, Str
-from aiida_shell.engine.launchers.shell_job import prepare_code
+from aiida_shell.launch import prepare_code
 from aiida_shell import ShellJob
 import chevron
 

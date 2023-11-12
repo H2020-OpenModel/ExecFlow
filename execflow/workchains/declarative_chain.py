@@ -1,11 +1,11 @@
-from os.path import splitext
+from os.path import splitext, dirname
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, Node, load_code, load_group, load_node
+from aiida.orm import Dict, List, SinglefileData, Node, Str, load_code, load_group, load_node
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -228,7 +228,7 @@ class DeclarativeChain(WorkChain):
     @classmethod
     def define(cls, spec):
         super().define(spec)
-        spec.input("workchain_specification", valid_type=SinglefileData)
+        spec.input("workchain_specification", valid_type=(SinglefileData, Str))
         spec.exit_code(2, "ERROR_SUBPROCESS", message="A subprocess has failed.")
 
         spec.outline(
@@ -241,15 +241,29 @@ class DeclarativeChain(WorkChain):
     def setup(self):
         self.ctx.current_id = 0
         self.ctx.results = dict()
+        if isinstance(self.inputs["workchain_specification"], Str):
+            full_file = self.inputs["workchain_specification"].value
+            d = dirname(full_file)
+            ext = splitext(full_file)[1]
 
-        ext = splitext(self.inputs["workchain_specification"].filename)[1]
-        with self.inputs["workchain_specification"].open(mode="r") as f:
-            if ext in (".yaml", ".yml"):
-                tspec = YAML(typ="safe").load(f)
-            else:
-                spec = jsonref.load(f)
+            with open(full_file, mode="r") as f:
+                s= f.read()
+                s = s.replace("__DIR__", d)
+                if ext in (".yaml", ".yml"):
+                    tspec = YAML(typ="safe").load(s)
+                    spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+                else:
+                    spec = jsonref.load(s)
 
-        spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+        else:
+            ext = splitext(self.inputs["workchain_specification"].filename)[1]
+            with self.inputs["workchain_specification"].open(mode="r") as f:
+                if ext in (".yaml", ".yml"):
+                    tspec = YAML(typ="safe").load(f)
+                    spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+                else:
+                    spec = jsonref.load(f)
+
         validate(instance=spec, schema=schema)
         self.ctx.steps = spec["steps"]
         self.env = NativeEnvironment()
