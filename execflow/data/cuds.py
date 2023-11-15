@@ -1,4 +1,5 @@
 import inspect
+from pathlib import Path
 
 from aiida.common.exceptions import MissingEntryPointError
 from aiida.orm import Dict, load_code, load_node
@@ -74,30 +75,45 @@ def DataNode2CUDS(data):
         class_module=type(data).__module__, class_name=datname
     )[1]
     name = ep.name
-    metauri = f"onto-ns.com/meta/1.0/{name}"
-    dimnames = {}
-    dims = {}
-    props = []
-    attributes_dict = {}
-    # The assumption is that the attributes dict holds all the important data.
-    for name in data.attributes:
-        gen_property(
-            props, dims, dimnames, 0, [], name, data.attributes[name], attributes_dict
+    if name == "core.singlefile":
+        thisdir = Path(__file__).resolve().parent
+        dlite.storage_path.append(thisdir.parent / "entities" / "SinglefileData_v2.json")
+
+        metauri = "http://onto-ns.com/meta/2.0/core.singlefile"
+        meta = dlite.get_instance(metauri)
+        content = data.get_content().encode()
+        inst = meta(dimensions = [len(content)])
+        inst.content = content
+        print(data.attributes, dir(data)) 
+        inst.filename = data.filename # Could not find file path, but maybe we do not need it?
+        print(inst)
+
+    else:
+        metauri = f"onto-ns.com/meta/1.0/{name}"
+        dimnames = {}
+        dims = {}
+        props = []
+        attributes_dict = {}
+    
+        # The assumption is that the attributes dict holds all the important data.
+        for name in data.attributes:
+            gen_property(
+                props, dims, dimnames, 0, [], name, data.attributes[name], attributes_dict
+            )
+
+        dimns = []
+        for x in dimnames:
+            for d in dimnames[x]:
+                if not any(x == d for x in dimns):
+                    dimns.append(d)
+
+        Meta = dlite.Instance.create_metadata(
+            metauri, dimns, props, f"Inferred metadata for {data.uuid} of type {datname}"
         )
 
-    dimns = []
-    for x in dimnames:
-        for d in dimnames[x]:
-            if not any(x == d for x in dimns):
-                dimns.append(d)
-
-    Meta = dlite.Instance.create_metadata(
-        metauri, dimns, props, f"Inferred metadata for {data.uuid} of type {datname}"
-    )
-
-    inst = Meta(dims=[dims["_".join(x.name.split("_")[:-1])][-1] for x in dimns])
-    for name in attributes_dict:
-        inst[name] = attributes_dict[name]
+        inst = Meta(dims=[dims["_".join(x.name.split("_")[:-1])][-1] for x in dimns])
+        for name in attributes_dict:
+            inst[name] = attributes_dict[name]
 
     return inst
 
