@@ -5,7 +5,7 @@ from urllib.parse import urlsplit
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, Node, Str, load_code, load_group, load_node
+from aiida.orm import Dict, List, SinglefileData, Node, Str, load_code, load_group, load_node, Data
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -166,6 +166,7 @@ def dict2kpoints(d):
 
 
 def dict2datanode(dat, typ, dynamic=False):
+    print(typ)
     # Resolve recursively
     if dynamic:
         out = dict()
@@ -198,6 +199,8 @@ def dict2datanode(dat, typ, dynamic=False):
         return Dict(dict=dat)
     elif typ is List:
         return List(list=dat)
+    elif typ is Data:
+        return dat
     else:
         return typ(dat)
 
