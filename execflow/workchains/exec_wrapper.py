@@ -28,7 +28,7 @@ class ExecWrapper(WorkChain):
 
         spec.input("files", valid_type=(Dict, dict),is_metadata=True)
         spec.input("command", valid_type = Str)
-        spec.expose_inputs(ShellJob, exclude=['nodes', 'filenames', 'code', 'metadata'])
+        spec.expose_inputs(ShellJob, exclude=['nodes', 'filenames', 'code'])
 
         spec.outline(
             cls.setup,
