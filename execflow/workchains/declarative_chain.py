@@ -166,22 +166,19 @@ def dict2kpoints(d):
 
 def dict2AsxData(d):
     AsxData=DataFactory("aspherix.parameters")
-    if 'mesh_list' in d:
-        aspherix_data = AsxData(shape=d['shape'], 
-                                domain=d['domain'],
-                                mat_prop=d['materials_list'],
-                                meshes_list=d['mesh_list'],
-                                part_temp_dict=d['particle_template_list'],
-                                particle_distribution=d['particle_distribution'],
-                                insertion_par=d['insertion_parameters'])
-    else:
-        aspherix_data = AsxData(shape=d['shape'], 
-                                domain=d['domain'],
-                                mat_prop=d['materials_list'],
-                                meshes_list=[],
-                                part_temp_dict=d['particle_template_list'],
-                                particle_distribution=d['particle_distribution'],
-                                insertion_par=d['insertion_parameters'])
+    mlist = d.get('mesh_list', [])
+    conv_p = d.get('convex_particle', '')
+    folder_m = d.get('folder_mesh', '')
+
+    aspherix_data = AsxData(shape=d['shape'],
+                            domain=d['domain'],
+                            mat_prop=d['materials_list'],
+                            meshes_list=mlist,
+                            convex_particle=conv_p,
+                            folder_mesh=folder_m,
+                            part_temp_dict=d['particle_template_list'],
+                            particle_distribution=d['particle_distribution'],
+                            insertion_par=d['insertion_parameters'])
 
 
 
@@ -216,7 +213,7 @@ def dict2datanode(dat, typ, dynamic=False):
         return dict2structure(dat)
     elif typ is AsxData:
         return dict2AsxData(dat)
-    
+
     elif typ is UpfData or typ is orm.nodes.data.upf.UpfData:
         return dict2upf(dat)
     elif typ is orm.KpointsData:
@@ -341,16 +338,16 @@ class DeclarativeChain(WorkChain):
                 spec_inputs = cjob.spec().inputs
 
                 inputs = self.resolve_inputs(step['inputs'], spec_inputs)
-                
+
                 if is_process_function(cjob):
                     return ToContext(current=run_get_node(cjob, **inputs)[1])
                 else:
                     return ToContext(current=self.submit(cjob, **inputs))
     def resolve_inputs(self, inputs, spec_inputs):
         out = dict()
-        
+
         for k in inputs:
-            
+
             # First resolve enforced types with 'type' and 'value', and dereference ctx vars
             val = self.resolve_input(inputs[k])
             # Now we resolve potential required types of the calcjob
@@ -405,7 +402,7 @@ class DeclarativeChain(WorkChain):
             for k in input:
                 input[k] = self.resolve_input(input[k])
             return input
-        
+
         if isinstance(input, list):
             list_s=[]
             for element in input:
