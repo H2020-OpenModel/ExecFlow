@@ -4,5 +4,32 @@
   "dimensions": {
   },
   "properties": {
-   }
+    "SYSTEM_dict_degauss": {
+      "type": "float64"
+    },
+    "SYSTEM_dict_ecutwfc": {
+      "type": "int64"
+    },
+    "SYSTEM_dict_smearing": {
+      "type": "string"
+    },
+    "SYSTEM_dict_occupations": {
+      "type": "string"
+    },
+    "CONTROL_dict_verbosity": {
+      "type": "string"
+    },
+    "CONTROL_dict_calculation": {
+      "type": "string"
+    },
+    "CONTROL_dict_restart_mode": {
+      "type": "string"
+    },
+    "ELECTRONS_dict_conv_thr": {
+      "type": "float64"
+    },
+    "ELECTRONS_dict_electron_maxstep": {
+      "type": "int64"
+    }
+  }
 }
