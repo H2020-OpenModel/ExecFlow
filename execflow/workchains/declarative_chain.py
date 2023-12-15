@@ -166,7 +166,6 @@ def dict2kpoints(d):
 
 
 def dict2datanode(dat, typ, dynamic=False):
-    print(typ)
     # Resolve recursively
     if dynamic:
         out = dict()
@@ -179,13 +178,6 @@ def dict2datanode(dat, typ, dynamic=False):
     if dat is dict and "node" in dat:
         return load_node(dat["node"])
 
-    # More than one typ possible
-    if isinstance(typ, tuple):
-        for t in typ:
-            try:
-                return dict2datanode(dat, t, dynamic)
-            except:
-                None
     # Else resolve DataNode from value
     if typ is orm.AbstractCode:
         return dict2code(dat)
@@ -372,7 +364,7 @@ class DeclarativeChain(WorkChain):
                     c = 0
                     while inval is None and c < len(valid_type):
                         try:
-                            inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+                            inval = dict2datanode(val, valid_type[c], isinstance(i, plumpy.PortNamespace))
                         except:
                             inval = None
                         c += 1
@@ -381,6 +373,8 @@ class DeclarativeChain(WorkChain):
                         ValueError(f"Couldn't resolve type of input {k}")
                 else:
                     inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+                    if inval is None:
+                        ValueError(f"Couldn't resolve input {k}")
 
                 set_dot2index(out, k, inval)
 
@@ -390,7 +384,6 @@ class DeclarativeChain(WorkChain):
         return out
 
     def resolve_input(self, input):
-
         if isinstance(input, dict):
             # If 'value' and 'type' are in dict we assume lowest level, otherwise recurse
             if 'value' in input and 'type' in input:

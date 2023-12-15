@@ -9,7 +9,7 @@ import os
 if __name__ == "__main__":
     workflow = sys.argv[1]
     all = {
-        'workchain_specification': orm.SinglefileData(os.path.abspath(workflow))
+        'workchain_specification': orm.Str(os.path.abspath(workflow))
     }
 
     engine.run(DeclarativeChain, **all)
