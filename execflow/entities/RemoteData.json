@@ -1,0 +1,16 @@
+{
+    "uuid": "c5ac0f61-fa44-5b19-b512-252861386e5e",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.remote",
+    "name": "core.remote",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 0a94af12-1e77-43dd-be96-12a7fbcb438b of type RemoteData",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "remote_path",
+            "type": "string"
+        }
+    ]
+}

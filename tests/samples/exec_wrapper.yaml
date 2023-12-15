@@ -19,6 +19,7 @@ steps:
             resources:
               num_mpiprocs_per_machine: 14
               num_machines: 1
+            withmpi: true
     postprocess:
       - "{{ ctx.current.outputs['stdout']|to_results('stdout') }}"
       - "{{ ctx.current.outputs['stderr']|to_results('stderr') }}"

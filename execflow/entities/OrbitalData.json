@@ -1,0 +1,71 @@
+{
+    "uuid": "ce35b9a6-5a9b-5fe2-9acf-22dcdd673c26",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.orbital",
+    "name": "core.orbital",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for c5fa17b5-c852-436d-957b-260f755a6418 of type OrbitalData",
+    "dimensions": [
+        {
+            "name": "orbital_dicts_1",
+            "description": "Dimension 1 of attribute orbital_dicts"
+        },
+        {
+            "name": "orbital_dicts_dict_position_2",
+            "description": "Dimension 2 of attribute orbital_dicts_dict_position"
+        }
+    ],
+    "properties": [
+        {
+            "name": "orbital_dicts_dict_spin",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_position",
+            "type": "float64",
+            "dims": [
+                "orbital_dicts_1",
+                "orbital_dicts_dict_position_2"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_kind_name",
+            "type": "string",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_radial_nodes",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict__orbital_type",
+            "type": "string",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_magnetic_number",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_angular_momentum",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        }
+    ]
+}

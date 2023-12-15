@@ -1,0 +1,108 @@
+{
+    "uuid": "cd0125cd-47bf-540f-ad4e-fc39db693b3c",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/process.calculation.calcjob",
+    "name": "process.calculation.calcjob",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for a392f0a5-9815-4af3-9158-ef7fb79b0cfc of type CalcJobNode",
+    "dimensions": [
+        {
+            "name": "retrieve_list_1",
+            "description": "Dimension 1 of attribute retrieve_list"
+        },
+        {
+            "name": "mpirun_extra_params_1",
+            "description": "Dimension 1 of attribute mpirun_extra_params"
+        },
+        {
+            "name": "retrieve_temporary_list_1",
+            "description": "Dimension 1 of attribute retrieve_temporary_list"
+        }
+    ],
+    "properties": [
+        {
+            "name": "job_id",
+            "type": "string"
+        },
+        {
+            "name": "sealed",
+            "type": "bool"
+        },
+        {
+            "name": "version_dict_core",
+            "type": "string"
+        },
+        {
+            "name": "withmpi",
+            "type": "bool"
+        },
+        {
+            "name": "resources_dict_num_machines",
+            "type": "int32"
+        },
+        {
+            "name": "resources_dict_num_mpiprocs_per_machine",
+            "type": "int32"
+        },
+        {
+            "name": "append_text",
+            "type": "string"
+        },
+        {
+            "name": "exit_status",
+            "type": "int32"
+        },
+        {
+            "name": "prepend_text",
+            "type": "string"
+        },
+        {
+            "name": "process_label",
+            "type": "string"
+        },
+        {
+            "name": "process_state",
+            "type": "string"
+        },
+        {
+            "name": "retrieve_list",
+            "type": "string",
+            "dims": [
+                "retrieve_list_1"
+            ]
+        },
+        {
+            "name": "remote_workdir",
+            "type": "string"
+        },
+        {
+            "name": "scheduler_state",
+            "type": "string"
+        },
+        {
+            "name": "scheduler_stderr",
+            "type": "string"
+        },
+        {
+            "name": "scheduler_stdout",
+            "type": "string"
+        },
+        {
+            "name": "import_sys_environment",
+            "type": "bool"
+        },
+        {
+            "name": "submit_script_filename",
+            "type": "string"
+        },
+        {
+            "name": "scheduler_lastchecktime",
+            "type": "string"
+        },
+        {
+            "name": "custom_scheduler_commands",
+            "type": "string"
+        }
+    ]
+}
