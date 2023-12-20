@@ -1,6 +1,6 @@
 ---
 data:
-  "$ref": "file:///home/lponet/Software/pythondev/Demo/data.yaml"
+  "$ref": "file://__DIR__/data.yaml"
 setup:
   - "{{ 1 | to_ctx('nscf_count') }}"
 steps:

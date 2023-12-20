@@ -1,6 +1,6 @@
 ---
 data:
-  "$ref": "file://data.yaml"
+  "$ref": "file://__DIR__/data.yaml"
 steps:
 - calcjob: quantumespresso.pw
   inputs:

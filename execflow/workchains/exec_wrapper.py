@@ -64,6 +64,9 @@ class ExecWrapper(WorkChain):
 
         if 'metadata' in self.inputs.shelljob:
             inputs['metadata'] =  self.inputs.shelljob.metadata
+        else:
+            inputs['metadata'] = {'options':{'resources': {'num_machines': 1, 'num_mpiprocs_per_machine': 1}}}
+
 
         shell = self.submit(ShellJob, **inputs)
         return ToContext(shell=shell)
