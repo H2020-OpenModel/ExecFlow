@@ -1,5 +1,7 @@
 import inspect
+from io import StringIO
 from pathlib import Path
+from typing import Any, Optional
 
 from aiida.common.exceptions import MissingEntryPointError
 from aiida.orm import Dict, load_code, load_node
@@ -13,8 +15,7 @@ from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, get_driver, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
-from typing import Optional, Any
-from io import StringIO
+
 
 # TODO also report uuid of cuds not just labels
 @dataclass
@@ -77,15 +78,19 @@ def DataNode2CUDS(data):
     name = ep.name
     if name == "core.singlefile":
         thisdir = Path(__file__).resolve().parent
-        dlite.storage_path.append(thisdir.parent / "entities" / "SinglefileData_v2.json")
+        dlite.storage_path.append(
+            thisdir.parent / "entities" / "SinglefileData_v2.json"
+        )
 
         metauri = "http://onto-ns.com/meta/2.0/core.singlefile"
         meta = dlite.get_instance(metauri)
         content = data.get_content().encode()
-        inst = meta(dimensions = [len(content)])
+        inst = meta(dimensions=[len(content)])
         inst.content = content
-        print(data.attributes, dir(data)) 
-        inst.filename = data.filename # Could not find file path, but maybe we do not need it?
+        print(data.attributes, dir(data))
+        inst.filename = (
+            data.filename
+        )  # Could not find file path, but maybe we do not need it?
         print(inst)
 
     else:
@@ -94,11 +99,18 @@ def DataNode2CUDS(data):
         dims = {}
         props = []
         attributes_dict = {}
-    
+
         # The assumption is that the attributes dict holds all the important data.
         for name in data.attributes:
             gen_property(
-                props, dims, dimnames, 0, [], name, data.attributes[name], attributes_dict
+                props,
+                dims,
+                dimnames,
+                0,
+                [],
+                name,
+                data.attributes[name],
+                attributes_dict,
             )
 
         dimns = []
@@ -108,7 +120,10 @@ def DataNode2CUDS(data):
                     dimns.append(d)
 
         Meta = dlite.Instance.create_metadata(
-            metauri, dimns, props, f"Inferred metadata for {data.uuid} of type {datname}"
+            metauri,
+            dimns,
+            props,
+            f"Inferred metadata for {data.uuid} of type {datname}",
         )
 
         inst = Meta(dims=[dims["_".join(x.name.split("_")[:-1])][-1] for x in dimns])
@@ -246,6 +261,7 @@ def CUDS2DataNode(cuds):
 
     if cuds.meta.name == "core.singlefile":
         from aiida.orm import SinglefileData
+
         with open(cuds.properties["filename"], "r") as f:
             return SinglefileData(StringIO(f.read()))
 
@@ -253,7 +269,6 @@ def CUDS2DataNode(cuds):
     att = {}
     for name in cuds.properties:
         construct_attributes(att, name, cuds.properties[name])
-
 
     # Here we handle the pipe debacle.
     to_node = {}
@@ -278,7 +293,7 @@ def CUDS2DataNode(cuds):
     else:
         t = d()
 
-    if isinstance(t, Dict) and cuds.meta.name != 'core.dict':
+    if isinstance(t, Dict) and cuds.meta.name != "core.dict":
         t["meta"] = cuds.meta.uri
 
     # Now we fill in the dlite Instance data into the datanode.

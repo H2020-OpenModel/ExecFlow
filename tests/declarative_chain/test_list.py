@@ -1,5 +1,7 @@
 def test_list(generate_declarative_workchain, generate_calcjob_node, samples):
-    process = generate_declarative_workchain(samples / "declarative_chain" / "list.yaml")
+    process = generate_declarative_workchain(
+        samples / "declarative_chain" / "list.yaml"
+    )
     process.setup()
     cjob, inputs = process.next_step()
     print(inputs)

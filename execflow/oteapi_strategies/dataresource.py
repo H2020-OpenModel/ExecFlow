@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 from aiida.engine import calcfunction
 from aiida.plugins import DataFactory
 from oteapi.plugins import create_strategy, load_strategies
+
 if TYPE_CHECKING:  # pragma: no cover
     from aiida.orm import Dict
 

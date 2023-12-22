@@ -3,15 +3,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Union
 
-from oteapi.models import (
-    FilterConfig,
-    FunctionConfig,
-    MappingConfig,
-    ResourceConfig,
-    TransformationConfig,
-)
-
-import yaml
 from aiida.common.exceptions import (
     NotExistent,
     NotExistentAttributeError,
@@ -20,8 +11,15 @@ from aiida.common.exceptions import (
 from aiida.orm import Dict as DictNode
 from aiida.orm import SinglefileData
 from aiida.orm import Str as StrNode
-
+from oteapi.models import (
+    FilterConfig,
+    FunctionConfig,
+    MappingConfig,
+    ResourceConfig,
+    TransformationConfig,
+)
 from pydantic import BaseModel, Field, ValidationError, validator
+import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple, Union
@@ -243,6 +241,7 @@ class DeclarativePipeline(BaseModel):
 
     def __hash__(self) -> int:
         return hash(repr(self))
+
 
 class OTEPipelineData(DictNode):
     """An OTE pipeline.

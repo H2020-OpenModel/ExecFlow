@@ -34,7 +34,9 @@ def parse_oteapi_pipeline(
     # pylint: disable=invalid-name
     AiiDADict: "Type[orm.Dict]" = DataFactory("core.dict")
     AiiDAStr: "Type[orm.Str]" = DataFactory("core.str")
-    OTEPipelineData: "Type[ExecFlowOTEPipelineData]" = DataFactory("execflow.oteapi_pipeline")
+    OTEPipelineData: "Type[ExecFlowOTEPipelineData]" = DataFactory(
+        "execflow.oteapi_pipeline"
+    )
     SinglefileData: "Type[orm.SinglefileData]" = DataFactory("core.singlefile")
 
     if isinstance(pipeline_input, (OTEPipelineData, AiiDADict)):

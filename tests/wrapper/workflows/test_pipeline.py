@@ -69,10 +69,10 @@ def test_result_pipeline(samples: "Path") -> None:
         samples: Path to test directory with sample files.
 
     """
-    import requests
-    import yaml
     from aiida.engine import run
     from aiida.plugins import DataFactory
+    import requests
+    import yaml
 
     from execflow.workchains.oteapi_pipeline import OTEPipeline
 

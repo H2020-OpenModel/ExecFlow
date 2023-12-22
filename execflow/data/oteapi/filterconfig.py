@@ -9,6 +9,7 @@ from execflow.data.oteapi.genericconfig import GenericConfigData
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union
 
+
 class FilterConfigData(GenericConfigData):
     """Filter Strategy Data Configuration.
 

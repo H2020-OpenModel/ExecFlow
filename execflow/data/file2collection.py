@@ -8,7 +8,9 @@ from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
+
 from .cuds import DataNode2CUDS
+
 # TODO also report uuid of cuds not just labels
 
 
@@ -54,15 +56,14 @@ class File2CollectionStrategy:
         cache = DataCache()
 
         coll = get_collection(session)
-        
+
         config = self.function_config.configuration
 
-        meta = dlite.get_instance('onto-ns.com/meta/1.0/core.singlefile')
+        meta = dlite.get_instance("onto-ns.com/meta/1.0/core.singlefile")
         inst = meta()
         inst.filename = config.path
         coll.add(config.label, inst)
 
         update_collection(coll)
 
-
-        return SessionUpdate()#**{"to_results": results})#**{config.label: node.id})
+        return SessionUpdate()  # **{"to_results": results})#**{config.label: node.id})
