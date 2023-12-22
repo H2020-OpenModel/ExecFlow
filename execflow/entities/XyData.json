@@ -1,0 +1,65 @@
+{
+    "uuid": "5feab417-134c-5007-b910-acbba2da91a9",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.array.xy",
+    "name": "core.array.xy",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 9af0a13e-7d7b-40a3-9194-c81f4c90d159 of type XyData",
+    "dimensions": [
+        {
+            "name": "y_names_1",
+            "description": "Dimension 1 of attribute y_names"
+        },
+        {
+            "name": "y_units_1",
+            "description": "Dimension 1 of attribute y_units"
+        },
+        {
+            "name": "array__x_array_1",
+            "description": "Dimension 1 of attribute array__x_array"
+        },
+        {
+            "name": "array__y_array_0_1",
+            "description": "Dimension 1 of attribute array__y_array_0"
+        }
+    ],
+    "properties": [
+        {
+            "name": "x_name",
+            "type": "string"
+        },
+        {
+            "name": "x_units",
+            "type": "string"
+        },
+        {
+            "name": "y_names",
+            "type": "string",
+            "dims": [
+                "y_names_1"
+            ]
+        },
+        {
+            "name": "y_units",
+            "type": "string",
+            "dims": [
+                "y_units_1"
+            ]
+        },
+        {
+            "name": "array__x_array",
+            "type": "int32",
+            "dims": [
+                "array__x_array_1"
+            ]
+        },
+        {
+            "name": "array__y_array_0",
+            "type": "int32",
+            "dims": [
+                "array__y_array_0_1"
+            ]
+        }
+    ]
+}

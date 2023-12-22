@@ -1,0 +1,1197 @@
+{
+    "uuid": "65b580ef-7b74-5f6b-9f0f-9b24c8ffc18b",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.array.projection",
+    "name": "core.array.projection",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for e4858005-f8e1-4179-8af8-65e4eda1671d of type ProjectionData",
+    "dimensions": [
+        {
+            "name": "orbital_dicts_1",
+            "description": "Dimension 1 of attribute orbital_dicts"
+        },
+        {
+            "name": "orbital_dicts_dict_position_2",
+            "description": "Dimension 2 of attribute orbital_dicts_dict_position"
+        },
+        {
+            "name": "array__pdos_array_0_1",
+            "description": "Dimension 1 of attribute array__pdos_array_0"
+        },
+        {
+            "name": "array__pdos_array_1_1",
+            "description": "Dimension 1 of attribute array__pdos_array_1"
+        },
+        {
+            "name": "array__pdos_array_2_1",
+            "description": "Dimension 1 of attribute array__pdos_array_2"
+        },
+        {
+            "name": "array__pdos_array_3_1",
+            "description": "Dimension 1 of attribute array__pdos_array_3"
+        },
+        {
+            "name": "array__pdos_array_4_1",
+            "description": "Dimension 1 of attribute array__pdos_array_4"
+        },
+        {
+            "name": "array__pdos_array_5_1",
+            "description": "Dimension 1 of attribute array__pdos_array_5"
+        },
+        {
+            "name": "array__pdos_array_6_1",
+            "description": "Dimension 1 of attribute array__pdos_array_6"
+        },
+        {
+            "name": "array__pdos_array_7_1",
+            "description": "Dimension 1 of attribute array__pdos_array_7"
+        },
+        {
+            "name": "array__pdos_array_8_1",
+            "description": "Dimension 1 of attribute array__pdos_array_8"
+        },
+        {
+            "name": "array__pdos_array_9_1",
+            "description": "Dimension 1 of attribute array__pdos_array_9"
+        },
+        {
+            "name": "array__proj_array_0_1",
+            "description": "Dimension 1 of attribute array__proj_array_0"
+        },
+        {
+            "name": "array__proj_array_1_1",
+            "description": "Dimension 1 of attribute array__proj_array_1"
+        },
+        {
+            "name": "array__proj_array_2_1",
+            "description": "Dimension 1 of attribute array__proj_array_2"
+        },
+        {
+            "name": "array__proj_array_3_1",
+            "description": "Dimension 1 of attribute array__proj_array_3"
+        },
+        {
+            "name": "array__proj_array_4_1",
+            "description": "Dimension 1 of attribute array__proj_array_4"
+        },
+        {
+            "name": "array__proj_array_5_1",
+            "description": "Dimension 1 of attribute array__proj_array_5"
+        },
+        {
+            "name": "array__proj_array_6_1",
+            "description": "Dimension 1 of attribute array__proj_array_6"
+        },
+        {
+            "name": "array__proj_array_7_1",
+            "description": "Dimension 1 of attribute array__proj_array_7"
+        },
+        {
+            "name": "array__proj_array_8_1",
+            "description": "Dimension 1 of attribute array__proj_array_8"
+        },
+        {
+            "name": "array__proj_array_9_1",
+            "description": "Dimension 1 of attribute array__proj_array_9"
+        },
+        {
+            "name": "array__pdos_array_10_1",
+            "description": "Dimension 1 of attribute array__pdos_array_10"
+        },
+        {
+            "name": "array__pdos_array_11_1",
+            "description": "Dimension 1 of attribute array__pdos_array_11"
+        },
+        {
+            "name": "array__pdos_array_12_1",
+            "description": "Dimension 1 of attribute array__pdos_array_12"
+        },
+        {
+            "name": "array__pdos_array_13_1",
+            "description": "Dimension 1 of attribute array__pdos_array_13"
+        },
+        {
+            "name": "array__pdos_array_14_1",
+            "description": "Dimension 1 of attribute array__pdos_array_14"
+        },
+        {
+            "name": "array__pdos_array_15_1",
+            "description": "Dimension 1 of attribute array__pdos_array_15"
+        },
+        {
+            "name": "array__pdos_array_16_1",
+            "description": "Dimension 1 of attribute array__pdos_array_16"
+        },
+        {
+            "name": "array__pdos_array_17_1",
+            "description": "Dimension 1 of attribute array__pdos_array_17"
+        },
+        {
+            "name": "array__pdos_array_18_1",
+            "description": "Dimension 1 of attribute array__pdos_array_18"
+        },
+        {
+            "name": "array__pdos_array_19_1",
+            "description": "Dimension 1 of attribute array__pdos_array_19"
+        },
+        {
+            "name": "array__pdos_array_20_1",
+            "description": "Dimension 1 of attribute array__pdos_array_20"
+        },
+        {
+            "name": "array__pdos_array_21_1",
+            "description": "Dimension 1 of attribute array__pdos_array_21"
+        },
+        {
+            "name": "array__pdos_array_22_1",
+            "description": "Dimension 1 of attribute array__pdos_array_22"
+        },
+        {
+            "name": "array__pdos_array_23_1",
+            "description": "Dimension 1 of attribute array__pdos_array_23"
+        },
+        {
+            "name": "array__pdos_array_24_1",
+            "description": "Dimension 1 of attribute array__pdos_array_24"
+        },
+        {
+            "name": "array__pdos_array_25_1",
+            "description": "Dimension 1 of attribute array__pdos_array_25"
+        },
+        {
+            "name": "array__pdos_array_26_1",
+            "description": "Dimension 1 of attribute array__pdos_array_26"
+        },
+        {
+            "name": "array__pdos_array_27_1",
+            "description": "Dimension 1 of attribute array__pdos_array_27"
+        },
+        {
+            "name": "array__pdos_array_28_1",
+            "description": "Dimension 1 of attribute array__pdos_array_28"
+        },
+        {
+            "name": "array__pdos_array_29_1",
+            "description": "Dimension 1 of attribute array__pdos_array_29"
+        },
+        {
+            "name": "array__pdos_array_30_1",
+            "description": "Dimension 1 of attribute array__pdos_array_30"
+        },
+        {
+            "name": "array__pdos_array_31_1",
+            "description": "Dimension 1 of attribute array__pdos_array_31"
+        },
+        {
+            "name": "array__pdos_array_32_1",
+            "description": "Dimension 1 of attribute array__pdos_array_32"
+        },
+        {
+            "name": "array__pdos_array_33_1",
+            "description": "Dimension 1 of attribute array__pdos_array_33"
+        },
+        {
+            "name": "array__proj_array_10_1",
+            "description": "Dimension 1 of attribute array__proj_array_10"
+        },
+        {
+            "name": "array__proj_array_11_1",
+            "description": "Dimension 1 of attribute array__proj_array_11"
+        },
+        {
+            "name": "array__proj_array_12_1",
+            "description": "Dimension 1 of attribute array__proj_array_12"
+        },
+        {
+            "name": "array__proj_array_13_1",
+            "description": "Dimension 1 of attribute array__proj_array_13"
+        },
+        {
+            "name": "array__proj_array_14_1",
+            "description": "Dimension 1 of attribute array__proj_array_14"
+        },
+        {
+            "name": "array__proj_array_15_1",
+            "description": "Dimension 1 of attribute array__proj_array_15"
+        },
+        {
+            "name": "array__proj_array_16_1",
+            "description": "Dimension 1 of attribute array__proj_array_16"
+        },
+        {
+            "name": "array__proj_array_17_1",
+            "description": "Dimension 1 of attribute array__proj_array_17"
+        },
+        {
+            "name": "array__proj_array_18_1",
+            "description": "Dimension 1 of attribute array__proj_array_18"
+        },
+        {
+            "name": "array__proj_array_19_1",
+            "description": "Dimension 1 of attribute array__proj_array_19"
+        },
+        {
+            "name": "array__proj_array_20_1",
+            "description": "Dimension 1 of attribute array__proj_array_20"
+        },
+        {
+            "name": "array__proj_array_21_1",
+            "description": "Dimension 1 of attribute array__proj_array_21"
+        },
+        {
+            "name": "array__proj_array_22_1",
+            "description": "Dimension 1 of attribute array__proj_array_22"
+        },
+        {
+            "name": "array__proj_array_23_1",
+            "description": "Dimension 1 of attribute array__proj_array_23"
+        },
+        {
+            "name": "array__proj_array_24_1",
+            "description": "Dimension 1 of attribute array__proj_array_24"
+        },
+        {
+            "name": "array__proj_array_25_1",
+            "description": "Dimension 1 of attribute array__proj_array_25"
+        },
+        {
+            "name": "array__proj_array_26_1",
+            "description": "Dimension 1 of attribute array__proj_array_26"
+        },
+        {
+            "name": "array__proj_array_27_1",
+            "description": "Dimension 1 of attribute array__proj_array_27"
+        },
+        {
+            "name": "array__proj_array_28_1",
+            "description": "Dimension 1 of attribute array__proj_array_28"
+        },
+        {
+            "name": "array__proj_array_29_1",
+            "description": "Dimension 1 of attribute array__proj_array_29"
+        },
+        {
+            "name": "array__proj_array_30_1",
+            "description": "Dimension 1 of attribute array__proj_array_30"
+        },
+        {
+            "name": "array__proj_array_31_1",
+            "description": "Dimension 1 of attribute array__proj_array_31"
+        },
+        {
+            "name": "array__proj_array_32_1",
+            "description": "Dimension 1 of attribute array__proj_array_32"
+        },
+        {
+            "name": "array__proj_array_33_1",
+            "description": "Dimension 1 of attribute array__proj_array_33"
+        },
+        {
+            "name": "array__energy_array_0_1",
+            "description": "Dimension 1 of attribute array__energy_array_0"
+        },
+        {
+            "name": "array__energy_array_1_1",
+            "description": "Dimension 1 of attribute array__energy_array_1"
+        },
+        {
+            "name": "array__energy_array_2_1",
+            "description": "Dimension 1 of attribute array__energy_array_2"
+        },
+        {
+            "name": "array__energy_array_3_1",
+            "description": "Dimension 1 of attribute array__energy_array_3"
+        },
+        {
+            "name": "array__energy_array_4_1",
+            "description": "Dimension 1 of attribute array__energy_array_4"
+        },
+        {
+            "name": "array__energy_array_5_1",
+            "description": "Dimension 1 of attribute array__energy_array_5"
+        },
+        {
+            "name": "array__energy_array_6_1",
+            "description": "Dimension 1 of attribute array__energy_array_6"
+        },
+        {
+            "name": "array__energy_array_7_1",
+            "description": "Dimension 1 of attribute array__energy_array_7"
+        },
+        {
+            "name": "array__energy_array_8_1",
+            "description": "Dimension 1 of attribute array__energy_array_8"
+        },
+        {
+            "name": "array__energy_array_9_1",
+            "description": "Dimension 1 of attribute array__energy_array_9"
+        },
+        {
+            "name": "array__energy_array_10_1",
+            "description": "Dimension 1 of attribute array__energy_array_10"
+        },
+        {
+            "name": "array__energy_array_11_1",
+            "description": "Dimension 1 of attribute array__energy_array_11"
+        },
+        {
+            "name": "array__energy_array_12_1",
+            "description": "Dimension 1 of attribute array__energy_array_12"
+        },
+        {
+            "name": "array__energy_array_13_1",
+            "description": "Dimension 1 of attribute array__energy_array_13"
+        },
+        {
+            "name": "array__energy_array_14_1",
+            "description": "Dimension 1 of attribute array__energy_array_14"
+        },
+        {
+            "name": "array__energy_array_15_1",
+            "description": "Dimension 1 of attribute array__energy_array_15"
+        },
+        {
+            "name": "array__energy_array_16_1",
+            "description": "Dimension 1 of attribute array__energy_array_16"
+        },
+        {
+            "name": "array__energy_array_17_1",
+            "description": "Dimension 1 of attribute array__energy_array_17"
+        },
+        {
+            "name": "array__energy_array_18_1",
+            "description": "Dimension 1 of attribute array__energy_array_18"
+        },
+        {
+            "name": "array__energy_array_19_1",
+            "description": "Dimension 1 of attribute array__energy_array_19"
+        },
+        {
+            "name": "array__energy_array_20_1",
+            "description": "Dimension 1 of attribute array__energy_array_20"
+        },
+        {
+            "name": "array__energy_array_21_1",
+            "description": "Dimension 1 of attribute array__energy_array_21"
+        },
+        {
+            "name": "array__energy_array_22_1",
+            "description": "Dimension 1 of attribute array__energy_array_22"
+        },
+        {
+            "name": "array__energy_array_23_1",
+            "description": "Dimension 1 of attribute array__energy_array_23"
+        },
+        {
+            "name": "array__energy_array_24_1",
+            "description": "Dimension 1 of attribute array__energy_array_24"
+        },
+        {
+            "name": "array__energy_array_25_1",
+            "description": "Dimension 1 of attribute array__energy_array_25"
+        },
+        {
+            "name": "array__energy_array_26_1",
+            "description": "Dimension 1 of attribute array__energy_array_26"
+        },
+        {
+            "name": "array__energy_array_27_1",
+            "description": "Dimension 1 of attribute array__energy_array_27"
+        },
+        {
+            "name": "array__energy_array_28_1",
+            "description": "Dimension 1 of attribute array__energy_array_28"
+        },
+        {
+            "name": "array__energy_array_29_1",
+            "description": "Dimension 1 of attribute array__energy_array_29"
+        },
+        {
+            "name": "array__energy_array_30_1",
+            "description": "Dimension 1 of attribute array__energy_array_30"
+        },
+        {
+            "name": "array__energy_array_31_1",
+            "description": "Dimension 1 of attribute array__energy_array_31"
+        },
+        {
+            "name": "array__energy_array_32_1",
+            "description": "Dimension 1 of attribute array__energy_array_32"
+        },
+        {
+            "name": "array__energy_array_33_1",
+            "description": "Dimension 1 of attribute array__energy_array_33"
+        }
+    ],
+    "properties": [
+        {
+            "name": "orbital_dicts_dict_spin",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_position",
+            "type": "float64",
+            "dims": [
+                "orbital_dicts_1",
+                "orbital_dicts_dict_position_2"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_kind_name",
+            "type": "string",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_radial_nodes",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict__orbital_type",
+            "type": "string",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_magnetic_number",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "orbital_dicts_dict_angular_momentum",
+            "type": "int32",
+            "dims": [
+                "orbital_dicts_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_0",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_0_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_1",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_1_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_2",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_2_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_3",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_3_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_4",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_4_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_5",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_5_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_6",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_6_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_7",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_7_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_8",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_8_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_9",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_9_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_0",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_0_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_1",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_1_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_2",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_2_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_3",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_3_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_4",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_4_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_5",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_5_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_6",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_6_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_7",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_7_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_8",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_8_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_9",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_9_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_10",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_10_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_11",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_11_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_12",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_12_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_13",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_13_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_14",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_14_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_15",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_15_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_16",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_16_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_17",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_17_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_18",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_18_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_19",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_19_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_20",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_20_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_21",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_21_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_22",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_22_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_23",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_23_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_24",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_24_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_25",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_25_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_26",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_26_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_27",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_27_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_28",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_28_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_29",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_29_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_30",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_30_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_31",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_31_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_32",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_32_1"
+            ]
+        },
+        {
+            "name": "array__pdos_array_33",
+            "type": "int32",
+            "dims": [
+                "array__pdos_array_33_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_10",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_10_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_11",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_11_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_12",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_12_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_13",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_13_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_14",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_14_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_15",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_15_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_16",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_16_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_17",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_17_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_18",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_18_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_19",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_19_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_20",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_20_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_21",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_21_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_22",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_22_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_23",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_23_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_24",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_24_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_25",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_25_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_26",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_26_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_27",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_27_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_28",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_28_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_29",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_29_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_30",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_30_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_31",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_31_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_32",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_32_1"
+            ]
+        },
+        {
+            "name": "array__proj_array_33",
+            "type": "int32",
+            "dims": [
+                "array__proj_array_33_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_0",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_0_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_1",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_1_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_2",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_2_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_3",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_3_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_4",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_4_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_5",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_5_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_6",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_6_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_7",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_7_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_8",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_8_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_9",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_9_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_10",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_10_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_11",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_11_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_12",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_12_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_13",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_13_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_14",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_14_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_15",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_15_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_16",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_16_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_17",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_17_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_18",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_18_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_19",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_19_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_20",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_20_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_21",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_21_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_22",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_22_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_23",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_23_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_24",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_24_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_25",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_25_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_26",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_26_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_27",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_27_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_28",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_28_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_29",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_29_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_30",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_30_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_31",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_31_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_32",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_32_1"
+            ]
+        },
+        {
+            "name": "array__energy_array_33",
+            "type": "int32",
+            "dims": [
+                "array__energy_array_33_1"
+            ]
+        },
+        {
+            "name": "reference_bandsdata_uuid",
+            "type": "string"
+        }
+    ]
+}

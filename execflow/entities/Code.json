@@ -1,0 +1,16 @@
+{
+    "uuid": "85b27f11-1ac3-5a9b-a88a-e0972f6482f0",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.code",
+    "name": "core.code",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 14e5dfe1-ebaa-4181-a8b0-fdeafbb5de0e of type Code",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "label",
+            "type": "string"
+        }
+    ]
+}

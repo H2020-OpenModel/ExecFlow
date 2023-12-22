@@ -1,0 +1,36 @@
+{
+    "uuid": "a1879191-1c99-5b39-9b47-5dd8e7478037",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.list",
+    "name": "core.list",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for b881140f-ef59-464d-b25b-b2072575fcfa of type List",
+    "dimensions": [
+        {
+            "name": "list_1",
+            "description": "Dimension 1 of attribute list"
+        },
+        {
+            "name": "list_dict_ang_mtm_name_2",
+            "description": "Dimension 2 of attribute list_dict_ang_mtm_name"
+        }
+    ],
+    "properties": [
+        {
+            "name": "list_dict_kind_name",
+            "type": "string",
+            "dims": [
+                "list_1"
+            ]
+        },
+        {
+            "name": "list_dict_ang_mtm_name",
+            "type": "string",
+            "dims": [
+                "list_1",
+                "list_dict_ang_mtm_name_2"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,97 @@
+{
+    "uuid": "cdb68a9a-4efb-55be-ab2d-3c265df46c75",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.array.bands",
+    "name": "core.array.bands",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for aeea2d09-4b76-42ad-853a-260afb866983 of type BandsData",
+    "dimensions": [
+        {
+            "name": "cell_1",
+            "description": "Dimension 1 of attribute cell"
+        },
+        {
+            "name": "cell_2",
+            "description": "Dimension 2 of attribute cell"
+        },
+        {
+            "name": "labels_1",
+            "description": "Dimension 1 of attribute labels"
+        },
+        {
+            "name": "array__bands_1",
+            "description": "Dimension 1 of attribute array__bands"
+        },
+        {
+            "name": "array__kpoints_1",
+            "description": "Dimension 1 of attribute array__kpoints"
+        },
+        {
+            "name": "array__weights_1",
+            "description": "Dimension 1 of attribute array__weights"
+        },
+        {
+            "name": "label_numbers_1",
+            "description": "Dimension 1 of attribute label_numbers"
+        },
+        {
+            "name": "array__occupations_1",
+            "description": "Dimension 1 of attribute array__occupations"
+        }
+    ],
+    "properties": [
+        {
+            "name": "cell",
+            "type": "float64",
+            "dims": [
+                "cell_1",
+                "cell_2"
+            ]
+        },
+        {
+            "name": "pbc1",
+            "type": "bool"
+        },
+        {
+            "name": "pbc2",
+            "type": "bool"
+        },
+        {
+            "name": "pbc3",
+            "type": "bool"
+        },
+        {
+            "name": "units",
+            "type": "string"
+        },
+        {
+            "name": "array__bands",
+            "type": "int32",
+            "dims": [
+                "array__bands_1"
+            ]
+        },
+        {
+            "name": "array__kpoints",
+            "type": "int32",
+            "dims": [
+                "array__kpoints_1"
+            ]
+        },
+        {
+            "name": "array__weights",
+            "type": "int32",
+            "dims": [
+                "array__weights_1"
+            ]
+        },
+        {
+            "name": "array__occupations",
+            "type": "int32",
+            "dims": [
+                "array__occupations_1"
+            ]
+        }
+    ]
+}

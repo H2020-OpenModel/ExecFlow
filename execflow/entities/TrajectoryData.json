@@ -1,0 +1,266 @@
+{
+    "uuid": "ee6913dc-d797-5c2a-bac4-d9690beabfb0",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.array.trajectory",
+    "name": "core.array.trajectory",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 275053c6-21e4-406a-98e6-a1d40ede9ace of type TrajectoryData",
+    "dimensions": [
+        {
+            "name": "symbols_1",
+            "description": "Dimension 1 of attribute symbols"
+        },
+        {
+            "name": "array__cells_1",
+            "description": "Dimension 1 of attribute array__cells"
+        },
+        {
+            "name": "array__steps_1",
+            "description": "Dimension 1 of attribute array__steps"
+        },
+        {
+            "name": "array__energy_1",
+            "description": "Dimension 1 of attribute array__energy"
+        },
+        {
+            "name": "array__forces_1",
+            "description": "Dimension 1 of attribute array__forces"
+        },
+        {
+            "name": "array__stress_1",
+            "description": "Dimension 1 of attribute array__stress"
+        },
+        {
+            "name": "array__energy_xc_1",
+            "description": "Dimension 1 of attribute array__energy_xc"
+        },
+        {
+            "name": "array__positions_1",
+            "description": "Dimension 1 of attribute array__positions"
+        },
+        {
+            "name": "array__total_force_1",
+            "description": "Dimension 1 of attribute array__total_force"
+        },
+        {
+            "name": "array__energy_ewald_1",
+            "description": "Dimension 1 of attribute array__energy_ewald"
+        },
+        {
+            "name": "array__scf_accuracy_1",
+            "description": "Dimension 1 of attribute array__scf_accuracy"
+        },
+        {
+            "name": "array__atomic_charges_1",
+            "description": "Dimension 1 of attribute array__atomic_charges"
+        },
+        {
+            "name": "array__energy_hartree_1",
+            "description": "Dimension 1 of attribute array__energy_hartree"
+        },
+        {
+            "name": "array__energy_hubbard_1",
+            "description": "Dimension 1 of attribute array__energy_hubbard"
+        },
+        {
+            "name": "array__scf_iterations_1",
+            "description": "Dimension 1 of attribute array__scf_iterations"
+        },
+        {
+            "name": "array__energy_accuracy_1",
+            "description": "Dimension 1 of attribute array__energy_accuracy"
+        },
+        {
+            "name": "array__energy_threshold_1",
+            "description": "Dimension 1 of attribute array__energy_threshold"
+        },
+        {
+            "name": "array__atomic_species_name_1",
+            "description": "Dimension 1 of attribute array__atomic_species_name"
+        },
+        {
+            "name": "array__energy_one_electron_1",
+            "description": "Dimension 1 of attribute array__energy_one_electron"
+        },
+        {
+            "name": "array__total_magnetization_1",
+            "description": "Dimension 1 of attribute array__total_magnetization"
+        },
+        {
+            "name": "array__energy_one_center_paw_1",
+            "description": "Dimension 1 of attribute array__energy_one_center_paw"
+        },
+        {
+            "name": "array__absolute_magnetization_1",
+            "description": "Dimension 1 of attribute array__absolute_magnetization"
+        },
+        {
+            "name": "array__atomic_magnetic_moments_1",
+            "description": "Dimension 1 of attribute array__atomic_magnetic_moments"
+        }
+    ],
+    "properties": [
+        {
+            "name": "symbols",
+            "type": "string",
+            "dims": [
+                "symbols_1"
+            ]
+        },
+        {
+            "name": "array__cells",
+            "type": "int32",
+            "dims": [
+                "array__cells_1"
+            ]
+        },
+        {
+            "name": "array__steps",
+            "type": "int32",
+            "dims": [
+                "array__steps_1"
+            ]
+        },
+        {
+            "name": "array__energy",
+            "type": "int32",
+            "dims": [
+                "array__energy_1"
+            ]
+        },
+        {
+            "name": "array__forces",
+            "type": "int32",
+            "dims": [
+                "array__forces_1"
+            ]
+        },
+        {
+            "name": "array__stress",
+            "type": "int32",
+            "dims": [
+                "array__stress_1"
+            ]
+        },
+        {
+            "name": "array__energy_xc",
+            "type": "int32",
+            "dims": [
+                "array__energy_xc_1"
+            ]
+        },
+        {
+            "name": "array__positions",
+            "type": "int32",
+            "dims": [
+                "array__positions_1"
+            ]
+        },
+        {
+            "name": "array__total_force",
+            "type": "int32",
+            "dims": [
+                "array__total_force_1"
+            ]
+        },
+        {
+            "name": "array__energy_ewald",
+            "type": "int32",
+            "dims": [
+                "array__energy_ewald_1"
+            ]
+        },
+        {
+            "name": "array__scf_accuracy",
+            "type": "int32",
+            "dims": [
+                "array__scf_accuracy_1"
+            ]
+        },
+        {
+            "name": "array__atomic_charges",
+            "type": "int32",
+            "dims": [
+                "array__atomic_charges_1"
+            ]
+        },
+        {
+            "name": "array__energy_hartree",
+            "type": "int32",
+            "dims": [
+                "array__energy_hartree_1"
+            ]
+        },
+        {
+            "name": "array__energy_hubbard",
+            "type": "int32",
+            "dims": [
+                "array__energy_hubbard_1"
+            ]
+        },
+        {
+            "name": "array__scf_iterations",
+            "type": "int32",
+            "dims": [
+                "array__scf_iterations_1"
+            ]
+        },
+        {
+            "name": "array__energy_accuracy",
+            "type": "int32",
+            "dims": [
+                "array__energy_accuracy_1"
+            ]
+        },
+        {
+            "name": "array__energy_threshold",
+            "type": "int32",
+            "dims": [
+                "array__energy_threshold_1"
+            ]
+        },
+        {
+            "name": "array__atomic_species_name",
+            "type": "int32",
+            "dims": [
+                "array__atomic_species_name_1"
+            ]
+        },
+        {
+            "name": "array__energy_one_electron",
+            "type": "int32",
+            "dims": [
+                "array__energy_one_electron_1"
+            ]
+        },
+        {
+            "name": "array__total_magnetization",
+            "type": "int32",
+            "dims": [
+                "array__total_magnetization_1"
+            ]
+        },
+        {
+            "name": "array__energy_one_center_paw",
+            "type": "int32",
+            "dims": [
+                "array__energy_one_center_paw_1"
+            ]
+        },
+        {
+            "name": "array__absolute_magnetization",
+            "type": "int32",
+            "dims": [
+                "array__absolute_magnetization_1"
+            ]
+        },
+        {
+            "name": "array__atomic_magnetic_moments",
+            "type": "int32",
+            "dims": [
+                "array__atomic_magnetic_moments_1"
+            ]
+        }
+    ]
+}

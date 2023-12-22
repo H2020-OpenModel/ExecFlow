@@ -1,0 +1,16 @@
+{
+    "uuid": "d4d6d2d5-1eb5-502e-9807-e2c2cb1e5f11",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.str",
+    "name": "core.str",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 8ef34ad3-d281-4d4c-af37-1c82439817fc of type Str",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "value",
+            "type": "string"
+        }
+    ]
+}

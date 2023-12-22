@@ -1,0 +1,16 @@
+{
+    "uuid": "3742af99-7dfb-5018-a226-898740a2398f",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/pseudo.upf",
+    "name": "pseudo.upf",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 1905b6c8-c85c-42f8-918a-9051cb919828 of type UpfData",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "filename",
+            "type": "string"
+        }
+    ]
+}

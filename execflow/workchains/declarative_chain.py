@@ -1,11 +1,11 @@
-from os.path import splitext
+from os.path import splitext, dirname
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, Node, load_code, load_group, load_node
+from aiida.orm import Dict, List, SinglefileData, Node, Str, load_code, load_group, load_node, Data
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -178,13 +178,6 @@ def dict2datanode(dat, typ, dynamic=False):
     if dat is dict and "node" in dat:
         return load_node(dat["node"])
 
-    # More than one typ possible
-    if isinstance(typ, tuple):
-        for t in typ:
-            try:
-                return dict2datanode(dat, t, dynamic)
-            except:
-                None
     # Else resolve DataNode from value
     if typ is orm.AbstractCode:
         return dict2code(dat)
@@ -198,6 +191,8 @@ def dict2datanode(dat, typ, dynamic=False):
         return Dict(dict=dat)
     elif typ is List:
         return List(list=dat)
+    elif typ is Data:
+        return dat
     else:
         return typ(dat)
 
@@ -228,7 +223,7 @@ class DeclarativeChain(WorkChain):
     @classmethod
     def define(cls, spec):
         super().define(spec)
-        spec.input("workchain_specification", valid_type=SinglefileData)
+        spec.input("workchain_specification", valid_type=(SinglefileData, Str))
         spec.exit_code(2, "ERROR_SUBPROCESS", message="A subprocess has failed.")
 
         spec.outline(
@@ -241,15 +236,29 @@ class DeclarativeChain(WorkChain):
     def setup(self):
         self.ctx.current_id = 0
         self.ctx.results = dict()
+        if isinstance(self.inputs["workchain_specification"], Str):
+            full_file = self.inputs["workchain_specification"].value
+            d = dirname(full_file)
+            ext = splitext(full_file)[1]
 
-        ext = splitext(self.inputs["workchain_specification"].filename)[1]
-        with self.inputs["workchain_specification"].open(mode="r") as f:
-            if ext in (".yaml", ".yml"):
-                tspec = YAML(typ="safe").load(f)
-            else:
-                spec = jsonref.load(f)
+            with open(full_file, mode="r") as f:
+                s= f.read()
+                s = s.replace("__DIR__", d)
+                if ext in (".yaml", ".yml"):
+                    tspec = YAML(typ="safe").load(s)
+                    spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+                else:
+                    spec = jsonref.load(s)
 
-        spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+        else:
+            ext = splitext(self.inputs["workchain_specification"].filename)[1]
+            with self.inputs["workchain_specification"].open(mode="r") as f:
+                if ext in (".yaml", ".yml"):
+                    tspec = YAML(typ="safe").load(f)
+                    spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
+                else:
+                    spec = jsonref.load(f)
+
         validate(instance=spec, schema=schema)
         self.ctx.steps = spec["steps"]
         self.env = NativeEnvironment()
@@ -326,6 +335,7 @@ class DeclarativeChain(WorkChain):
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
+                print(step['inputs'])
                 inputs = self.resolve_inputs(step['inputs'], spec_inputs)
                 return cjob, inputs
 
@@ -355,7 +365,7 @@ class DeclarativeChain(WorkChain):
                     c = 0
                     while inval is None and c < len(valid_type):
                         try:
-                            inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+                            inval = dict2datanode(val, valid_type[c], isinstance(i, plumpy.PortNamespace))
                         except:
                             inval = None
                         c += 1
@@ -364,6 +374,8 @@ class DeclarativeChain(WorkChain):
                         ValueError(f"Couldn't resolve type of input {k}")
                 else:
                     inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
+                    if inval is None:
+                        ValueError(f"Couldn't resolve input {k}")
 
                 set_dot2index(out, k, inval)
 
@@ -373,7 +385,6 @@ class DeclarativeChain(WorkChain):
         return out
 
     def resolve_input(self, input):
-
         if isinstance(input, dict):
             # If 'value' and 'type' are in dict we assume lowest level, otherwise recurse
             if 'value' in input and 'type' in input:

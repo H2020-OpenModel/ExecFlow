@@ -1,0 +1,18 @@
+---
+
+steps:
+  - workflow: execflow.exec_wrapper
+    inputs:
+      files:
+        bcin:
+          filename: "bc.in"
+          template: "__DIR__/bc.template"
+          parameters:
+            a: 3
+            b: 4
+      command: "bc"
+      arguments:
+        - "bc.in"
+    postprocess:
+      - "{{ ctx.current.outputs['stdout']|to_results('stdout') }}"
+      - "{{ ctx.current.outputs['stderr']|to_results('stderr') }}"

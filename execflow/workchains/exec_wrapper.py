@@ -10,7 +10,7 @@ from aiida.common.datastructures import CalcInfo, CodeInfo
 from aiida.common.folders import Folder
 from aiida.engine import CalcJob, CalcJobProcessSpec
 from aiida.orm import Data, Dict, List, SinglefileData, to_aiida_type, Str
-from aiida_shell.engine.launchers.shell_job import prepare_code
+from aiida_shell.launch import prepare_code
 from aiida_shell import ShellJob
 import chevron
 
@@ -29,6 +29,7 @@ class ExecWrapper(WorkChain):
         spec.input("files", valid_type=(Dict, dict),is_metadata=True)
         spec.input("command", valid_type = Str)
         spec.expose_inputs(ShellJob, exclude=['nodes', 'filenames', 'code', 'metadata'])
+        spec.expose_inputs(ShellJob, include=['metadata'], namespace='shelljob')
 
         spec.outline(
             cls.setup,
@@ -51,7 +52,7 @@ class ExecWrapper(WorkChain):
             self.ctx.filenames[k] = f['filename']
 
     def register_code(self):
-        computer = (self.inputs.metadata or {}).get('options', {}).pop('computer', None)
+        computer = (self.inputs.shelljob.metadata or {}).get('options', {}).get('computer', None)
         self.ctx.code = prepare_code(str(self.inputs.command.value), computer)
         return
 
@@ -61,6 +62,10 @@ class ExecWrapper(WorkChain):
                   'filenames': self.ctx.filenames,
                   **self.exposed_inputs(ShellJob)}
 
+        if 'metadata' in self.inputs.shelljob:
+            inputs['metadata'] =  self.inputs.shelljob.metadata
+        else:
+            inputs['metadata'] = {'options':{'resources': {'num_machines': 1, 'num_mpiprocs_per_machine': 1}}}
 
 
         shell = self.submit(ShellJob, **inputs)

@@ -1,0 +1,43 @@
+{
+    "uuid": "826eaa4c-1fd0-52d1-9b30-08c4f783bdc6",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/dynamic_workflows.PyFunction",
+    "name": "dynamic_workflows.PyFunction",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for be4d9f85-1ffb-4d52-866c-f6e43eebfcfe of type PyFunction",
+    "dimensions": [
+        {
+            "name": "returns_1",
+            "description": "Dimension 1 of attribute returns"
+        },
+        {
+            "name": "parameters_1",
+            "description": "Dimension 1 of attribute parameters"
+        }
+    ],
+    "properties": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "source",
+            "type": "string"
+        },
+        {
+            "name": "returns",
+            "type": "string",
+            "dims": [
+                "returns_1"
+            ]
+        },
+        {
+            "name": "parameters",
+            "type": "string",
+            "dims": [
+                "parameters_1"
+            ]
+        }
+    ]
+}

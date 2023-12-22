@@ -1,0 +1,36 @@
+{
+    "uuid": "f8c86acd-7d26-5858-bc73-8a983e9a68e6",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/process.workflow.workchain",
+    "name": "process.workflow.workchain",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 973c9f32-92fe-40c6-8e6a-4b106b1af369 of type WorkChainNode",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "sealed",
+            "type": "bool"
+        },
+        {
+            "name": "version_dict_core",
+            "type": "string"
+        },
+        {
+            "name": "exit_status",
+            "type": "int32"
+        },
+        {
+            "name": "process_label",
+            "type": "string"
+        },
+        {
+            "name": "process_state",
+            "type": "string"
+        },
+        {
+            "name": "stepper_state_info",
+            "type": "string"
+        }
+    ]
+}
