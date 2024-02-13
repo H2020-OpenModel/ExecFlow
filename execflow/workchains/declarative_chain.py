@@ -14,7 +14,7 @@ import jsonref
 from jsonschema import validate
 import plumpy
 import requests
-from ruamel.yaml import YAML
+import yaml
 
 # Copied from https://github.com/aiidalab/aiidalab/blob/90b334e6a473393ba22b915fdaf85d917fd947f4/aiidalab/registry/yaml.py
 # licensed under the MIT license
@@ -30,7 +30,7 @@ def my_fancy_loader(uri):
             response = REQUESTS.get(uri)
             response.raise_for_status()
             content = response.content
-        return YAML(typ="safe").load(content)
+        return yaml.safe_load(content)
     else:
         return jsonref.load_uri(uri)
 
@@ -245,7 +245,7 @@ class DeclarativeChain(WorkChain):
         ext = splitext(self.inputs["workchain_specification"].filename)[1]
         with self.inputs["workchain_specification"].open(mode="r") as f:
             if ext in (".yaml", ".yml"):
-                tspec = YAML(typ="safe").load(f)
+                tspec = yaml.safe_load(f.read())
             else:
                 spec = jsonref.load(f)
 
