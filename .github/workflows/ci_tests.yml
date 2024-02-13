@@ -10,7 +10,7 @@ on:
 jobs:
   basic_tests:
     name: External
-    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.5.1
+    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.7.2
     with:
       # pre-commit
       run_pre-commit: true
@@ -21,11 +21,11 @@ jobs:
       # pylint & safety
       python_version_pylint_safety: "3.9"
 
-      run_pylint: true
+      run_pylint: false
       pylint_runs: |
-        #--rcfile=pyproject.toml --ignore-paths=oteapi/strategies/,tests/ --extension-pkg-whitelist='pydantic' *.py oteapi
-        #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=R,C oteapi/strategies
-        #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=C0415,W0621,import-error --recursive=yes tests
+        --rcfile=pyproject.toml --ignore-paths=oteapi/strategies/,tests/ --extension-pkg-whitelist='pydantic' *.py oteapi
+        --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=R,C oteapi/strategies
+        --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=C0415,W0621,import-error --recursive=yes tests
 
       run_safety: true
 
