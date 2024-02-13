@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from aiida.orm import Dict
 import dlite
@@ -17,24 +17,32 @@ class File2CollectionConfig(AttrDict):
 
     """
 
-    path: str = Field(
-        description=("Location of file to cast as AiiDA.singlefile DataNode"),
-    )
-
-    label: Optional[str] = Field(
-        "filename",
-        description="Label of the file.",
-    )
-    datacache_config: Optional[DataCacheConfig] = Field(
-        None,
-        description="Configuration options for the local data cache.",
-    )
+    path: Annotated[
+        str,
+        Field(
+            description=("Location of file to cast as AiiDA.singlefile DataNode"),
+        ),
+    ]
+    label: Annotated[
+        Optional[str],
+        Field(
+            description="Label of the file.",
+        ),
+    ] = "filename"
+    datacache_config: Annotated[
+        Optional[DataCacheConfig],
+        Field(
+            description="Configuration options for the local data cache.",
+        ),
+    ] = None
 
 
 class File2CollectionFunctionConfig(FunctionConfig):
     """DLite function strategy config."""
 
-    configuration: File2CollectionConfig = Field(..., description="DLite function strategy-specific configuration.")
+    configuration: Annotated[
+        File2CollectionConfig, Field(description="DLite function strategy-specific configuration.")
+    ]
 
 
 @dataclass

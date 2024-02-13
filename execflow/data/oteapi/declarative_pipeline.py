@@ -2,14 +2,14 @@
 
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Type, Union
+from typing import TYPE_CHECKING, Annotated, Dict, List, Type, Union
 
 from aiida.common.exceptions import NotExistent, NotExistentAttributeError, ValidationError
 from aiida.orm import Dict as DictNode
 from aiida.orm import SinglefileData
 from aiida.orm import Str as StrNode
 from oteapi.models import FilterConfig, FunctionConfig, MappingConfig, ResourceConfig, TransformationConfig
-from pydantic import BaseModel, Field, ValidationError, validator
+from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -36,7 +36,7 @@ class DeclarativeStrategyBase(BaseModel):
 
     def get_config(self) -> "Dict[str, Any]":
         """Get the model as a ready-to-parse config for AiiDA calculations."""
-        return self.dict(exclude={self.get_type()})
+        return self.model_dump(exclude={self.get_type()})
 
     def __hash__(self) -> int:
         return hash(repr(self))
@@ -45,46 +45,56 @@ class DeclarativeStrategyBase(BaseModel):
 class DeclarativeDataResource(DeclarativeStrategyBase, ResourceConfig):
     """Data model for data resource."""
 
-    dataresource: str = Field(
-        ...,
-        description="Name for the strategy within the declarative pipeline.",
-    )
+    dataresource: Annotated[
+        str,
+        Field(
+            description="Name for the strategy within the declarative pipeline.",
+        ),
+    ]
 
 
 class DeclarativeFilter(DeclarativeStrategyBase, FilterConfig):
     """Data model for filter."""
 
-    filter: str = Field(
-        ...,
-        description="Name for the strategy within the declarative pipeline.",
-    )
+    filter: Annotated[
+        str,
+        Field(
+            description="Name for the strategy within the declarative pipeline.",
+        ),
+    ]
 
 
 class DeclarativeFunction(DeclarativeStrategyBase, FunctionConfig):
     """Data model for function."""
 
-    function: str = Field(
-        ...,
-        description="Name for the strategy within the declarative pipeline.",
-    )
+    function: Annotated[
+        str,
+        Field(
+            description="Name for the strategy within the declarative pipeline.",
+        ),
+    ]
 
 
 class DeclarativeMapping(DeclarativeStrategyBase, MappingConfig):
     """Data model for mapping."""
 
-    mapping: str = Field(
-        ...,
-        description="Name for the strategy within the declarative pipeline.",
-    )
+    mapping: Annotated[
+        str,
+        Field(
+            description="Name for the strategy within the declarative pipeline.",
+        ),
+    ]
 
 
 class DeclarativeTransformation(DeclarativeStrategyBase, TransformationConfig):
     """Data model for transformation."""
 
-    transformation: str = Field(
-        ...,
-        description="Name for the strategy within the declarative pipeline.",
-    )
+    transformation: Annotated[
+        str,
+        Field(
+            description="Name for the strategy within the declarative pipeline.",
+        ),
+    ]
 
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -100,27 +110,35 @@ if TYPE_CHECKING:  # pragma: no cover
 class DeclarativePipeline(BaseModel):
     """Data model for a declarative pipeline."""
 
-    version: int = Field(1, description="The declarative pipeline syntax version.")
-    strategies: List[
-        Union[
-            DeclarativeDataResource,
-            DeclarativeFilter,
-            DeclarativeFunction,
-            DeclarativeMapping,
-            DeclarativeTransformation,
-        ]
-    ] = Field(
-        ...,
-        description=("List of strategies to be used in the pipeline(s), including their " "configuration."),
-    )
-    pipelines: Dict[str, str] = Field(
-        ...,
-        description="Dict of the pipeline(s) defined as part of the overall pipeline.",
-    )
+    version: Annotated[int, Field(description="The declarative pipeline syntax version.")] = 1
+    strategies: Annotated[
+        List[
+            Union[
+                DeclarativeDataResource,
+                DeclarativeFilter,
+                DeclarativeFunction,
+                DeclarativeMapping,
+                DeclarativeTransformation,
+            ]
+        ],
+        Field(
+            description=("List of strategies to be used in the pipeline(s), including their configuration."),
+        ),
+    ]
+    pipelines: Annotated[
+        Dict[str, str],
+        Field(
+            description="Dict of the pipeline(s) defined as part of the overall pipeline.",
+        ),
+    ]
 
-    @validator("strategies", pre=True, each_item=False)
-    def type_cast_strategies(cls, value: "List[Dict[str, Any]]") -> "List[DeclarativeStrategy]":
+    @field_validator("strategies", mode="before")
+    @classmethod
+    def type_cast_strategies(cls, value: "Any") -> "List[DeclarativeStrategy]":
         """Sort strategies into "correct" types."""
+        if not isinstance(value, list):
+            raise ValueError(f"strategies must be a list of strategy dictionaries. Got {value!r} instead.")
+
         type_mapping: "Dict[str, Type[DeclarativeStrategy]]" = {
             "dataresource": DeclarativeDataResource,
             "filter": DeclarativeFilter,
@@ -149,19 +167,19 @@ class DeclarativePipeline(BaseModel):
                 )
         return type_casted_strategies
 
-    @validator("pipelines")
-    def ensure_steps_exist(cls, value: "Dict[str, str]", values: "Dict[str, Any]") -> "Dict[str, str]":
+    @model_validator(mode="after")
+    def ensure_steps_exist(self) -> "DeclarativePipeline":
         """Ensure the listed steps in the pipelines exist within the same data model."""
-        strategy_names = [strategy.get_name() for strategy in values.get("strategies", [])]
-        pipeline_names = list(value)
-        for name, pipeline in value.items():
+        strategy_names = [strategy.get_name() for strategy in self.strategies]
+        pipeline_names = list(self.pipelines)
+        for name, pipeline in self.pipelines.items():
             pipeline_parts = [part.strip() for part in pipeline.split("|")]
             if not all(part in strategy_names + pipeline_names for part in pipeline_parts):
                 raise ValueError(
                     f"Part(s) in {name!r} pipeline not found in the list of strategies"
                     " or pipelines within the declarative pipeline."
                 )
-        return value
+        return self
 
     def _strategy_names(self) -> "List[str]":
         """Utility function to return list of strategy names.
@@ -210,7 +228,7 @@ class DeclarativePipeline(BaseModel):
                 parsed_pipeline.extend(self.parse_pipeline(part))
             else:
                 raise ValueError(
-                    f"Could unexpectedly not find part {part!r} in the list of known " "strategy and pipeline names!"
+                    f"Could unexpectedly not find part {part!r} in the list of known strategy and pipeline names!"
                 )
         return parsed_pipeline
 
@@ -284,7 +302,7 @@ class OTEPipelineData(DictNode):
                 raise ValueError("Could not parse declarative pipeline YAML file from 'value'.") from exc
 
         if dictionary and isinstance(dictionary, self._pydantic_model_class):
-            dictionary = dictionary.dict()
+            dictionary = dictionary.model_dump()
 
         dictionary = dictionary or {}
 

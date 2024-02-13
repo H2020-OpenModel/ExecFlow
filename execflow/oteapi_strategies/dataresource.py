@@ -34,7 +34,7 @@ def init_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
         session_update = create_strategy("resource", config.get_dict()).initialize(session.get_dict())
     else:
         raise ValueError(
-            "Either of the pairs downloadUrl/mediaType and accessUrl/accessService " "must be defined in the config."
+            "Either of the pairs downloadUrl/mediaType and accessUrl/accessService must be defined in the config."
         )
 
     updated_session = session.get_dict()
@@ -60,7 +60,7 @@ def get_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
         session_update = create_strategy("resource", config.get_dict()).get(session.get_dict())
     else:
         raise ValueError(
-            "Either of the pairs downloadUrl/mediaType and accessUrl/accessService " "must be defined in the config."
+            "Either of the pairs downloadUrl/mediaType and accessUrl/accessService must be defined in the config."
         )
 
     updated_session = session.get_dict()

@@ -27,7 +27,7 @@ class ExtendedData(Data):
         """
         if self.is_stored:
             raise ModificationNotAllowed(
-                f"The {self.__class__.__name__} object cannot be modified, " "it has already been stored."
+                f"The {self.__class__.__name__} object cannot be modified, it has already been stored."
             )
 
         self.base.attributes.set(attribute_name, value)

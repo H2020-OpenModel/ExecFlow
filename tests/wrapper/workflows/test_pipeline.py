@@ -1,4 +1,4 @@
-"""Test execflow.wrapper.workflows.pipeline"""
+"""Test execflow.workchains.oteapi_pipeline"""
 
 from typing import TYPE_CHECKING
 

@@ -1,14 +1,12 @@
-import sys
-
 from aiida import engine, orm
 
 from execflow.workchains.declarative_chain import DeclarativeChain
 
 
 def test_simple_execution(samples, fixture_localhost):
-    from aiida.orm import InstalledCode, load_computer
+    from aiida.orm import InstalledCode
 
-    code = InstalledCode(label="bash", computer=fixture_localhost, filepath_executable="/bin/bash").store()
+    InstalledCode(label="bash", computer=fixture_localhost, filepath_executable="/bin/bash").store()
     res = engine.run(
         DeclarativeChain,
         **{"workchain_specification": orm.SinglefileData(samples / "declarative_chain" / "double_sum.yaml")},

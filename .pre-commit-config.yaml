@@ -56,7 +56,7 @@ repos:
       exclude: ^tests/.*$
       additional_dependencies:
         - "types-PyYAML"
-        - "pydantic<2"
+        - "pydantic>=2"
         - "types-requests"
 
   # - repo: local

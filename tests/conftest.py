@@ -9,7 +9,6 @@ https://aiida.readthedocs.io/projects/aiida-core/en/latest/reference/apidoc/aiid
 """
 
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 
@@ -50,8 +49,6 @@ def generate_calcjob_node(fixture_localhost):
         :param entry_point: entry point name of the calculation class
         """
         from aiida import orm
-        from aiida.common import LinkType
-        from aiida.plugins.entry_point import format_entry_point_string
 
         node = orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
 
@@ -100,9 +97,7 @@ def generate_declarative_workchain(generate_workchain):
         """
         from io import StringIO
 
-        from aiida.common import LinkType
         from aiida.orm import SinglefileData
-        from plumpy import ProcessState
 
         entry_point = "execflow.declarative"
         if isinstance(input, Path):
@@ -114,15 +109,6 @@ def generate_declarative_workchain(generate_workchain):
             raise ValueError("input needs to be SinglefileData or a str")
 
         process = generate_workchain(entry_point, {"workchain_specification": input})
-
-        # if pw_outputs is not None:
-        #     for link_label, output_node in pw_outputs.items():
-        #         output_node.base.links.add_incoming(pw_node, link_type=LinkType.CREATE, link_label=link_label)
-        #         output_node.store()
-
-        # if exit_code is not None:
-        #     pw_node.set_process_state(ProcessState.FINISHED)
-        #     pw_node.set_exit_status(exit_code.status)
 
         return process
 

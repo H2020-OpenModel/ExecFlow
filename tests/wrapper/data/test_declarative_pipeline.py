@@ -1,4 +1,4 @@
-"""Test execflow.wrapper.data.declarative_pipeline"""
+"""Test execflow.data.oteapi.declarative_pipeline"""
 
 # pylint: disable=too-many-locals,invalid-name
 from typing import TYPE_CHECKING
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from pathlib import Path
     from typing import Any, Dict, Tuple, Type, Union
 
-    from execflow.wrapper.data.declarative_pipeline import OTEPipelineData as OTEPipelineDataNode
+    from execflow.data.oteapi.declarative_pipeline import OTEPipelineData as OTEPipelineDataNode
 
 
 @pytest.mark.parametrize(
@@ -89,7 +89,7 @@ def test_initialization_strategies_value(
         # Initialize pydantic model and convert strategies to a list of dictionaries.
         pydantic_input = deepcopy(declarative_pipeline_file)
         pydantic_model = DeclarativePipeline(**pydantic_input)
-        assert node.strategies == [_.dict() for _ in pydantic_model.strategies]
+        assert node.strategies == [_.model_dump() for _ in pydantic_model.strategies]
     else:
         assert node.strategies == list(declarative_pipeline_file["strategies"])
 

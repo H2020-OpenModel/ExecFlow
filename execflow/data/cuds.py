@@ -8,11 +8,9 @@ from aiida.plugins import DataFactory
 from aiida.plugins.entry_point import get_entry_point_from_class
 import dlite
 import numpy as np
-from oteapi.datacache import DataCache
-from oteapi.models import AttrDict, FunctionConfig, SessionUpdate
+from oteapi.models import FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
-from oteapi_dlite.utils import get_collection, get_driver, update_collection
-from pydantic import Field
+from oteapi_dlite.utils import get_collection, update_collection
 from pydantic.dataclasses import dataclass
 
 
@@ -26,7 +24,6 @@ class DataNode2CUDSStrategy:
         return DLiteSessionUpdate(collection_id=get_collection(session).uuid)
 
     def get(self, session=None):
-        update = DLiteSessionUpdate()
         # TODO handle error when node does not exist
         #
         coll = get_collection(session)
@@ -48,9 +45,6 @@ class CUDS2DataNodeStrategy:
         return DLiteSessionUpdate(collection_id=get_collection(session).uuid)
 
     def get(self, session=None):
-
-        cache = DataCache()
-
         coll = get_collection(session)
         names = load_node(session[self.config.configuration["names"]])
         results = session.get("to_results", dict())
