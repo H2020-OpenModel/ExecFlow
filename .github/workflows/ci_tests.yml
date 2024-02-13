@@ -32,8 +32,8 @@ jobs:
       # - 63227: paramiko. Subdependency of aiida-core.
       # - 59901: aio-pika. Subdependency of aiida-core.
       safety_options: |
-        --ignore 63227
-        --ignore 59901
+        --ignore=63227
+        --ignore=59901
 
       # Build package
       run_build_package: true
@@ -71,12 +71,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          -   5432:5432
+          - 5432:5432
       rabbitmq:
           image: rabbitmq:3.8.14-management
           ports:
-          -   5672:5672
-          -   15672:15672
+          - 5672:5672
+          - 15672:15672
 
     steps:
     - uses: actions/checkout@v3
@@ -107,18 +107,6 @@ jobs:
       with:
         files: coverage.xml
         flags: linux
-
-    # - name: Test with optional libs
-    #   run: |
-    #     pip install ase numpy
-    #     tests/tests.sh
-
-    # - name: Upload coverage to Codecov
-    #   if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     files: coverage.xml
-    #     flags: linux-extra_libs
 
   pytest-win:
     name: pytest (windows-py${{ matrix.python-version }})
