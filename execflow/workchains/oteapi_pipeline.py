@@ -142,7 +142,7 @@ class OTEPipeline(WorkChain):
         # Add all the input nodes to ote_session
         for k in self.inputs:
             if isinstance(self.inputs[k], orm.Data):
-                self.ctx.ote_session[k] = self.inputs[k].id
+                self.ctx.ote_session[k] = self.inputs[k].pk
 
     def not_finished(self) -> bool:
         """Determine whether or not the WorkChain is finished.

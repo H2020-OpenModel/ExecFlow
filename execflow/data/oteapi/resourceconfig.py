@@ -66,25 +66,25 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         **kwargs: "Any",
     ) -> None:
         if downloadUrl is None:
-            downloadUrl = ResourceConfig.schema()["properties"]["downloadUrl"].get("default")
+            downloadUrl = ResourceConfig.model_fields["downloadUrl"].default
 
         if mediaType is None:
-            mediaType = ResourceConfig.schema()["properties"]["mediaType"].get("default")
+            mediaType = ResourceConfig.model_fields["mediaType"].default
 
         if accessUrl is None:
-            accessUrl = ResourceConfig.schema()["properties"]["accessUrl"].get("default")
+            accessUrl = ResourceConfig.model_fields["accessUrl"].default
 
         if accessService is None:
-            accessService = ResourceConfig.schema()["properties"]["accessService"].get("default")
+            accessService = ResourceConfig.model_fields["accessService"].default
 
         if license is None:
-            license = ResourceConfig.schema()["properties"]["license"].get("default")
+            license = ResourceConfig.model_fields["license"].default
 
         if accessRights is None:
-            accessRights = ResourceConfig.schema()["properties"]["accessRights"].get("default")
+            accessRights = ResourceConfig.model_fields["accessRights"].default
 
         if publisher is None:
-            publisher = ResourceConfig.schema()["properties"]["publisher"].get("default")
+            publisher = ResourceConfig.model_fields["publisher"].default
 
         super().__init__(**kwargs)
 

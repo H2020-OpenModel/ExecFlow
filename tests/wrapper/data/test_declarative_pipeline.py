@@ -89,7 +89,7 @@ def test_initialization_strategies_value(
         # Initialize pydantic model and convert strategies to a list of dictionaries.
         pydantic_input = deepcopy(declarative_pipeline_file)
         pydantic_model = DeclarativePipeline(**pydantic_input)
-        assert node.strategies == [_.model_dump() for _ in pydantic_model.strategies]
+        assert node.strategies == [_.model_dump(mode="json") for _ in pydantic_model.strategies]
     else:
         assert node.strategies == list(declarative_pipeline_file["strategies"])
 

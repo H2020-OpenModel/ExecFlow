@@ -16,8 +16,7 @@ pytest_plugins = ["aiida.manage.tests.pytest_fixtures"]
 
 
 @pytest.fixture(scope="function", autouse=True)
-@pytest.mark.usefixtures("aiida_profile_clean")
-def aiida_profile_clean_auto():
+def aiida_profile_clean_auto(aiida_profile_clean):
     """Automatically clear the AiiDA profile's DB and storage after each test."""
 
 

@@ -67,4 +67,4 @@ class File2CollectionStrategy:
 
         update_collection(coll)
 
-        return SessionUpdate()  # **{"to_results": results})#**{config.label: node.id})
+        return SessionUpdate()  # **{"to_results": results})#**{config.label: node.pk})

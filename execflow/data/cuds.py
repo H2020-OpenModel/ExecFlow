@@ -52,7 +52,7 @@ class CUDS2DataNodeStrategy:
             i = coll[n]
             d = CUDS2DataNode(i)
             d.store()
-            results[n] = d.id
+            results[n] = d.pk
 
         update_collection(coll)
         return SessionUpdate(**{"to_results": results})

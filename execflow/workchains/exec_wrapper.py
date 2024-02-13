@@ -5,7 +5,7 @@ from io import StringIO
 from aiida.engine import ToContext, WorkChain, calcfunction
 from aiida.orm import Dict, SinglefileData, Str
 from aiida_shell import ShellJob
-from aiida_shell.engine.launchers.shell_job import prepare_code
+from aiida_shell.launch import prepare_code
 import chevron
 
 

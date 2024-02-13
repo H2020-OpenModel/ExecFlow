@@ -22,7 +22,7 @@ def test_qe(generate_declarative_workchain, generate_calcjob_node, samples):
     assert isinstance(inputs["structure"], StructureData)
 
     assert inputs["parameters"]["CONTROL"]["calculation"] == "scf"
-    assert inputs["kpoints"].attributes["mesh"] == [4, 4, 4]
+    assert inputs["kpoints"].base.attributes.all["mesh"] == [4, 4, 4]
 
     node = generate_calcjob_node("quantumespresso.pw")
     process.ctx.current = node.store()

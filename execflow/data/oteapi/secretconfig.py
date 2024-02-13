@@ -35,11 +35,11 @@ class SecretConfigData(ExtendedData):
         super().__init__(**kwargs)
         self.base.attributes.set_many(
             {
-                "user": user or SecretConfig.schema()["properties"]["user"].get("default"),
-                "password": password or SecretConfig.schema()["properties"]["password"].get("default"),
-                "token": token or SecretConfig.schema()["properties"]["token"].get("default"),
-                "client_id": client_id or SecretConfig.schema()["properties"]["client_id"].get("default"),
-                "client_secret": client_secret or SecretConfig.schema()["properties"]["client_secret"].get("default"),
+                "user": user or SecretConfig.model_fields["user"].default,
+                "password": password or SecretConfig.model_fields["password"].default,
+                "token": token or SecretConfig.model_fields["token"].default,
+                "client_id": client_id or SecretConfig.model_fields["client_id"].default,
+                "client_secret": client_secret or SecretConfig.model_fields["client_secret"].default,
             }
         )
 

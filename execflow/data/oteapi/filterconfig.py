@@ -32,13 +32,13 @@ class FilterConfigData(GenericConfigData):
         **kwargs: "Any",
     ) -> None:
         if query is None:
-            query = FilterConfig.schema()["properties"]["query"].get("default")
+            query = FilterConfig.model_fields["query"].default
 
         if condition is None:
-            condition = FilterConfig.schema()["properties"]["condition"].get("default")
+            condition = FilterConfig.model_fields["condition"].default
 
         if limit is None:
-            limit = FilterConfig.schema()["properties"]["limit"].get("default")
+            limit = FilterConfig.model_fields["limit"].default
 
         super().__init__(**kwargs)
 

@@ -36,13 +36,13 @@ class DeclarativeStrategyBase(BaseModel):
 
     def get_config(self) -> "Dict[str, Any]":
         """Get the model as a ready-to-parse config for AiiDA calculations."""
-        return self.model_dump(exclude={self.get_type()})
+        return self.model_dump(exclude={self.get_type()}, mode="json")
 
     def __hash__(self) -> int:
         return hash(repr(self))
 
 
-class DeclarativeDataResource(DeclarativeStrategyBase, ResourceConfig):
+class DeclarativeDataResource(ResourceConfig, DeclarativeStrategyBase):
     """Data model for data resource."""
 
     dataresource: Annotated[
@@ -53,7 +53,7 @@ class DeclarativeDataResource(DeclarativeStrategyBase, ResourceConfig):
     ]
 
 
-class DeclarativeFilter(DeclarativeStrategyBase, FilterConfig):
+class DeclarativeFilter(FilterConfig, DeclarativeStrategyBase):
     """Data model for filter."""
 
     filter: Annotated[
@@ -64,7 +64,7 @@ class DeclarativeFilter(DeclarativeStrategyBase, FilterConfig):
     ]
 
 
-class DeclarativeFunction(DeclarativeStrategyBase, FunctionConfig):
+class DeclarativeFunction(FunctionConfig, DeclarativeStrategyBase):
     """Data model for function."""
 
     function: Annotated[
@@ -75,7 +75,7 @@ class DeclarativeFunction(DeclarativeStrategyBase, FunctionConfig):
     ]
 
 
-class DeclarativeMapping(DeclarativeStrategyBase, MappingConfig):
+class DeclarativeMapping(MappingConfig, DeclarativeStrategyBase):
     """Data model for mapping."""
 
     mapping: Annotated[
@@ -86,7 +86,7 @@ class DeclarativeMapping(DeclarativeStrategyBase, MappingConfig):
     ]
 
 
-class DeclarativeTransformation(DeclarativeStrategyBase, TransformationConfig):
+class DeclarativeTransformation(TransformationConfig, DeclarativeStrategyBase):
     """Data model for transformation."""
 
     transformation: Annotated[
@@ -302,7 +302,7 @@ class OTEPipelineData(DictNode):
                 raise ValueError("Could not parse declarative pipeline YAML file from 'value'.") from exc
 
         if dictionary and isinstance(dictionary, self._pydantic_model_class):
-            dictionary = dictionary.model_dump()
+            dictionary = dictionary.model_dump(mode="json")
 
         dictionary = dictionary or {}
 
