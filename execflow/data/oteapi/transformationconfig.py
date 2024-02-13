@@ -1,11 +1,9 @@
 """OTEAPI Transformation strategy config AiiDA Data Node class."""
+
 # pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
-from oteapi.models.transformationconfig import (
-    TransformationConfig,
-    TransformationStatus,
-)
+from oteapi.models.transformationconfig import TransformationConfig, TransformationStatus
 
 from execflow.data.oteapi.base import ExtendedData
 from execflow.data.oteapi.genericconfig import GenericConfigData
@@ -49,9 +47,7 @@ class TransformationConfigData(GenericConfigData, SecretConfigData):
             due = TransformationConfig.schema()["properties"]["due"].get("default")
 
         if priority is None:
-            priority = TransformationConfig.schema()["properties"]["priority"].get(
-                "default"
-            )
+            priority = TransformationConfig.schema()["properties"]["priority"].get("default")
 
         super().__init__(**kwargs)
 
@@ -129,29 +125,19 @@ class TransformationStatusData(ExtendedData):
         **kwargs: "Any",
     ) -> None:
         if status is None:
-            status = TransformationStatus.schema()["properties"]["status"].get(
-                "default"
-            )
+            status = TransformationStatus.schema()["properties"]["status"].get("default")
 
         if messages is None:
-            messages = TransformationStatus.schema()["properties"]["messages"].get(
-                "default"
-            )
+            messages = TransformationStatus.schema()["properties"]["messages"].get("default")
 
         if created is None:
-            created = TransformationStatus.schema()["properties"]["created"].get(
-                "default"
-            )
+            created = TransformationStatus.schema()["properties"]["created"].get("default")
 
         if startTime is None:
-            startTime = TransformationStatus.schema()["properties"]["startTime"].get(
-                "default"
-            )
+            startTime = TransformationStatus.schema()["properties"]["startTime"].get("default")
 
         if finishTime is None:
-            finishTime = TransformationStatus.schema()["properties"]["finishTime"].get(
-                "default"
-            )
+            finishTime = TransformationStatus.schema()["properties"]["finishTime"].get("default")
 
         super().__init__(**kwargs)
 

@@ -1,4 +1,5 @@
 """Test execflow.wrapper.data.declarative_pipeline"""
+
 # pylint: disable=too-many-locals,invalid-name
 from typing import TYPE_CHECKING
 
@@ -8,9 +9,7 @@ if TYPE_CHECKING:
     from pathlib import Path
     from typing import Any, Dict, Tuple, Type, Union
 
-    from execflow.wrapper.data.declarative_pipeline import (
-        OTEPipelineData as OTEPipelineDataNode,
-    )
+    from execflow.wrapper.data.declarative_pipeline import OTEPipelineData as OTEPipelineDataNode
 
 
 @pytest.mark.parametrize(
@@ -44,12 +43,8 @@ def test_initialization_strategies_value(
 
     from execflow.data.oteapi.declarative_pipeline import DeclarativePipeline
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory(
-        "execflow.oteapi_pipeline"
-    )
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load(
-        (samples / "pipe.yml").read_bytes()
-    )
+    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     if isinstance(value_type, type):
         if value_type == dict:
@@ -57,9 +52,7 @@ def test_initialization_strategies_value(
             assert isinstance(pipeline_input, dict)
             node = OTEPipelineData(value=pipeline_input)
         elif value_type == str:
-            node = OTEPipelineData(
-                value=(samples / "pipe.yml").read_text(encoding="utf8")
-            )
+            node = OTEPipelineData(value=(samples / "pipe.yml").read_text(encoding="utf8"))
         else:
             assert value_type == bytes, f"Unknown value_type type: {value_type}"
             node = OTEPipelineData(value=(samples / "pipe.yml").read_bytes())
@@ -81,9 +74,7 @@ def test_initialization_strategies_value(
             node = OTEPipelineData(value=aiida_dict_node)
         else:
             assert value_type == "core.str", f"Unknown value_type given: {value_type}"
-            aiida_str_node = DataFactory(value_type)(
-                (samples / "pipe.yml").read_text(encoding="utf8")
-            )
+            aiida_str_node = DataFactory(value_type)((samples / "pipe.yml").read_text(encoding="utf8"))
             node = OTEPipelineData(value=aiida_str_node)
 
     assert node.validate() is None
@@ -112,9 +103,7 @@ def test_initialization_strategies_value(
         "core.singlefile",
     ),
 )
-def test_initialization_strategies_file(
-    input_type: "Union[Type[str], str]", samples: "Path"
-) -> None:
+def test_initialization_strategies_file(input_type: "Union[Type[str], str]", samples: "Path") -> None:
     """Ensure the different intended initialization strategies work.
 
     This test is for the file pathway, i.e., using the `filepath` or `single_file`
@@ -129,12 +118,8 @@ def test_initialization_strategies_file(
     from aiida.plugins import DataFactory
     import yaml
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory(
-        "execflow.oteapi_pipeline"
-    )
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load(
-        (samples / "pipe.yml").read_bytes()
-    )
+    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     if input_type == str:
         # filepath
@@ -151,9 +136,7 @@ def test_initialization_strategies_file(
 
         # single_file
         else:
-            assert (
-                input_type == "core.singlefile"
-            ), f"Unknown input_type given: {input_type}"
+            assert input_type == "core.singlefile", f"Unknown input_type given: {input_type}"
 
             aiida_singlefile_node = DataFactory(input_type)(samples / "pipe.yml")
             node = OTEPipelineData(single_file=aiida_singlefile_node)
@@ -179,12 +162,8 @@ def test_initialization_strategies_explicit(samples: "Path") -> None:
     from aiida.plugins import DataFactory
     import yaml
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory(
-        "execflow.oteapi_pipeline"
-    )
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load(
-        (samples / "pipe.yml").read_bytes()
-    )
+    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     # Create Node from __init__ directly
     copy_file = deepcopy(declarative_pipeline_file)
@@ -234,16 +213,10 @@ def test_validate_valid_cases(input_keys: "Tuple[str, ...]", samples: "Path") ->
     from aiida.plugins import DataFactory
     import yaml
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory(
-        "execflow.oteapi_pipeline"
-    )
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load(
-        (samples / "pipe.yml").read_bytes()
-    )
+    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
-    node = OTEPipelineData(
-        **{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys}
-    )
+    node = OTEPipelineData(**{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys})
     assert node.validate() is None
 
 
@@ -273,16 +246,10 @@ def test_validate_invalid_cases(input_keys: "Tuple[str, ...]", samples: "Path") 
     from aiida.plugins import DataFactory
     import yaml
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory(
-        "execflow.oteapi_pipeline"
-    )
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load(
-        (samples / "pipe.yml").read_bytes()
-    )
+    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
-    node = OTEPipelineData(
-        **{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys}
-    )
+    node = OTEPipelineData(**{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys})
 
     exception_message_end = ""
     if "strategies" not in input_keys:
@@ -293,7 +260,5 @@ def test_validate_invalid_cases(input_keys: "Tuple[str, ...]", samples: "Path") 
         exception_message_end += " pipelines"
 
     assert node.validate(strict=False) is None
-    with pytest.raises(
-        ValidationError, match=rf"^Cannot validate, missing{exception_message_end}$"
-    ):
+    with pytest.raises(ValidationError, match=rf"^Cannot validate, missing{exception_message_end}$"):
         node.validate(strict=True)

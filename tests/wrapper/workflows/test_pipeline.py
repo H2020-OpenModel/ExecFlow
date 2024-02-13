@@ -1,4 +1,5 @@
 """Test execflow.wrapper.workflows.pipeline"""
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -69,10 +70,10 @@ def test_result_pipeline(samples: "Path") -> None:
         samples: Path to test directory with sample files.
 
     """
-    import requests
-    import yaml
     from aiida.engine import run
     from aiida.plugins import DataFactory
+    import requests
+    import yaml
 
     from execflow.workchains.oteapi_pipeline import OTEPipeline
 
@@ -98,9 +99,6 @@ def test_result_pipeline(samples: "Path") -> None:
     # The mapping strategy will add "prefixes" and "triples" entries in the session.
     assert "prefixes" in result["session"]
     assert "triples" in result["session"]
-    assert (
-        result["session"]["prefixes"]
-        == declarative_pipeline_file["strategies"][1]["prefixes"]
-    )
+    assert result["session"]["prefixes"] == declarative_pipeline_file["strategies"][1]["prefixes"]
     for triple in result["session"]["triples"]:
         assert triple in declarative_pipeline_file["strategies"][1]["triples"]

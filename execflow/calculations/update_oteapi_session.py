@@ -1,5 +1,6 @@
 """Utility AiiDA calculation to update the session for 'function' and 'transformation'
 strategies."""
+
 from typing import TYPE_CHECKING
 
 from aiida.engine import calcfunction

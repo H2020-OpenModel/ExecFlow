@@ -1,4 +1,5 @@
 """OTEAPI Download, Parse, and Resource strategy config AiiDA Data Node class."""
+
 # pylint: disable=line-too-long,invalid-name
 from typing import TYPE_CHECKING
 
@@ -65,37 +66,25 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         **kwargs: "Any",
     ) -> None:
         if downloadUrl is None:
-            downloadUrl = ResourceConfig.schema()["properties"]["downloadUrl"].get(
-                "default"
-            )
+            downloadUrl = ResourceConfig.schema()["properties"]["downloadUrl"].get("default")
 
         if mediaType is None:
-            mediaType = ResourceConfig.schema()["properties"]["mediaType"].get(
-                "default"
-            )
+            mediaType = ResourceConfig.schema()["properties"]["mediaType"].get("default")
 
         if accessUrl is None:
-            accessUrl = ResourceConfig.schema()["properties"]["accessUrl"].get(
-                "default"
-            )
+            accessUrl = ResourceConfig.schema()["properties"]["accessUrl"].get("default")
 
         if accessService is None:
-            accessService = ResourceConfig.schema()["properties"]["accessService"].get(
-                "default"
-            )
+            accessService = ResourceConfig.schema()["properties"]["accessService"].get("default")
 
         if license is None:
             license = ResourceConfig.schema()["properties"]["license"].get("default")
 
         if accessRights is None:
-            accessRights = ResourceConfig.schema()["properties"]["accessRights"].get(
-                "default"
-            )
+            accessRights = ResourceConfig.schema()["properties"]["accessRights"].get("default")
 
         if publisher is None:
-            publisher = ResourceConfig.schema()["properties"]["publisher"].get(
-                "default"
-            )
+            publisher = ResourceConfig.schema()["properties"]["publisher"].get("default")
 
         super().__init__(**kwargs)
 

@@ -1,4 +1,5 @@
 """AiiDA Data Node classes."""
+
 from .declarative_pipeline import OTEPipelineData
 from .filterconfig import FilterConfigData
 from .functionconfig import FunctionConfigData

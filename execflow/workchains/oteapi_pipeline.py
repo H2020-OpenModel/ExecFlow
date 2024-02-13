@@ -1,4 +1,5 @@
 """AiiDA WorkChain for the OTE Pipeline."""
+
 from typing import TYPE_CHECKING
 
 from aiida import orm
@@ -61,7 +62,7 @@ class OTEPipeline(WorkChain):
         spec.outputs.dynamic = True
         # Outputs
         spec.output("session", valid_type=orm.Dict)
-        spec.output_namespace('results', dynamic=True)
+        spec.output_namespace("results", dynamic=True)
         # Outline
         spec.outline(
             cls.parse_pipeline,
@@ -160,9 +161,7 @@ class OTEPipeline(WorkChain):
         Run the next strategy's CalcFunction and return its ProcessNode to the context.
 
         """
-        strategy_method, strategy_type, strategy_config = self.ctx.strategies[
-            self.ctx.current_id
-        ]
+        strategy_method, strategy_type, strategy_config = self.ctx.strategies[self.ctx.current_id]
         strategy_process_cls = (
             WorkflowFactory(f"execflow.{strategy_type}_{strategy_method}")
             if strategy_type in ("function", "transformation")
@@ -193,9 +192,7 @@ class OTEPipeline(WorkChain):
                 f" {self.ctx.current.exit_message}"
             )
 
-        self.ctx.ote_session = (
-            self.ctx.current.base.links.get_outgoing().get_node_by_label("result")
-        )
+        self.ctx.ote_session = self.ctx.current.base.links.get_outgoing().get_node_by_label("result")
 
         self.ctx.current_id += 1
 
@@ -206,17 +203,17 @@ class OTEPipeline(WorkChain):
         """
         self.out("session", self.ctx.ote_session)
 
-        if 'to_results' in self.ctx.ote_session:
+        if "to_results" in self.ctx.ote_session:
             results = dict()
-            for k in self.ctx.ote_session['to_results']:
-                results[k] = orm.load_node(self.ctx.ote_session['to_results'][k])
+            for k in self.ctx.ote_session["to_results"]:
+                results[k] = orm.load_node(self.ctx.ote_session["to_results"][k])
 
             self.out("results", results)
 
-        if 'collection_id' in self.inputs:
-            self.out('collection_id', self.inputs['collection_id'])
+        if "collection_id" in self.inputs:
+            self.out("collection_id", self.inputs["collection_id"])
 
-        elif 'collection_id' in self.ctx.ote_session:
-            coll_id = orm.Str(self.ctx.ote_session['collection_id'])
+        elif "collection_id" in self.ctx.ote_session:
+            coll_id = orm.Str(self.ctx.ote_session["collection_id"])
             coll_id.store()
-            self.out('collection_id', coll_id)
+            self.out("collection_id", coll_id)

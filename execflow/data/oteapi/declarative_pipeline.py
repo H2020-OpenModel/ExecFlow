@@ -1,27 +1,16 @@
 """A Data Node representing a declarative OTE pipeline."""
+
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Union
+from typing import TYPE_CHECKING, Dict, List, Type, Union
 
-from oteapi.models import (
-    FilterConfig,
-    FunctionConfig,
-    MappingConfig,
-    ResourceConfig,
-    TransformationConfig,
-)
-
-import yaml
-from aiida.common.exceptions import (
-    NotExistent,
-    NotExistentAttributeError,
-    ValidationError,
-)
+from aiida.common.exceptions import NotExistent, NotExistentAttributeError, ValidationError
 from aiida.orm import Dict as DictNode
 from aiida.orm import SinglefileData
 from aiida.orm import Str as StrNode
-
+from oteapi.models import FilterConfig, FunctionConfig, MappingConfig, ResourceConfig, TransformationConfig
 from pydantic import BaseModel, Field, ValidationError, validator
+import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple, Union
@@ -122,10 +111,7 @@ class DeclarativePipeline(BaseModel):
         ]
     ] = Field(
         ...,
-        description=(
-            "List of strategies to be used in the pipeline(s), including their "
-            "configuration."
-        ),
+        description=("List of strategies to be used in the pipeline(s), including their " "configuration."),
     )
     pipelines: Dict[str, str] = Field(
         ...,
@@ -133,9 +119,7 @@ class DeclarativePipeline(BaseModel):
     )
 
     @validator("strategies", pre=True, each_item=False)
-    def type_cast_strategies(
-        cls, value: "List[Dict[str, Any]]"
-    ) -> "List[DeclarativeStrategy]":
+    def type_cast_strategies(cls, value: "List[Dict[str, Any]]") -> "List[DeclarativeStrategy]":
         """Sort strategies into "correct" types."""
         type_mapping: "Dict[str, Type[DeclarativeStrategy]]" = {
             "dataresource": DeclarativeDataResource,
@@ -166,19 +150,13 @@ class DeclarativePipeline(BaseModel):
         return type_casted_strategies
 
     @validator("pipelines")
-    def ensure_steps_exist(
-        cls, value: "Dict[str, str]", values: "Dict[str, Any]"
-    ) -> "Dict[str, str]":
+    def ensure_steps_exist(cls, value: "Dict[str, str]", values: "Dict[str, Any]") -> "Dict[str, str]":
         """Ensure the listed steps in the pipelines exist within the same data model."""
-        strategy_names = [
-            strategy.get_name() for strategy in values.get("strategies", [])
-        ]
+        strategy_names = [strategy.get_name() for strategy in values.get("strategies", [])]
         pipeline_names = list(value)
         for name, pipeline in value.items():
             pipeline_parts = [part.strip() for part in pipeline.split("|")]
-            if not all(
-                part in strategy_names + pipeline_names for part in pipeline_parts
-            ):
+            if not all(part in strategy_names + pipeline_names for part in pipeline_parts):
                 raise ValueError(
                     f"Part(s) in {name!r} pipeline not found in the list of strategies"
                     " or pipelines within the declarative pipeline."
@@ -207,9 +185,7 @@ class DeclarativePipeline(BaseModel):
         for strategy in self.strategies:
             if strategy_name == strategy.get_name():
                 return strategy
-        raise ValueError(
-            f"Strategy {strategy_name!r} does not exist among {self._strategy_names()}"
-        )
+        raise ValueError(f"Strategy {strategy_name!r} does not exist among {self._strategy_names()}")
 
     def parse_pipeline(self, pipeline: str) -> "List[DeclarativeStrategy]":
         """Resolve a pipeline into its strategy parts.
@@ -222,9 +198,7 @@ class DeclarativePipeline(BaseModel):
 
         """
         if pipeline not in self.pipelines:
-            raise ValueError(
-                f"Pipeline {pipeline!r} does not exist among {list(self.pipelines)}"
-            )
+            raise ValueError(f"Pipeline {pipeline!r} does not exist among {list(self.pipelines)}")
 
         parsed_pipeline = []
 
@@ -236,13 +210,13 @@ class DeclarativePipeline(BaseModel):
                 parsed_pipeline.extend(self.parse_pipeline(part))
             else:
                 raise ValueError(
-                    f"Could unexpectedly not find part {part!r} in the list of known "
-                    "strategy and pipeline names!"
+                    f"Could unexpectedly not find part {part!r} in the list of known " "strategy and pipeline names!"
                 )
         return parsed_pipeline
 
     def __hash__(self) -> int:
         return hash(repr(self))
+
 
 class OTEPipelineData(DictNode):
     """An OTE pipeline.
@@ -282,44 +256,32 @@ class OTEPipelineData(DictNode):
 
         if dictionary is None:
             if filepath and single_file:
-                raise ValueError(
-                    "Specify either 'filepath' or 'single_file', not both."
-                )
+                raise ValueError("Specify either 'filepath' or 'single_file', not both.")
             if filepath:
-                filepath = (
-                    Path(filepath.value).resolve()
-                    if isinstance(filepath, StrNode)
-                    else Path(filepath).resolve()
-                )
+                filepath = Path(filepath.value).resolve() if isinstance(filepath, StrNode) else Path(filepath).resolve()
                 if not filepath.exists():
                     raise FileNotFoundError(f"Cannot find file at filepath={filepath}")
                 try:
                     dictionary = yaml.safe_load(filepath.read_bytes())
                 except yaml.error.YAMLError as exc:
                     raise ValueError(
-                        "Could not parse declarative pipeline YAML file from "
-                        f"filepath={filepath}."
+                        "Could not parse declarative pipeline YAML file from " f"filepath={filepath}."
                     ) from exc
             elif single_file:
                 try:
                     dictionary = yaml.safe_load(single_file.get_content())
                 except yaml.error.YAMLError as exc:
                     raise ValueError(
-                        "Could not parse declarative pipeline YAML file from "
-                        f"single_file={single_file}."
+                        "Could not parse declarative pipeline YAML file from " f"single_file={single_file}."
                     ) from exc
 
         if dictionary and isinstance(dictionary, (str, bytes, StrNode)):
             try:
                 dictionary = (
-                    yaml.safe_load(dictionary.value)
-                    if isinstance(dictionary, StrNode)
-                    else yaml.safe_load(dictionary)
+                    yaml.safe_load(dictionary.value) if isinstance(dictionary, StrNode) else yaml.safe_load(dictionary)
                 )
             except yaml.error.YAMLError as exc:
-                raise ValueError(
-                    "Could not parse declarative pipeline YAML file from 'value'."
-                ) from exc
+                raise ValueError("Could not parse declarative pipeline YAML file from 'value'.") from exc
 
         if dictionary and isinstance(dictionary, self._pydantic_model_class):
             dictionary = dictionary.dict()
@@ -336,17 +298,13 @@ class OTEPipelineData(DictNode):
             try:
                 dictionary["version"] = int(dictionary["version"])
             except ValueError as exc:
-                raise ValueError(
-                    f"{dictionary['version']!r} is not a valid value for 'version'."
-                ) from exc
+                raise ValueError(f"{dictionary['version']!r} is not a valid value for 'version'.") from exc
 
         if version is not None:
             try:
                 version = int(version)
             except ValueError as exc:
-                raise ValueError(
-                    f"{version!r} is not a valid value for 'version'."
-                ) from exc
+                raise ValueError(f"{version!r} is not a valid value for 'version'.") from exc
             dictionary["version"] = version
 
         if strategies is not None:
@@ -377,9 +335,7 @@ class OTEPipelineData(DictNode):
             strict: Whether or not to raise if `strategies` or `pipelines` are None.
 
         """
-        if self.base.attributes.get("strategies", None) and self.base.attributes.get(
-            "pipelines", None
-        ):
+        if self.base.attributes.get("strategies", None) and self.base.attributes.get("pipelines", None):
             self._pydantic_model = self._pydantic_model_class(**self.get_dict())
             self._pydantic_model_hash = hash(self._pydantic_model)
         elif strict:
@@ -522,9 +478,7 @@ class OTEPipelineData(DictNode):
             raise NotExistentAttributeError("pipelines is not defined.") from exc
 
     @pipelines.setter
-    def pipelines(
-        self, value: "Union[Dict[str, str], Iterable[Tuple[str, str]]]"
-    ) -> None:
+    def pipelines(self, value: "Union[Dict[str, str], Iterable[Tuple[str, str]]]") -> None:
         """Set the dictionary of pipelines.
 
         Parameters:
@@ -545,10 +499,7 @@ class OTEPipelineData(DictNode):
             A pydantic model representing the declarative pipeline.
 
         """
-        if (
-            self.base.attributes.get("strategies", None) is None
-            or self.base.attributes.get("pipelines", None) is None
-        ):
+        if self.base.attributes.get("strategies", None) is None or self.base.attributes.get("pipelines", None) is None:
             raise NotExistent(
                 "Cannot instantiate a pydantic model, missing"
                 f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"  # pylint: disable=line-too-long
@@ -556,9 +507,7 @@ class OTEPipelineData(DictNode):
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
-        if self._pydantic_model_hash is None or self._pydantic_model_hash != hash(
-            self._pydantic_model
-        ):
+        if self._pydantic_model_hash is None or self._pydantic_model_hash != hash(self._pydantic_model):
             self._pydantic_model = self._pydantic_model_class(**self.get_dict())
             self._pydantic_model_hash = hash(self._pydantic_model)
 
@@ -567,9 +516,7 @@ class OTEPipelineData(DictNode):
 
         return self._pydantic_model
 
-    def get_strategies(
-        self, pipeline: str, reverse: bool = False
-    ) -> "Generator[DeclarativeStrategy, None, None]":
+    def get_strategies(self, pipeline: str, reverse: bool = False) -> "Generator[DeclarativeStrategy, None, None]":
         """Yield pipeline strategies as pydantic models.
 
         Parameters:
@@ -581,13 +528,8 @@ class OTEPipelineData(DictNode):
 
         """
         self.validate(strict=True)
-        if (
-            self.base.attributes.get("pipelines", None)
-            and pipeline not in self.pipelines
-        ):
-            raise NotExistent(
-                f"Pipeline {pipeline!r} does not exist among {list(self.pipelines)}"
-            )
+        if self.base.attributes.get("pipelines", None) and pipeline not in self.pipelines:
+            raise NotExistent(f"Pipeline {pipeline!r} does not exist among {list(self.pipelines)}")
 
         if reverse:
             for strategy in reversed(self.pydantic_model.parse_pipeline(pipeline)):

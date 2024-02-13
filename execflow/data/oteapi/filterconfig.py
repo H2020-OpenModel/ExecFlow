@@ -1,4 +1,5 @@
 """OTEAPI Filter strategy config AiiDA Data Node class."""
+
 # pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
@@ -8,6 +9,7 @@ from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union
+
 
 class FilterConfigData(GenericConfigData):
     """Filter Strategy Data Configuration.

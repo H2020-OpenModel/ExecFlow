@@ -1,4 +1,6 @@
 import inspect
+from io import StringIO
+from typing import Any, Optional
 
 from aiida.common.exceptions import MissingEntryPointError
 from aiida.orm import Dict, load_code, load_node
@@ -12,8 +14,7 @@ from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, get_driver, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
-from typing import Optional, Any
-from io import StringIO
+
 
 # TODO also report uuid of cuds not just labels
 @dataclass
@@ -70,9 +71,7 @@ class CUDS2DataNodeStrategy:
 # will be converted into {"kinds_dict_name": ["xyz", "srt"], ...}.
 def DataNode2CUDS(data):
     datname = type(data).__name__
-    ep = get_entry_point_from_class(
-        class_module=type(data).__module__, class_name=datname
-    )[1]
+    ep = get_entry_point_from_class(class_module=type(data).__module__, class_name=datname)[1]
     name = ep.name
     metauri = f"onto-ns.com/meta/1.0/{name}"
     dimnames = {}
@@ -81,9 +80,7 @@ def DataNode2CUDS(data):
     attributes_dict = {}
     # The assumption is that the attributes dict holds all the important data.
     for name in data.attributes:
-        gen_property(
-            props, dims, dimnames, 0, [], name, data.attributes[name], attributes_dict
-        )
+        gen_property(props, dims, dimnames, 0, [], name, data.attributes[name], attributes_dict)
 
     dimns = []
     for x in dimnames:
@@ -91,9 +88,7 @@ def DataNode2CUDS(data):
             if not any(x == d for x in dimns):
                 dimns.append(d)
 
-    Meta = dlite.Instance.create_metadata(
-        metauri, dimns, props, f"Inferred metadata for {data.uuid} of type {datname}"
-    )
+    Meta = dlite.Instance.create_metadata(metauri, dimns, props, f"Inferred metadata for {data.uuid} of type {datname}")
 
     inst = Meta(dims=[dims["_".join(x.name.split("_")[:-1])][-1] for x in dimns])
     for name in attributes_dict:
@@ -105,9 +100,7 @@ def DataNode2CUDS(data):
 # Here we recursively unpack all the nested data into separate arrays and track the dimensions etc.
 # Every time an array of dicts is found the recursion goes one level deeper, and an extra _dict_ is appended
 # to the end of the property name.
-def gen_property(
-    props, dims, dimnames, dim, curid, attributename, attribute, attributes_dict
-):
+def gen_property(props, dims, dimnames, dim, curid, attributename, attribute, attributes_dict):
     # TODO: why does dlite not accept pipes ??
     attributename = attributename.replace("|", "__")
 
@@ -137,14 +130,12 @@ def gen_property(
                 )
             )
 
-        for (i, at) in enumerate(attribute):
+        for i, at in enumerate(attribute):
             # The integers in id hold the Cartesian Indices into the lists.
             # E.g. d in [[a, b, c], [d, e, f], [h, i, j]] will have ids [2, 1].
             id = curid.copy()
             id.append(i)
-            gen_property(
-                props, dims, dimnames, dim, id, attributename, at, attributes_dict
-            )
+            gen_property(props, dims, dimnames, dim, id, attributename, at, attributes_dict)
 
     elif isinstance(attribute, dict):
         # Nested data case, set the new attribute name to designate the next level
@@ -186,9 +177,7 @@ def gen_property(
                     )
                 )
             else:
-                props.append(
-                    dlite.Property(attributename, attype_name, None, None, None)
-                )
+                props.append(dlite.Property(attributename, attype_name, None, None, None))
 
         if dim > 0:
             # We are part of a list of nested data structures
@@ -230,6 +219,7 @@ def CUDS2DataNode(cuds):
 
     if cuds.meta.name == "core.singlefile":
         from aiida.orm import SinglefileData
+
         with open(cuds.properties["filename"], "r") as f:
             return SinglefileData(StringIO(f.read()))
 
@@ -237,7 +227,6 @@ def CUDS2DataNode(cuds):
     att = {}
     for name in cuds.properties:
         construct_attributes(att, name, cuds.properties[name])
-
 
     # Here we handle the pipe debacle.
     to_node = {}
@@ -262,14 +251,12 @@ def CUDS2DataNode(cuds):
     else:
         t = d()
 
-    if isinstance(t, Dict) and cuds.meta.name != 'core.dict':
+    if isinstance(t, Dict) and cuds.meta.name != "core.dict":
         t["meta"] = cuds.meta.uri
 
     # Now we fill in the dlite Instance data into the datanode.
     for name in att:
-        t.set_attribute(
-            name.replace("__", "|"), att[name]
-        )  # The replace here is done because dlite doesn't like pipe
+        t.set_attribute(name.replace("__", "|"), att[name])  # The replace here is done because dlite doesn't like pipe
     return t
 
 
@@ -285,7 +272,7 @@ def construct_attributes(attributes, propertyname, property):
             if sname[0] not in attributes:
                 attributes[sname[0]] = [{} for p in property]
 
-            for (i, p) in enumerate(property):
+            for i, p in enumerate(property):
                 construct_attributes(attributes[sname[0]][i], "_".join(sname[1:]), p)
         else:
             if sname[0] not in attributes:

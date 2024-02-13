@@ -3,6 +3,7 @@
 Since OTE Filter strategies may not subsequently invoke other AiiDA Workflows or
 Calculations, it is semantically equivalent to an AiiDA Calculation.
 """
+
 from typing import TYPE_CHECKING
 
 from aiida.engine import calcfunction
