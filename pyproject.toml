@@ -26,6 +26,7 @@ dependencies = [
     'oteapi-dlite @ git+https://github.com/EMMC-ASBL/oteapi-dlite.git@cwa/close-187-migrate-to-pydantic-v2',
     'DLite-Python>=0.5.1,<1',
     'jsonref~=1.1.0',
+    'jsonschema~=4.21',
     # 'ruamel.yaml>=0.18.23,<0.17.33',
     'cachecontrol>=0.14.0,<1',
     'chevron>=0.14.0,<1',
