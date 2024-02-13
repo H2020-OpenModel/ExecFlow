@@ -89,7 +89,14 @@ def test_initialization_strategies_value(
         # Initialize pydantic model and convert strategies to a list of dictionaries.
         pydantic_input = deepcopy(declarative_pipeline_file)
         pydantic_model = DeclarativePipeline(**pydantic_input)
-        assert node.strategies == [_.model_dump(mode="json") for _ in pydantic_model.strategies]
+
+        # Handle mapping triples, which is a set and therefore needs to be ordered.
+        pydantic_model_strategies = [_.model_dump(mode="json") for _ in pydantic_model.strategies]
+        for strategies in [node.strategies, pydantic_model_strategies]:
+            for strategy in strategies:
+                if "triples" in strategy:
+                    strategy["triples"] = sorted(strategy["triples"])
+        assert node.strategies == pydantic_model_strategies
     else:
         assert node.strategies == list(declarative_pipeline_file["strategies"])
 
