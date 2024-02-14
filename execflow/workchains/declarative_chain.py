@@ -1,11 +1,11 @@
-from os.path import splitext, dirname
+from os.path import dirname, splitext
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, Node, Str, load_code, load_group, load_node, Data
+from aiida.orm import Data, Dict, List, Node, SinglefileData, Str, load_code, load_group, load_node
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -242,7 +242,7 @@ class DeclarativeChain(WorkChain):
             ext = splitext(full_file)[1]
 
             with open(full_file, mode="r") as f:
-                s= f.read()
+                s = f.read()
                 s = s.replace("__DIR__", d)
                 if ext in (".yaml", ".yml"):
                     tspec = YAML(typ="safe").load(s)
@@ -322,7 +322,7 @@ class DeclarativeChain(WorkChain):
 
             elif "calcjob" in step or "workflow" in step or "calculation" in step or "calcfunction" in step:
                 # This needs to happen because no dict 2 node for now.
-                #M inputs = dict()
+                # M inputs = dict()
                 if "calcjob" in step:
                     cjob = CalculationFactory(step["calcjob"])
                 elif "calcfunction" in step:
@@ -335,7 +335,7 @@ class DeclarativeChain(WorkChain):
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
-                inputs = self.resolve_inputs(step['inputs'], spec_inputs)
+                inputs = self.resolve_inputs(step["inputs"], spec_inputs)
                 return cjob, inputs
 
     def resolve_inputs(self, inputs, spec_inputs):
@@ -351,9 +351,10 @@ class DeclarativeChain(WorkChain):
                 valid_type = i.valid_type
 
                 if valid_type is None:
-                    set_dot2index(out, k, orm.to_aiida_type(val) if not (isinstance(val, orm.Data) or k == 'metadata') else val)
+                    set_dot2index(
+                        out, k, orm.to_aiida_type(val) if not (isinstance(val, orm.Data) or k == "metadata") else val
+                    )
                     continue
-
 
                 if isinstance(val, valid_type):
                     set_dot2index(out, k, val)
@@ -386,13 +387,13 @@ class DeclarativeChain(WorkChain):
     def resolve_input(self, input):
         if isinstance(input, dict):
             # If 'value' and 'type' are in dict we assume lowest level, otherwise recurse
-            if 'value' in input and 'type' in input:
+            if "value" in input and "type" in input:
                 try:
-                    valid_type = DataFactory(input['type'])
+                    valid_type = DataFactory(input["type"])
                 except:
-                    valid_type = eval(input['type']) # Other classes
+                    valid_type = ast.literal_eval(input["type"])  # Other classes
 
-                return dict2datanode(self.resolve_input(input['value']), valid_type)
+                return dict2datanode(self.resolve_input(input["value"]), valid_type)
             # Normal dict, recurse
             for k in input:
                 input[k] = self.resolve_input(input[k])
@@ -419,9 +420,7 @@ class DeclarativeChain(WorkChain):
                 return (
                     ExitCode(step["error"]["code"])
                     if "message" not in step["error"]
-                    else ExitCode(
-                        step["error"]["code"], message=step["error"]["message"]
-                    )
+                    else ExitCode(step["error"]["code"], message=step["error"]["message"])
                 )
 
         if "postprocess" in step:
@@ -435,7 +434,7 @@ class DeclarativeChain(WorkChain):
 
     # Jinja evaluation
     def eval_template(self, s):
-        if isinstance(s, str) and '{{' in s and '}}' in s:
+        if isinstance(s, str) and "{{" in s and "}}" in s:
             return self.env.from_string(s).render(ctx=self.ctx)
         return s
 
