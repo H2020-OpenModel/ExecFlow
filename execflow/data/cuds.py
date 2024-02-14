@@ -266,7 +266,9 @@ def CUDS2DataNode(cuds):
 
     # Now we fill in the dlite Instance data into the datanode.
     for name in att:
-        t.base.attributes.set(name.replace("__", "|"), att[name])  # The replace here is done because dlite doesn't like pipe
+        t.base.attributes.set(
+            name.replace("__", "|"), att[name]
+        )  # The replace here is done because dlite doesn't like pipe
     return t
 
 
