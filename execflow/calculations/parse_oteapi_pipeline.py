@@ -1,4 +1,5 @@
 """AiiDA calculation function for parsing a declarative pipeline."""
+
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -11,9 +12,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
     from aiida import orm
 
-    from execflow.data.oteapi.declarative_pipeline import (
-        OTEPipelineData as ExecFlowOTEPipelineData,
-    )
+    from execflow.data.oteapi.declarative_pipeline import OTEPipelineData as ExecFlowOTEPipelineData
     from execflow.data.oteapi.genericconfig import GenericConfigData
 
 
@@ -47,9 +46,7 @@ def parse_oteapi_pipeline(
         else:
             pipeline = OTEPipelineData(value=pipeline_input)
     else:
-        raise TypeError(
-            f"pipeline_input is an unsupported type: {type(pipeline_input)}"
-        )
+        raise TypeError(f"pipeline_input is an unsupported type: {type(pipeline_input)}")
 
     try:
         pipeline.validate(strict=True)
@@ -58,9 +55,7 @@ def parse_oteapi_pipeline(
 
     strategy_configs = {}
     for strategy in pipeline.pydantic_model.strategies:
-        config_cls: "Type[GenericConfigData]" = DataFactory(
-            f"execflow.{strategy.get_type()}config"
-        )
+        config_cls: "Type[GenericConfigData]" = DataFactory(f"execflow.{strategy.get_type()}config")
         config = config_cls(**strategy.get_config())
         config.base.extras.set("strategy_name", strategy.get_name())
 

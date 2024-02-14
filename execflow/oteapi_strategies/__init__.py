@@ -1,4 +1,5 @@
 """AiiDA Calculations representing OTE strategies."""
+
 from .dataresource import get_dataresource, init_dataresource
 from .filter import get_filter, init_filter
 from .function import get_function, init_function

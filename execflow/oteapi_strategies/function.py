@@ -3,6 +3,7 @@
 Since OTE Function strategies may subsequently invoke other AiiDA Workflows or
 Calculations, it is semantically equivalent to an AiiDA Workflow.
 """
+
 from typing import TYPE_CHECKING
 
 from aiida.engine import workfunction

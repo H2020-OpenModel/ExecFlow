@@ -4,6 +4,7 @@ This contains an "extended" Data class, which is equivalent to aiida.orm.Data,
 but has some extra methods or functionalities that is useful for the ExecFlow Data
 classes.
 """
+
 from typing import TYPE_CHECKING
 
 from aiida.common.exceptions import ModificationNotAllowed
@@ -26,8 +27,7 @@ class ExtendedData(Data):
         """
         if self.is_stored:
             raise ModificationNotAllowed(
-                f"The {self.__class__.__name__} object cannot be modified, "
-                "it has already been stored."
+                f"The {self.__class__.__name__} object cannot be modified, it has already been stored."
             )
 
         self.base.attributes.set(attribute_name, value)

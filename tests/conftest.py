@@ -7,17 +7,16 @@ Use AiiDA's pytest fixtures.
 Look inside aiida.manage.tests.pytest_fixtures to see which fixtures are provided:
 https://aiida.readthedocs.io/projects/aiida-core/en/latest/reference/apidoc/aiida.manage.tests.html#module-aiida.manage.tests.pytest_fixtures
 """
-from typing import TYPE_CHECKING
-
-import pytest
 
 from pathlib import Path
 
+import pytest
+
 pytest_plugins = ["aiida.manage.tests.pytest_fixtures"]
 
+
 @pytest.fixture(scope="function", autouse=True)
-@pytest.mark.usefixtures("aiida_profile_clean")
-def aiida_profile_clean_auto():
+def aiida_profile_clean_auto(aiida_profile_clean):
     """Automatically clear the AiiDA profile's DB and storage after each test."""
 
 
@@ -30,6 +29,7 @@ def samples() -> "Path":
         raise FileNotFoundError(f"Could not locate the 'samples' folder at: {path}")
     return path
 
+
 @pytest.fixture
 def fixture_localhost(aiida_localhost):
     """Return a localhost `Computer`."""
@@ -37,22 +37,23 @@ def fixture_localhost(aiida_localhost):
     localhost.set_default_mpiprocs_per_machine(1)
     return localhost
 
+
 @pytest.fixture
 def generate_calcjob_node(fixture_localhost):
     """Fixture to generate a mock `CalcJobNode` for testing parsers."""
+
     def _generate_calc_job_node(entry_point):
         """Fixture to generate a mock `CalcJobNode` for testing parsers.
 
         :param entry_point: entry point name of the calculation class
         """
         from aiida import orm
-        from aiida.common import LinkType
-        from aiida.plugins.entry_point import format_entry_point_string
 
         node = orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
 
         # node.store()
         return node
+
     return _generate_calc_job_node
 
 
@@ -79,6 +80,7 @@ def generate_workchain():
 
     return _generate_workchain
 
+
 @pytest.fixture
 def generate_declarative_workchain(generate_workchain):
     """Generate an instance of a ``PwBaseWorkChain``."""
@@ -92,12 +94,11 @@ def generate_declarative_workchain(generate_workchain):
         :param pw_outputs: ``dict`` of outputs for the ``PwCalculation``. The keys must correspond to the link labels
             and the values to the output nodes.
         """
-        from aiida.common import LinkType
-        from aiida.orm import SinglefileData
-        from plumpy import ProcessState
         from io import StringIO
 
-        entry_point = 'execflow.declarative'
+        from aiida.orm import SinglefileData
+
+        entry_point = "execflow.declarative"
         if isinstance(input, Path):
             input = SinglefileData(input)
         elif isinstance(input, str):
@@ -106,23 +107,8 @@ def generate_declarative_workchain(generate_workchain):
         elif not isinstance(input, SinglefileData):
             raise ValueError("input needs to be SinglefileData or a str")
 
-        process = generate_workchain(entry_point, {
-            'workchain_specification': input
-        })
-
-        # if pw_outputs is not None:
-        #     for link_label, output_node in pw_outputs.items():
-        #         output_node.base.links.add_incoming(pw_node, link_type=LinkType.CREATE, link_label=link_label)
-        #         output_node.store()
-
-        # if exit_code is not None:
-        #     pw_node.set_process_state(ProcessState.FINISHED)
-        #     pw_node.set_exit_status(exit_code.status)
+        process = generate_workchain(entry_point, {"workchain_specification": input})
 
         return process
 
     return _generate_declarative_workchain
-
-
-
-

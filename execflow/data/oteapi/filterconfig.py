@@ -1,4 +1,5 @@
 """OTEAPI Filter strategy config AiiDA Data Node class."""
+
 # pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
@@ -8,6 +9,7 @@ from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any, Optional, Union
+
 
 class FilterConfigData(GenericConfigData):
     """Filter Strategy Data Configuration.
@@ -30,13 +32,13 @@ class FilterConfigData(GenericConfigData):
         **kwargs: "Any",
     ) -> None:
         if query is None:
-            query = FilterConfig.schema()["properties"]["query"].get("default")
+            query = FilterConfig.model_fields["query"].default
 
         if condition is None:
-            condition = FilterConfig.schema()["properties"]["condition"].get("default")
+            condition = FilterConfig.model_fields["condition"].default
 
         if limit is None:
-            limit = FilterConfig.schema()["properties"]["limit"].get("default")
+            limit = FilterConfig.model_fields["limit"].default
 
         super().__init__(**kwargs)
 

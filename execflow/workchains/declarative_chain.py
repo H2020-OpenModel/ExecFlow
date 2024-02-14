@@ -5,7 +5,7 @@ from urllib.parse import urlsplit
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Dict, List, SinglefileData, Node, load_code, load_group, load_node
+from aiida.orm import Dict, List, Node, SinglefileData, load_code, load_group, load_node
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -14,7 +14,7 @@ import jsonref
 from jsonschema import validate
 import plumpy
 import requests
-from ruamel.yaml import YAML
+import yaml
 
 # Copied from https://github.com/aiidalab/aiidalab/blob/90b334e6a473393ba22b915fdaf85d917fd947f4/aiidalab/registry/yaml.py
 # licensed under the MIT license
@@ -30,7 +30,7 @@ def my_fancy_loader(uri):
             response = REQUESTS.get(uri)
             response.raise_for_status()
             content = response.content
-        return YAML(typ="safe").load(content)
+        return yaml.safe_load(content)
     else:
         return jsonref.load_uri(uri)
 
@@ -245,7 +245,7 @@ class DeclarativeChain(WorkChain):
         ext = splitext(self.inputs["workchain_specification"].filename)[1]
         with self.inputs["workchain_specification"].open(mode="r") as f:
             if ext in (".yaml", ".yml"):
-                tspec = YAML(typ="safe").load(f)
+                tspec = yaml.safe_load(f.read())
             else:
                 spec = jsonref.load(f)
 
@@ -313,7 +313,7 @@ class DeclarativeChain(WorkChain):
 
             elif "calcjob" in step or "workflow" in step or "calculation" in step or "calcfunction" in step:
                 # This needs to happen because no dict 2 node for now.
-                #M inputs = dict()
+                # M inputs = dict()
                 if "calcjob" in step:
                     cjob = CalculationFactory(step["calcjob"])
                 elif "calcfunction" in step:
@@ -326,7 +326,7 @@ class DeclarativeChain(WorkChain):
                     ValueError(f"Unrecognized step {step}")
 
                 spec_inputs = cjob.spec().inputs
-                inputs = self.resolve_inputs(step['inputs'], spec_inputs)
+                inputs = self.resolve_inputs(step["inputs"], spec_inputs)
                 return cjob, inputs
 
     def resolve_inputs(self, inputs, spec_inputs):
@@ -342,9 +342,12 @@ class DeclarativeChain(WorkChain):
                 valid_type = i.valid_type
 
                 if valid_type is None:
-                    set_dot2index(out, k, orm.to_aiida_type(val) if not (isinstance(val, orm.Data) or k == 'metadata') else val)
+                    set_dot2index(
+                        out,
+                        k,
+                        (orm.to_aiida_type(val) if not (isinstance(val, orm.Data) or k == "metadata") else val),
+                    )
                     continue
-
 
                 if isinstance(val, valid_type):
                     set_dot2index(out, k, val)
@@ -368,7 +371,11 @@ class DeclarativeChain(WorkChain):
                 set_dot2index(out, k, inval)
 
             else:
-                set_dot2index(out, k, orm.to_aiida_type(val) if not isinstance(val, orm.Data) else val)
+                set_dot2index(
+                    out,
+                    k,
+                    orm.to_aiida_type(val) if not isinstance(val, orm.Data) else val,
+                )
 
         return out
 
@@ -376,13 +383,13 @@ class DeclarativeChain(WorkChain):
 
         if isinstance(input, dict):
             # If 'value' and 'type' are in dict we assume lowest level, otherwise recurse
-            if 'value' in input and 'type' in input:
+            if "value" in input and "type" in input:
                 try:
-                    valid_type = DataFactory(input['type'])
+                    valid_type = DataFactory(input["type"])
                 except:
-                    valid_type = eval(input['type']) # Other classes
+                    valid_type = eval(input["type"])  # Other classes  # nosec
 
-                return dict2datanode(self.resolve_input(input['value']), valid_type)
+                return dict2datanode(self.resolve_input(input["value"]), valid_type)
             # Normal dict, recurse
             for k in input:
                 input[k] = self.resolve_input(input[k])
@@ -409,9 +416,7 @@ class DeclarativeChain(WorkChain):
                 return (
                     ExitCode(step["error"]["code"])
                     if "message" not in step["error"]
-                    else ExitCode(
-                        step["error"]["code"], message=step["error"]["message"]
-                    )
+                    else ExitCode(step["error"]["code"], message=step["error"]["message"])
                 )
 
         if "postprocess" in step:
@@ -425,7 +430,7 @@ class DeclarativeChain(WorkChain):
 
     # Jinja evaluation
     def eval_template(self, s):
-        if isinstance(s, str) and '{{' in s and '}}' in s:
+        if isinstance(s, str) and "{{" in s and "}}" in s:
             return self.env.from_string(s).render(ctx=self.ctx)
         return s
 

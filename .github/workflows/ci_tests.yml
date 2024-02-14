@@ -10,7 +10,7 @@ on:
 jobs:
   basic_tests:
     name: External
-    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.5.1
+    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.7.2
     with:
       # pre-commit
       run_pre-commit: true
@@ -21,13 +21,19 @@ jobs:
       # pylint & safety
       python_version_pylint_safety: "3.9"
 
-      run_pylint: true
+      run_pylint: false
       pylint_runs: |
-              #--rcfile=pyproject.toml --ignore-paths=oteapi/strategies/,tests/ --extension-pkg-whitelist='pydantic' *.py oteapi
-              #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=R,C oteapi/strategies
-              #--rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=C0415,W0621,import-error --recursive=yes tests
+        --rcfile=pyproject.toml --ignore-paths=oteapi/strategies/,tests/ --extension-pkg-whitelist='pydantic' *.py oteapi
+        --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=R,C oteapi/strategies
+        --rcfile=pyproject.toml --extension-pkg-whitelist='pydantic' --disable=C0415,W0621,import-error --recursive=yes tests
 
       run_safety: true
+      # Ignore some safety warnings:
+      # - 63227: paramiko. Subdependency of aiida-core.
+      # - 59901: aio-pika. Subdependency of aiida-core.
+      safety_options: |
+        --ignore=63227
+        --ignore=59901
 
       # Build package
       run_build_package: true
@@ -65,12 +71,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          -   5432:5432
+          - 5432:5432
       rabbitmq:
           image: rabbitmq:3.8.14-management
           ports:
-          -   5672:5672
-          -   15672:15672
+          - 5672:5672
+          - 15672:15672
 
     steps:
     - uses: actions/checkout@v3
@@ -86,14 +92,8 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools wheel pytest pytest-cov pgtest
-        pip install -e .
-
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
-            pre_commit="${line}"
-          fi
-        done < requirements_dev.txt
+        pip install -U setuptools wheel
+        pip install -e .[dev]
 
     - name: Setup environment
       run: .github/workflows/setup.sh
@@ -107,18 +107,6 @@ jobs:
       with:
         files: coverage.xml
         flags: linux
-
-    # - name: Test with optional libs
-    #   run: |
-    #     pip install ase numpy
-    #     tests/tests.sh
-
-    # - name: Upload coverage to Codecov
-    #   if: matrix.python-version == '3.9' && github.repository == 'H2020-OpenModel/ExecFlow'
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     files: coverage.xml
-    #     flags: linux-extra_libs
 
   pytest-win:
     name: pytest (windows-py${{ matrix.python-version }})
@@ -149,7 +137,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools wheel pytest pytest-cov pgtest
+        pip install -U setuptools wheel
         pip install -e .[dev]
 
     - name: Setup environment

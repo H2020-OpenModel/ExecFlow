@@ -3,6 +3,7 @@
 Since OTE Transformation strategies may subsequently invoke other AiiDA Workflows or
 Calculations, it is semantically equivalent to an AiiDA Workflow.
 """
+
 from time import sleep, time
 from typing import TYPE_CHECKING
 
@@ -23,9 +24,7 @@ def init_transformation(config: "TransformationConfigData", session: "Dict") -> 
     """Initialize an OTE Transformation strategy."""
     load_strategies(False)
 
-    strategy: "ITransformationStrategy" = create_strategy(
-        "transformation", config.get_dict()
-    )
+    strategy: "ITransformationStrategy" = create_strategy("transformation", config.get_dict())
     updates_for_session = strategy.initialize(session.get_dict())
 
     return CalculationFactory("execflow.update_oteapi_session")(
@@ -53,9 +52,7 @@ def get_transformation(config: "TransformationConfigData", session: "Dict") -> "
     """
     load_strategies(False)
 
-    strategy: "ITransformationStrategy" = create_strategy(
-        "transformation", config.get_dict()
-    )
+    strategy: "ITransformationStrategy" = create_strategy("transformation", config.get_dict())
 
     wall_time = 2 * 60  # 2 min.
 
