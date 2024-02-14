@@ -30,6 +30,9 @@ dependencies = [
     'chevron>=0.14.0,<1',
     'aiida-shell>=0.3.0',
     'aiida-pseudo>=1.5.0,<2',
+    'jsonref>=1.1.0,<1.1.1',
+    'ruamel.yaml>=0.17.23,<0.17.33',
+
 ]
 
 [project.urls]
