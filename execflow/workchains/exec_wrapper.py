@@ -25,8 +25,8 @@ class ExecWrapper(WorkChain):
         spec.input("files", valid_type=(Dict, dict), is_metadata=True)
         spec.input("command", valid_type=Str)
         spec.expose_inputs(ShellJob, exclude=["nodes", "filenames", "code", "metadata"])
-        spec.expose_inputs(ShellJob, include=['metadata'], namespace='shelljob')
-        
+        spec.expose_inputs(ShellJob, include=["metadata"], namespace="shelljob")
+
         spec.outline(cls.setup, cls.register_code, cls.submit_shell, cls.finalize)
 
         spec.outputs.dynamic = True
@@ -43,7 +43,7 @@ class ExecWrapper(WorkChain):
             self.ctx.filenames[k] = f["filename"]
 
     def register_code(self):
-        computer = (self.inputs.shelljob.metadata or {}).get('options', {}).get('computer', None)
+        computer = (self.inputs.shelljob.metadata or {}).get("options", {}).get("computer", None)
         self.ctx.code = prepare_code(str(self.inputs.command.value), computer)
 
     def submit_shell(self):
@@ -53,12 +53,12 @@ class ExecWrapper(WorkChain):
             "filenames": self.ctx.filenames,
             **self.exposed_inputs(ShellJob),
         }
-        
+
         # if 'metadata' in self.inputs.shelljob:
         #    inputs['metadata'] =  self.inputs.shelljob.metadata
         # else:
         # This if else from Louis did not work.
-        inputs['metadata'] = {'options':{'resources': {'num_machines': 1, 'num_mpiprocs_per_machine': 1}}}
+        inputs["metadata"] = {"options": {"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1}}}
 
         shell = self.submit(ShellJob, **inputs)
         return ToContext(shell=shell)  # nosec
