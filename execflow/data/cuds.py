@@ -77,9 +77,7 @@ def DataNode2CUDS(data):
         content = data.get_content().encode()
         inst = meta(dimensions=[len(content)])
         inst.content = content
-        print(data.attributes, dir(data))
         inst.filename = data.filename  # Could not find file path, but maybe we do not need it?
-        print(inst)
 
     else:
         metauri = f"onto-ns.com/meta/1.0/{name}"
@@ -268,7 +266,7 @@ def CUDS2DataNode(cuds):
 
     # Now we fill in the dlite Instance data into the datanode.
     for name in att:
-        t.set_attribute(name.replace("__", "|"), att[name])  # The replace here is done because dlite doesn't like pipe
+        t.base.attributes.set(name.replace("__", "|"), att[name])  # The replace here is done because dlite doesn't like pipe
     return t
 
 

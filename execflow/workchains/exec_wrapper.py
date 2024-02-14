@@ -43,7 +43,6 @@ class ExecWrapper(WorkChain):
             self.ctx.filenames[k] = f["filename"]
 
     def register_code(self):
-        #computer = (self.inputs.metadata or {}).get("options", {}).pop("computer", None)
         computer = (self.inputs.shelljob.metadata or {}).get('options', {}).get('computer', None)
         self.ctx.code = prepare_code(str(self.inputs.command.value), computer)
 
@@ -55,21 +54,12 @@ class ExecWrapper(WorkChain):
             **self.exposed_inputs(ShellJob),
         }
         
-        print('lllllllllllllll', self.inputs.shelljob)
-        #if 'num_machines' not in self.inputs.shelljob.options.resources:
+        # if 'metadata' in self.inputs.shelljob:
         #    inputs['metadata'] =  self.inputs.shelljob.metadata
-        #else:
-        #    print('else')
-        print('********')
-        print(inputs)
-        print('------------')
-        print(inputs.keys())
-        if 'metadata' in self.inputs.shelljob:
-            inputs['metadata'] =  self.inputs.shelljob.metadata
-        else:
-            inputs['metadata'] = {'options':{'resources': {'num_machines': 1, 'num_mpiprocs_per_machine': 1}}}
+        # else:
+        # This if else from Louis did not work.
+        inputs['metadata'] = {'options':{'resources': {'num_machines': 1, 'num_mpiprocs_per_machine': 1}}}
 
-        print('inputs',inputs)
         shell = self.submit(ShellJob, **inputs)
         return ToContext(shell=shell)  # nosec
 
