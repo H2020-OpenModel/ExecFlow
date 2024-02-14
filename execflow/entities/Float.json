@@ -1,0 +1,16 @@
+{
+    "uuid": "390be175-f1f6-52a0-93cd-cd5692ad8134",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.float",
+    "name": "core.float",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 5519968e-bdda-48a7-a66d-c86775cf7358 of type Float",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "value",
+            "type": "float64"
+        }
+    ]
+}

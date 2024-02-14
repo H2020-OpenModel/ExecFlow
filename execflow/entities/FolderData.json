@@ -1,0 +1,11 @@
+{
+    "uuid": "52ac92b3-61af-5fe0-9b57-9491048380f7",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.folder",
+    "name": "core.folder",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for f178d3f6-d258-42e7-8850-7d0c49264a06 of type FolderData",
+    "dimensions": [],
+    "properties": []
+}

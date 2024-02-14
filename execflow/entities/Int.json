@@ -1,0 +1,16 @@
+{
+    "uuid": "42968049-8bef-513f-9090-3d4274f0f223",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.int",
+    "name": "core.int",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 458d2b3c-1a99-440b-88b3-dba18633053e of type Int",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "value",
+            "type": "int32"
+        }
+    ]
+}

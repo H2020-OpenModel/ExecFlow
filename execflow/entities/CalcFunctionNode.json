@@ -1,0 +1,44 @@
+{
+    "uuid": "62060ee2-001b-5e4b-8d96-75e85a93a525",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/process.calculation.calcfunction",
+    "name": "process.calculation.calcfunction",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for fec6649e-7788-4c6e-a570-390bbb56b906 of type CalcFunctionNode",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "sealed",
+            "type": "bool"
+        },
+        {
+            "name": "version_dict_core",
+            "type": "string"
+        },
+        {
+            "name": "exception",
+            "type": "string"
+        },
+        {
+            "name": "function_name",
+            "type": "string"
+        },
+        {
+            "name": "process_label",
+            "type": "string"
+        },
+        {
+            "name": "process_state",
+            "type": "string"
+        },
+        {
+            "name": "function_namespace",
+            "type": "string"
+        },
+        {
+            "name": "function_starting_line_number",
+            "type": "int32"
+        }
+    ]
+}
