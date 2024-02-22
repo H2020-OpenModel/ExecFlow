@@ -1,11 +1,9 @@
 """OTEAPI Transformation strategy config AiiDA Data Node class."""
+
 # pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
-from oteapi.models.transformationconfig import (
-    TransformationConfig,
-    TransformationStatus,
-)
+from oteapi.models.transformationconfig import TransformationConfig, TransformationStatus
 
 from execflow.data.oteapi.base import ExtendedData
 from execflow.data.oteapi.genericconfig import GenericConfigData
@@ -43,15 +41,13 @@ class TransformationConfigData(GenericConfigData, SecretConfigData):
         **kwargs: "Any",
     ) -> None:
         if name is None:
-            name = TransformationConfig.schema()["properties"]["name"].get("default")
+            name = TransformationConfig.model_fields["name"].default
 
         if due is None:
-            due = TransformationConfig.schema()["properties"]["due"].get("default")
+            due = TransformationConfig.model_fields["due"].default
 
         if priority is None:
-            priority = TransformationConfig.schema()["properties"]["priority"].get(
-                "default"
-            )
+            priority = TransformationConfig.model_fields["priority"].default
 
         super().__init__(**kwargs)
 
@@ -129,29 +125,19 @@ class TransformationStatusData(ExtendedData):
         **kwargs: "Any",
     ) -> None:
         if status is None:
-            status = TransformationStatus.schema()["properties"]["status"].get(
-                "default"
-            )
+            status = TransformationStatus.model_fields["status"].default
 
         if messages is None:
-            messages = TransformationStatus.schema()["properties"]["messages"].get(
-                "default"
-            )
+            messages = TransformationStatus.model_fields["messages"].default
 
         if created is None:
-            created = TransformationStatus.schema()["properties"]["created"].get(
-                "default"
-            )
+            created = TransformationStatus.model_fields["created"].default
 
         if startTime is None:
-            startTime = TransformationStatus.schema()["properties"]["startTime"].get(
-                "default"
-            )
+            startTime = TransformationStatus.model_fields["startTime"].default
 
         if finishTime is None:
-            finishTime = TransformationStatus.schema()["properties"]["finishTime"].get(
-                "default"
-            )
+            finishTime = TransformationStatus.model_fields["finishTime"].default
 
         super().__init__(**kwargs)
 

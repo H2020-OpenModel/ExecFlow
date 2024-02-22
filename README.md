@@ -131,4 +131,3 @@ pip install -e .
 
 # Acknowledgements
 The `DeclarativeChain` was developed and design with help and input of Simon Adorf (@csadorf).
-

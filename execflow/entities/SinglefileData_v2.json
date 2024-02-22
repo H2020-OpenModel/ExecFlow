@@ -1,0 +1,18 @@
+{
+    "uri": "http://onto-ns.com/meta/2.0/core.singlefile",
+    "description": "Inferred metadata for 2ea67bb8-4f10-45fb-9e0d-43ce18be6e1c of type SinglefileData",
+    "dimensions": {
+	"nbytes": "number of bytes in the blob"
+    },
+    "properties": {
+        "filename": {
+            "type": "string",
+	    "description": "The filename including full path."
+	},
+	"content": {
+	    "type": "uint8",
+	    "shape": ["nbytes"],
+            "description": "The content of the file"
+	}
+    }
+}

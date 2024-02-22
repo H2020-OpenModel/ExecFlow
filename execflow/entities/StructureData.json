@@ -1,0 +1,106 @@
+{
+    "uuid": "c50c4cca-fe62-5f7d-ac84-71a1cb631b7a",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.structure",
+    "name": "core.structure",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for e022ac61-29cd-4586-812f-67cc135f7c76 of type StructureData",
+    "dimensions": [
+        {
+            "name": "cell_1",
+            "description": "Dimension 1 of attribute cell"
+        },
+        {
+            "name": "cell_2",
+            "description": "Dimension 2 of attribute cell"
+        },
+        {
+            "name": "kinds_1",
+            "description": "Dimension 1 of attribute kinds"
+        },
+        {
+            "name": "kinds_dict_symbols_2",
+            "description": "Dimension 2 of attribute kinds_dict_symbols"
+        },
+        {
+            "name": "kinds_dict_weights_2",
+            "description": "Dimension 2 of attribute kinds_dict_weights"
+        },
+        {
+            "name": "sites_1",
+            "description": "Dimension 1 of attribute sites"
+        },
+        {
+            "name": "sites_dict_position_2",
+            "description": "Dimension 2 of attribute sites_dict_position"
+        }
+    ],
+    "properties": [
+        {
+            "name": "cell",
+            "type": "float64",
+            "dims": [
+                "cell_1",
+                "cell_2"
+            ]
+        },
+        {
+            "name": "pbc1",
+            "type": "bool"
+        },
+        {
+            "name": "pbc2",
+            "type": "bool"
+        },
+        {
+            "name": "pbc3",
+            "type": "bool"
+        },
+        {
+            "name": "kinds_dict_mass",
+            "type": "float64",
+            "dims": [
+                "kinds_1"
+            ]
+        },
+        {
+            "name": "kinds_dict_name",
+            "type": "string",
+            "dims": [
+                "kinds_1"
+            ]
+        },
+        {
+            "name": "kinds_dict_symbols",
+            "type": "string",
+            "dims": [
+                "kinds_1",
+                "kinds_dict_symbols_2"
+            ]
+        },
+        {
+            "name": "kinds_dict_weights",
+            "type": "float64",
+            "dims": [
+                "kinds_1",
+                "kinds_dict_weights_2"
+            ]
+        },
+        {
+            "name": "sites_dict_position",
+            "type": "float64",
+            "dims": [
+                "sites_1",
+                "sites_dict_position_2"
+            ]
+        },
+        {
+            "name": "sites_dict_kind_name",
+            "type": "string",
+            "dims": [
+                "sites_1"
+            ]
+        }
+    ]
+}

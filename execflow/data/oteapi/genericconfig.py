@@ -1,4 +1,5 @@
 """Generic OTEAPI Config AiiDA Data Node class."""
+
 from typing import TYPE_CHECKING
 
 from execflow.data.oteapi.base import ExtendedData
@@ -17,9 +18,7 @@ class GenericConfigData(ExtendedData):
 
     """
 
-    def __init__(
-        self, configuration: "dict[str, Any]", description: str, **kwargs: "Any"
-    ) -> None:
+    def __init__(self, configuration: "dict[str, Any]", description: str, **kwargs: "Any") -> None:
         super().__init__(**kwargs)
 
         attr_dict = {"configuration": configuration, "description": description}

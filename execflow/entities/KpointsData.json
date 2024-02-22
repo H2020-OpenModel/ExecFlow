@@ -1,0 +1,35 @@
+{
+    "uuid": "93c23afc-8552-5cdc-a0e6-d254a71fbaca",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/core.array.kpoints",
+    "name": "core.array.kpoints",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for 656518e7-63c2-40ea-b3ee-9dcc213dd177 of type KpointsData",
+    "dimensions": [
+        {
+            "name": "mesh_1",
+            "description": "Dimension 1 of attribute mesh"
+        },
+        {
+            "name": "offset_1",
+            "description": "Dimension 1 of attribute offset"
+        }
+    ],
+    "properties": [
+        {
+            "name": "mesh",
+            "type": "int32",
+            "dims": [
+                "mesh_1"
+            ]
+        },
+        {
+            "name": "offset",
+            "type": "float64",
+            "dims": [
+                "offset_1"
+            ]
+        }
+    ]
+}

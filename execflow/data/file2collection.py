@@ -1,14 +1,13 @@
-from typing import Optional
+from typing import Annotated, Any, Optional
 
-from aiida.orm import Dict, SinglefileData, load_node
+from aiida.orm import Dict
 import dlite
-from oteapi.datacache import DataCache
 from oteapi.models import AttrDict, DataCacheConfig, FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection
 from pydantic import Field
 from pydantic.dataclasses import dataclass
-from .cuds import DataNode2CUDS
+
 # TODO also report uuid of cuds not just labels
 
 
@@ -18,26 +17,32 @@ class File2CollectionConfig(AttrDict):
 
     """
 
-    path: str = Field(
-        description=("Location of file to cast as AiiDA.singlefile DataNode"),
-    )
-
-    label: Optional[str] = Field(
-        "filename",
-        description="Label of the file.",
-    )
-    datacache_config: Optional[DataCacheConfig] = Field(
-        None,
-        description="Configuration options for the local data cache.",
-    )
+    path: Annotated[
+        str,
+        Field(
+            description=("Location of file to cast as AiiDA.singlefile DataNode"),
+        ),
+    ]
+    label: Annotated[
+        Optional[str],
+        Field(
+            description="Label of the file.",
+        ),
+    ] = "filename"
+    datacache_config: Annotated[
+        Optional[DataCacheConfig],
+        Field(
+            description="Configuration options for the local data cache.",
+        ),
+    ] = None
 
 
 class File2CollectionFunctionConfig(FunctionConfig):
     """DLite function strategy config."""
 
-    configuration: File2CollectionConfig = Field(
-        ..., description="DLite function strategy-specific configuration."
-    )
+    configuration: Annotated[
+        File2CollectionConfig, Field(description="DLite function strategy-specific configuration.")
+    ]
 
 
 @dataclass
@@ -51,18 +56,15 @@ class File2CollectionStrategy:
 
     def get(self, session=None):
 
-        cache = DataCache()
-
         coll = get_collection(session)
-        
+
         config = self.function_config.configuration
 
-        meta = dlite.get_instance('onto-ns.com/meta/1.0/core.singlefile')
+        meta = dlite.get_instance("onto-ns.com/meta/1.0/core.singlefile")
         inst = meta()
         inst.filename = config.path
         coll.add(config.label, inst)
 
         update_collection(coll)
 
-
-        return SessionUpdate()#**{"to_results": results})#**{config.label: node.id})
+        return SessionUpdate()  # **{"to_results": results})#**{config.label: node.pk})

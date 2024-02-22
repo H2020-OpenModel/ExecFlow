@@ -2,8 +2,9 @@ from aiida import orm
 from aiida.engine import CalcJob
 from aiida.plugins import DataFactory
 
-LegacyUpfData = DataFactory('core.upf')
-UpfData = DataFactory('pseudo.upf')
+LegacyUpfData = DataFactory("core.upf")
+UpfData = DataFactory("pseudo.upf")
+
 
 class FakeQEPW(CalcJob):
     @classmethod

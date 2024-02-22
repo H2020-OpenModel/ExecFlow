@@ -1,0 +1,20 @@
+{
+    "uuid": "984cfa90-056c-5eb6-a241-61fad7661c02",
+    "meta": "http://onto-ns.com/meta/0.3/EntitySchema",
+    "uri": "onto-ns.com/meta/1.0/dynamic_workflows.PyRemoteData",
+    "name": "dynamic_workflows.PyRemoteData",
+    "version": "1.0",
+    "namespace": "onto-ns.com/meta",
+    "description": "Inferred metadata for b4cb14ae-163f-4d2b-996b-a8641ab7afa1 of type PyRemoteData",
+    "dimensions": [],
+    "properties": [
+        {
+            "name": "pickle_path",
+            "type": "string"
+        },
+        {
+            "name": "remote_path",
+            "type": "string"
+        }
+    ]
+}

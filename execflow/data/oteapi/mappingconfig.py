@@ -1,4 +1,5 @@
 """OTEAPI Mapping strategy config AiiDA Data Node class."""
+
 # pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
@@ -32,10 +33,10 @@ class MappingConfigData(GenericConfigData):
         **kwargs: "Any",
     ) -> None:
         if prefixes is None:
-            prefixes = MappingConfig.schema()["properties"]["prefixes"].get("default")
+            prefixes = MappingConfig.model_fields["prefixes"].default
 
         if triples is None:
-            triples = MappingConfig.schema()["properties"]["triples"].get("default")
+            triples = MappingConfig.model_fields["triples"].default
 
         super().__init__(**kwargs)
 
