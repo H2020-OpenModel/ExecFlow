@@ -22,8 +22,7 @@ requires-python = '>=3.9'
 dependencies = [
     'aiida-core>=2.1.0,<3',
     'oteapi-core>=0.6.1,<1',
-    # 'oteapi-dlite>0.1.6,<1',  # update to the latest version of oteapi-dlite once the migration to pydantic v2 has been implemented and released
-    'oteapi-dlite @ git+https://github.com/EMMC-ASBL/oteapi-dlite.git@cwa/close-187-migrate-to-pydantic-v2',
+    'oteapi-dlite>=0.2.0,<1',
     'DLite-Python>=0.5.1,<1',
     'jsonschema~=4.21',
     'cachecontrol>=0.14.0,<1',
