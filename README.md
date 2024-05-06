@@ -156,6 +156,28 @@ repository and use `pip`:
 pip install -e .
 ```
 
+## Run in JupyterLab
+
+The root [Dockerfile](./Dockerfile) contains the necessary setup to run ExecFlow in a JupyterLab environment.
+To run the JupyterLab environment, execute the following command:
+
+```bash
+# Build the Docker image
+docker build -t omilab .
+
+# Run the Docker container
+docker run -it -p 8888:8888 omilab
+```
+
+This will start a JupyterLab server in the container.
+The URL to access the server will be printed in the terminal (use the link with the 127.0.0.1 host).
+
+For the JupyterLab environment, you should first open a terminal (found under the "Other" section) and write `verdi status` to check the AiiDA installation.
+Then you can start working in a notebook to use ExecFlow by starting the "OpenModel ExecFlow" Python kernel (see the box in the top-most section).
+
+> **Note** If any issues should arise with regards to AiiDA, such as the AiiDA installation not checking out, please refer to the [AiiDA documentation](https://aiida.readthedocs.io/projects/aiida-core/en/stable/) or contact the AiiDA team.
+> Furthermore, if other issues should arise, please open an issue in this repository.
+
 ## Acknowledgements
 
 The `DeclarativeChain` was developed and design with help and input of Simon Adorf (@csadorf).
