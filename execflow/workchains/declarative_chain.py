@@ -1,19 +1,31 @@
+from __future__ import annotations
+
 from os.path import dirname, splitext
 from pathlib import Path
 from urllib.parse import urlsplit
 
+import cachecontrol
+import jsonref
+import plumpy
+import requests
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Data, Dict, List, Node, SinglefileData, Str, load_code, load_group, load_node
+from aiida.orm import (
+    Data,
+    Dict,
+    List,
+    Node,
+    SinglefileData,
+    Str,
+    load_code,
+    load_group,
+    load_node,
+)
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
-import cachecontrol
 from jinja2.nativetypes import NativeEnvironment
-import jsonref
 from jsonschema import validate
-import plumpy
-import requests
 from ruamel.yaml import YAML
 
 # Copied from https://github.com/aiidalab/aiidalab/blob/90b334e6a473393ba22b915fdaf85d917fd947f4/aiidalab/registry/yaml.py
@@ -241,7 +253,7 @@ class DeclarativeChain(WorkChain):
             d = dirname(full_file)
             ext = splitext(full_file)[1]
 
-            with open(full_file, mode="r") as f:
+            with open(full_file) as f:
                 s = f.read()
                 s = s.replace("__DIR__", d)
                 if ext in (".yaml", ".yml"):

@@ -1,5 +1,7 @@
 """AiiDA calculation function for parsing a declarative pipeline."""
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -8,18 +10,19 @@ from aiida.engine import calcfunction
 from aiida.plugins import DataFactory
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Dict, Type, Union
 
     from aiida import orm
 
-    from execflow.data.oteapi.declarative_pipeline import OTEPipelineData as ExecFlowOTEPipelineData
+    from execflow.data.oteapi.declarative_pipeline import (
+        OTEPipelineData as ExecFlowOTEPipelineData,
+    )
     from execflow.data.oteapi.genericconfig import GenericConfigData
 
 
 @calcfunction
 def parse_oteapi_pipeline(
-    pipeline_input: "Union[ExecFlowOTEPipelineData, orm.Dict, orm.SinglefileData, orm.Str]",
-) -> "Dict[str, Union[ExecFlowOTEPipelineData, Dict[str, GenericConfigData]]]":
+    pipeline_input: ExecFlowOTEPipelineData | orm.Dict | orm.SinglefileData | orm.Str,
+) -> dict[str, ExecFlowOTEPipelineData | dict[str, GenericConfigData]]:
     """Calculation function for parsing a declarative pipeline.
 
     Parameters:
@@ -30,10 +33,10 @@ def parse_oteapi_pipeline(
         AiiDA Data Nodes.
 
     """
-    AiiDADict: "Type[orm.Dict]" = DataFactory("core.dict")
-    AiiDAStr: "Type[orm.Str]" = DataFactory("core.str")
-    OTEPipelineData: "Type[ExecFlowOTEPipelineData]" = DataFactory("execflow.oteapi_pipeline")
-    SinglefileData: "Type[orm.SinglefileData]" = DataFactory("core.singlefile")
+    AiiDADict: type[orm.Dict] = DataFactory("core.dict")
+    AiiDAStr: type[orm.Str] = DataFactory("core.str")
+    OTEPipelineData: type[ExecFlowOTEPipelineData] = DataFactory("execflow.oteapi_pipeline")
+    SinglefileData: type[orm.SinglefileData] = DataFactory("core.singlefile")
 
     if isinstance(pipeline_input, (OTEPipelineData, AiiDADict)):
         pipeline = OTEPipelineData(value=pipeline_input)
@@ -54,7 +57,7 @@ def parse_oteapi_pipeline(
 
     strategy_configs = {}
     for strategy in pipeline.pydantic_model.strategies:
-        config_cls: "Type[GenericConfigData]" = DataFactory(f"execflow.{strategy.get_type()}config")
+        config_cls: type[GenericConfigData] = DataFactory(f"execflow.{strategy.get_type()}config")
         config = config_cls(**strategy.get_config())
         config.base.extras.set("strategy_name", strategy.get_name())
 

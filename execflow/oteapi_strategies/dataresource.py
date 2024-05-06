@@ -4,6 +4,8 @@ Since OTE Data Resource strategies may not subsequently invoke other AiiDA Workf
 Calculations, it is semantically equivalent to an AiiDA Calculation.
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida.engine import calcfunction
@@ -17,7 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 
 @calcfunction
-def init_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
+def init_dataresource(config: ResourceConfigData, session: Dict) -> Dict:
     """Initialize an OTE Data Resource strategy."""
     load_strategies(False)
 
@@ -43,7 +45,7 @@ def init_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
 
 
 @calcfunction
-def get_dataresource(config: "ResourceConfigData", session: "Dict") -> "Dict":
+def get_dataresource(config: ResourceConfigData, session: Dict) -> Dict:
     """Get/Execute an OTE Data Resource strategy."""
     load_strategies(False)
 

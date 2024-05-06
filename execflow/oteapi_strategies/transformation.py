@@ -4,6 +4,8 @@ Since OTE Transformation strategies may subsequently invoke other AiiDA Workflow
 Calculations, it is semantically equivalent to an AiiDA Workflow.
 """
 
+from __future__ import annotations
+
 from time import sleep, time
 from typing import TYPE_CHECKING
 
@@ -20,11 +22,11 @@ if TYPE_CHECKING:  # pragma: no cover
 
 
 @workfunction
-def init_transformation(config: "TransformationConfigData", session: "Dict") -> "Dict":
+def init_transformation(config: TransformationConfigData, session: Dict) -> Dict:
     """Initialize an OTE Transformation strategy."""
     load_strategies(False)
 
-    strategy: "ITransformationStrategy" = create_strategy("transformation", config.get_dict())
+    strategy: ITransformationStrategy = create_strategy("transformation", config.get_dict())
     updates_for_session = strategy.initialize(session.get_dict())
 
     return CalculationFactory("execflow.update_oteapi_session")(
@@ -34,7 +36,7 @@ def init_transformation(config: "TransformationConfigData", session: "Dict") -> 
 
 
 @workfunction
-def get_transformation(config: "TransformationConfigData", session: "Dict") -> "Dict":
+def get_transformation(config: TransformationConfigData, session: Dict) -> Dict:
     """Get an OTE Transformation strategy.
 
     Important:
@@ -52,12 +54,12 @@ def get_transformation(config: "TransformationConfigData", session: "Dict") -> "
     """
     load_strategies(False)
 
-    strategy: "ITransformationStrategy" = create_strategy("transformation", config.get_dict())
+    strategy: ITransformationStrategy = create_strategy("transformation", config.get_dict())
 
     wall_time = 2 * 60  # 2 min.
 
     start_time = time()
-    status: "TransformationStatus" = strategy.run(session.get_dict())
+    status: TransformationStatus = strategy.run(session.get_dict())
     while (
         status.status
         not in (

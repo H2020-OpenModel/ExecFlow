@@ -4,6 +4,8 @@ Since OTE Function strategies may subsequently invoke other AiiDA Workflows or
 Calculations, it is semantically equivalent to an AiiDA Workflow.
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida.engine import workfunction
@@ -18,11 +20,11 @@ if TYPE_CHECKING:  # pragma: no cover
 
 
 @workfunction
-def init_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
+def init_function(config: FunctionConfigData, session: Dict) -> Dict:
     """Initialize an OTE Function strategy."""
     load_strategies(False)
 
-    strategy: "IFunctionStrategy" = create_strategy("function", config.get_dict())
+    strategy: IFunctionStrategy = create_strategy("function", config.get_dict())
     updates_for_session = strategy.initialize(session.get_dict())
 
     return CalculationFactory("execflow.update_oteapi_session")(
@@ -32,11 +34,11 @@ def init_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
 
 
 @workfunction
-def get_function(config: "FunctionConfigData", session: "Dict") -> "Dict":
+def get_function(config: FunctionConfigData, session: Dict) -> Dict:
     """Get/Execute an OTE Function strategy."""
     load_strategies(False)
 
-    strategy: "IFunctionStrategy" = create_strategy("function", config.get_dict())
+    strategy: IFunctionStrategy = create_strategy("function", config.get_dict())
     updates_for_session = strategy.get(session.get_dict())
 
     return CalculationFactory("execflow.update_oteapi_session")(

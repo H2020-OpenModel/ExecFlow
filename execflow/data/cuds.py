@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 import inspect
 from io import StringIO
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
+import dlite
+import numpy as np
 from aiida.common.exceptions import MissingEntryPointError
 from aiida.orm import Dict, load_code, load_node
 from aiida.plugins import DataFactory
 from aiida.plugins.entry_point import get_entry_point_from_class
-import dlite
-import numpy as np
 from oteapi.models import FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection
@@ -20,7 +22,7 @@ from pydantic.dataclasses import dataclass
 class DataNode2CUDSStrategy:
     config: FunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(self, session: Dict[str, Any] | None = None) -> SessionUpdate:
         """Initialize strategy."""
         return DLiteSessionUpdate(collection_id=get_collection(session).uuid)
 
@@ -41,7 +43,7 @@ class DataNode2CUDSStrategy:
 class CUDS2DataNodeStrategy:
     config: FunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(self, session: Dict[str, Any] | None = None) -> SessionUpdate:
         """Initialize strategy."""
         return DLiteSessionUpdate(collection_id=get_collection(session).uuid)
 
@@ -56,7 +58,7 @@ class CUDS2DataNodeStrategy:
             results[n] = d.pk
 
         update_collection(coll)
-        return SessionUpdate(**{"to_results": results})
+        return SessionUpdate(to_results=results)
 
 
 # This function tries to automatically converts an AiiDA DataNode into a dlite Instance.
@@ -230,7 +232,7 @@ def CUDS2DataNode(cuds):
     if cuds.meta.name == "core.singlefile":
         from aiida.orm import SinglefileData
 
-        with open(cuds.properties["filename"], "r") as f:
+        with open(cuds.properties["filename"]) as f:
             return SinglefileData(StringIO(f.read()))
 
     # Instantiate the nested datastructure as a basic dict for later use

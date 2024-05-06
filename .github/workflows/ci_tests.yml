@@ -12,7 +12,7 @@ jobs:
     name: External
     uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.7.2
     with:
-      # Generic      
+      # Generic
       install_extras: "[dev]"
 
       # pre-commit

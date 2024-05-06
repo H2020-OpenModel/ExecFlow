@@ -1,5 +1,7 @@
 """Generic OTEAPI Config AiiDA Data Node class."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from execflow.data.oteapi.base import ExtendedData
@@ -18,7 +20,7 @@ class GenericConfigData(ExtendedData):
 
     """
 
-    def __init__(self, configuration: "dict[str, Any]", description: str, **kwargs: "Any") -> None:
+    def __init__(self, configuration: dict[str, Any], description: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
         attr_dict = {"configuration": configuration, "description": description}
@@ -26,13 +28,13 @@ class GenericConfigData(ExtendedData):
         self.base.attributes.set_many(attr_dict)
 
     @property
-    def configuration(self) -> "dict[str, Any]":
+    def configuration(self) -> dict[str, Any]:
         """Model-specific configuration options, which can either be given as
         key/value-pairs or set as attributes."""
         return self.base.attributes.get("configuration")
 
     @configuration.setter
-    def configuration(self, value: "dict[str, Any]") -> None:
+    def configuration(self, value: dict[str, Any]) -> None:
         self.set_attribute("configuration", value)
 
     @property

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from execflow.calculations.fake import FakeQEPW
 
 

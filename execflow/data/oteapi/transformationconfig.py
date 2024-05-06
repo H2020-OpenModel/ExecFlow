@@ -1,8 +1,13 @@
 """OTEAPI Transformation strategy config AiiDA Data Node class."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from oteapi.models.transformationconfig import TransformationConfig, TransformationStatus
+from oteapi.models.transformationconfig import (
+    TransformationConfig,
+    TransformationStatus,
+)
 
 from execflow.data.oteapi.base import ExtendedData
 from execflow.data.oteapi.genericconfig import GenericConfigData
@@ -10,7 +15,7 @@ from execflow.data.oteapi.secretconfig import SecretConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
     from datetime import datetime
-    from typing import Any, Optional, Union
+    from typing import Any
 
     from oteapi.models.transformationconfig import ProcessPriority
 
@@ -34,10 +39,10 @@ class TransformationConfigData(GenericConfigData, SecretConfigData):
     def __init__(
         self,
         transformationType: str,
-        name: "Optional[str]" = None,
-        due: "Optional[datetime]" = None,
-        priority: "Optional[ProcessPriority]" = None,
-        **kwargs: "Any",
+        name: str | None = None,
+        due: datetime | None = None,
+        priority: ProcessPriority | None = None,
+        **kwargs: Any,
     ) -> None:
         if name is None:
             name = TransformationConfig.model_fields["name"].default
@@ -69,31 +74,31 @@ class TransformationConfigData(GenericConfigData, SecretConfigData):
         self.set_attribute("transformationType", value)
 
     @property
-    def name(self) -> "Union[str, None]":
+    def name(self) -> str | None:
         """Human-readable name of the transformation strategy."""
         return self.base.attributes.get("name")
 
     @name.setter
-    def name(self, value: "Union[str, None]") -> None:
+    def name(self, value: str | None) -> None:
         self.set_attribute("name", value)
 
     @property
-    def due(self) -> "Union[datetime, None]":
+    def due(self) -> datetime | None:
         """Optional field to indicate a due data/time for when a transformation should
         finish."""
         return self.base.attributes.get("due")
 
     @due.setter
-    def due(self, value: "Union[datetime, None]") -> None:
+    def due(self, value: datetime | None) -> None:
         self.set_attribute("due", value)
 
     @property
-    def priority(self) -> "Union[ProcessPriority, None]":
+    def priority(self) -> ProcessPriority | None:
         """Define the process priority of the transformation execution."""
         return self.base.attributes.get("priority")
 
     @priority.setter
-    def priority(self, value: "Union[ProcessPriority, None]") -> None:
+    def priority(self, value: ProcessPriority | None) -> None:
         self.set_attribute("priority", value)
 
 
@@ -116,12 +121,12 @@ class TransformationStatusData(ExtendedData):
     def __init__(
         self,
         id: str,
-        status: "Optional[str]" = None,
-        messages: "Optional[list[str]]" = None,
-        created: "Optional[datetime]" = None,
-        startTime: "Optional[datetime]" = None,
-        finishTime: "Optional[datetime]" = None,
-        **kwargs: "Any",
+        status: str | None = None,
+        messages: list[str] | None = None,
+        created: datetime | None = None,
+        startTime: datetime | None = None,
+        finishTime: datetime | None = None,
+        **kwargs: Any,
     ) -> None:
         if status is None:
             status = TransformationStatus.model_fields["status"].default
@@ -161,46 +166,46 @@ class TransformationStatusData(ExtendedData):
         self.set_attribute("id", value)
 
     @property
-    def status(self) -> "Union[str, None]":
+    def status(self) -> str | None:
         """Status for the transformation process."""
         return self.base.attributes.get("status")
 
     @status.setter
-    def status(self, value: "Union[str, None]") -> None:
+    def status(self, value: str | None) -> None:
         self.set_attribute("status", value)
 
     @property
-    def messages(self) -> "Union[list[str], None]":
+    def messages(self) -> list[str] | None:
         """Messages related to the transformation process."""
         return self.base.attributes.get("messages")
 
     @messages.setter
-    def messages(self, value: "Union[list[str], None]") -> None:
+    def messages(self, value: list[str] | None) -> None:
         self.set_attribute("messages", value)
 
     @property
-    def created(self) -> "Union[datetime, None]":
+    def created(self) -> datetime | None:
         """Time of creation for the transformation process. Given in UTC."""
         return self.base.attributes.get("created")
 
     @created.setter
-    def created(self, value: "Union[datetime, None]") -> None:
+    def created(self, value: datetime | None) -> None:
         self.set_attribute("created", value)
 
     @property
-    def startTime(self) -> "Union[datetime, None]":
+    def startTime(self) -> datetime | None:
         """Time when the transformation process started. Given in UTC."""
         return self.base.attributes.get("startTime")
 
     @startTime.setter
-    def startTime(self, value: "Union[datetime, None]") -> None:
+    def startTime(self, value: datetime | None) -> None:
         self.set_attribute("startTime", value)
 
     @property
-    def finishTime(self) -> "Union[datetime, None]":
+    def finishTime(self) -> datetime | None:
         """Time when the tranformation process finished. Given in UTC."""
         return self.base.attributes.get("finishTime")
 
     @finishTime.setter
-    def finishTime(self, value: "Union[datetime, None]") -> None:
+    def finishTime(self, value: datetime | None) -> None:
         self.set_attribute("finishTime", value)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from aiida import orm
 from aiida.engine import CalcJob
 from aiida.plugins import DataFactory

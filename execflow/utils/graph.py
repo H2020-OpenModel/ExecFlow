@@ -1,14 +1,13 @@
+from __future__ import annotations
+
 from aiida import load_profile
 
 profile = load_profile()
 
-import os
 import sys
 
-from aiida.common import LinkType
 from aiida.orm import load_node
-from aiida.orm.utils.links import LinkPair
-from aiida.tools.visualization import Graph, pstate_node_styles
+from aiida.tools.visualization import Graph
 
 
 def graph_node(node):

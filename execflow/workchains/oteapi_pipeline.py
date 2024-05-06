@@ -1,5 +1,7 @@
 """AiiDA WorkChain for the OTE Pipeline."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida import orm
@@ -48,7 +50,7 @@ class OTEPipeline(WorkChain):
     """
 
     @classmethod
-    def define(cls, spec: "WorkChainSpec") -> None:
+    def define(cls, spec: WorkChainSpec) -> None:
         super().define(spec)
 
         # Inputs
@@ -171,10 +173,8 @@ class OTEPipeline(WorkChain):
         self.to_context(
             current=run_get_node(
                 strategy_process_cls,
-                **{
-                    "config": strategy_config,
-                    "session": self.ctx.ote_session,
-                },
+                config=strategy_config,
+                session=self.ctx.ote_session,
             )[1]
         )
 

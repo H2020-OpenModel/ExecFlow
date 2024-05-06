@@ -8,6 +8,8 @@ Look inside aiida.manage.tests.pytest_fixtures to see which fixtures are provide
 https://aiida.readthedocs.io/projects/aiida-core/en/latest/reference/apidoc/aiida.manage.tests.html#module-aiida.manage.tests.pytest_fixtures
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import pytest
@@ -21,7 +23,7 @@ def aiida_profile_clean_auto(aiida_profile_clean):
 
 
 @pytest.fixture(scope="session")
-def samples() -> "Path":
+def samples() -> Path:
     """Return path to 'samples' folder."""
 
     path = (Path(__file__).resolve().parent / "samples").resolve()
@@ -30,7 +32,7 @@ def samples() -> "Path":
     return path
 
 
-@pytest.fixture
+@pytest.fixture()
 def fixture_localhost(aiida_localhost):
     """Return a localhost `Computer`."""
     localhost = aiida_localhost
@@ -38,7 +40,7 @@ def fixture_localhost(aiida_localhost):
     return localhost
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_calcjob_node(fixture_localhost):
     """Fixture to generate a mock `CalcJobNode` for testing parsers."""
 
@@ -57,7 +59,7 @@ def generate_calcjob_node(fixture_localhost):
     return _generate_calc_job_node
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_workchain():
     """Generate an instance of a `WorkChain`."""
 
@@ -81,7 +83,7 @@ def generate_workchain():
     return _generate_workchain
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_declarative_workchain(generate_workchain):
     """Generate an instance of a ``PwBaseWorkChain``."""
 

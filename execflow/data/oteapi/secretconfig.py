@@ -1,5 +1,7 @@
 """Authentication OTEAPI Config AiiDA Data Node class."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from oteapi.models import SecretConfig
@@ -7,7 +9,7 @@ from oteapi.models import SecretConfig
 from execflow.data.oteapi.base import ExtendedData
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Optional, Union
+    from typing import Any
 
 
 class SecretConfigData(ExtendedData):
@@ -25,12 +27,12 @@ class SecretConfigData(ExtendedData):
 
     def __init__(
         self,
-        user: "Optional[str]" = None,
-        password: "Optional[str]" = None,
-        token: "Optional[str]" = None,
-        client_id: "Optional[str]" = None,
-        client_secret: "Optional[str]" = None,
-        **kwargs: "Any",
+        user: str | None = None,
+        password: str | None = None,
+        token: str | None = None,
+        client_id: str | None = None,
+        client_secret: str | None = None,
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.base.attributes.set_many(
@@ -44,12 +46,12 @@ class SecretConfigData(ExtendedData):
         )
 
     @property
-    def user(self) -> "Optional[str]":
+    def user(self) -> str | None:
         """User name for authentication."""
         return self.base.attributes.get("user")
 
     @user.setter
-    def user(self, value: "Union[str, None]") -> None:
+    def user(self, value: str | None) -> None:
         self.set_attribute("user", value)
 
     @property

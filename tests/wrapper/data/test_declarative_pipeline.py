@@ -1,14 +1,18 @@
 """Test execflow.data.oteapi.declarative_pipeline"""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Any, Dict, Tuple, Type, Union
+    from typing import Any
 
-    from execflow.data.oteapi.declarative_pipeline import OTEPipelineData as OTEPipelineDataNode
+    from execflow.data.oteapi.declarative_pipeline import (
+        OTEPipelineData as OTEPipelineDataNode,
+    )
 
 
 @pytest.mark.parametrize(
@@ -23,9 +27,7 @@ if TYPE_CHECKING:
         "core.str",
     ),
 )
-def test_initialization_strategies_value(
-    value_type: "Union[Type[Union[dict, str, bytes]], str]", samples: "Path"
-) -> None:
+def test_initialization_strategies_value(value_type: type[dict | str | bytes] | str, samples: Path) -> None:
     """Ensure the different intended initialization strategies work.
 
     This test is for the `value` pathway, i.e., using the `value` parameter.
@@ -37,13 +39,13 @@ def test_initialization_strategies_value(
     """
     from copy import deepcopy
 
-    from aiida.plugins import DataFactory
     import yaml
+    from aiida.plugins import DataFactory
 
     from execflow.data.oteapi.declarative_pipeline import DeclarativePipeline
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
+    OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     if isinstance(value_type, type):
         if value_type == dict:
@@ -109,7 +111,7 @@ def test_initialization_strategies_value(
         "core.singlefile",
     ),
 )
-def test_initialization_strategies_file(input_type: "Union[Type[str], str]", samples: "Path") -> None:
+def test_initialization_strategies_file(input_type: type[str] | str, samples: Path) -> None:
     """Ensure the different intended initialization strategies work.
 
     This test is for the file pathway, i.e., using the `filepath` or `single_file`
@@ -121,11 +123,11 @@ def test_initialization_strategies_file(input_type: "Union[Type[str], str]", sam
         samples: Path to test directory with sample files.
 
     """
-    from aiida.plugins import DataFactory
     import yaml
+    from aiida.plugins import DataFactory
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
+    OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     if input_type == str:
         # filepath
@@ -153,7 +155,7 @@ def test_initialization_strategies_file(input_type: "Union[Type[str], str]", sam
     assert node.strategies == list(declarative_pipeline_file["strategies"])
 
 
-def test_initialization_strategies_explicit(samples: "Path") -> None:
+def test_initialization_strategies_explicit(samples: Path) -> None:
     """Ensure the different intended initialization strategies work.
 
     This test is for explicitly filling out the top keywords.
@@ -165,11 +167,11 @@ def test_initialization_strategies_explicit(samples: "Path") -> None:
     """
     from copy import deepcopy
 
-    from aiida.plugins import DataFactory
     import yaml
+    from aiida.plugins import DataFactory
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
+    OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     # Create Node from __init__ directly
     copy_file = deepcopy(declarative_pipeline_file)
@@ -206,7 +208,7 @@ def test_initialization_strategies_explicit(samples: "Path") -> None:
     ],
     ids=["strat+pipe", "ver+strat+pipe"],
 )
-def test_validate_valid_cases(input_keys: "Tuple[str, ...]", samples: "Path") -> None:
+def test_validate_valid_cases(input_keys: tuple[str, ...], samples: Path) -> None:
     """Test various valid cases for validation.
 
     Parameters:
@@ -216,11 +218,11 @@ def test_validate_valid_cases(input_keys: "Tuple[str, ...]", samples: "Path") ->
     """
     from copy import deepcopy
 
-    from aiida.plugins import DataFactory
     import yaml
+    from aiida.plugins import DataFactory
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
+    OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     node = OTEPipelineData(**{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys})
     assert node.validate() is None
@@ -238,7 +240,7 @@ def test_validate_valid_cases(input_keys: "Tuple[str, ...]", samples: "Path") ->
     ids=["strat", "pipe", "ver", "ver+strat", "ver+pipe"],
 )
 @pytest.mark.skip(reason="Issues with validation, needs fixing")
-def test_validate_invalid_cases(input_keys: "Tuple[str, ...]", samples: "Path") -> None:
+def test_validate_invalid_cases(input_keys: tuple[str, ...], samples: Path) -> None:
     """Test various invalid cases for validation.
 
     Parameters:
@@ -248,12 +250,12 @@ def test_validate_invalid_cases(input_keys: "Tuple[str, ...]", samples: "Path") 
     """
     from copy import deepcopy
 
+    import yaml
     from aiida.common.exceptions import ValidationError
     from aiida.plugins import DataFactory
-    import yaml
 
-    OTEPipelineData: "Type[OTEPipelineDataNode]" = DataFactory("execflow.oteapi_pipeline")
-    declarative_pipeline_file: "Dict[str, Any]" = yaml.safe_load((samples / "pipe.yml").read_bytes())
+    OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
+    declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     node = OTEPipelineData(**{key: deepcopy(declarative_pipeline_file[key]) for key in input_keys})
 

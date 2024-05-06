@@ -1,7 +1,9 @@
-from typing import Annotated, Any, Optional
+from __future__ import annotations
 
-from aiida.orm import Dict
+from typing import Annotated, Any
+
 import dlite
+from aiida.orm import Dict
 from oteapi.models import AttrDict, DataCacheConfig, FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection
@@ -24,13 +26,13 @@ class File2CollectionConfig(AttrDict):
         ),
     ]
     label: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description="Label of the file.",
         ),
     ] = "filename"
     datacache_config: Annotated[
-        Optional[DataCacheConfig],
+        DataCacheConfig | None,
         Field(
             description="Configuration options for the local data cache.",
         ),
@@ -50,7 +52,7 @@ class File2CollectionStrategy:
     "Strategy for casting a file into an Aiida SinglefileDataNode"
     function_config: File2CollectionFunctionConfig
 
-    def initialize(self, session: "Optional[Dict[str, Any]]" = None) -> SessionUpdate:
+    def initialize(self, session: Dict[str, Any] | None = None) -> SessionUpdate:
         """Initialize strategy."""
         return DLiteSessionUpdate(collection_id=get_collection(session).uuid)
 

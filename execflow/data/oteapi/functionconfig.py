@@ -1,4 +1,7 @@
 """OTEAPI Function strategy config AiiDA Data Node class."""
+
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from execflow.data.oteapi.genericconfig import GenericConfigData
@@ -16,7 +19,7 @@ class FunctionConfigData(GenericConfigData, SecretConfigData):
 
     """
 
-    def __init__(self, functionType: str, **kwargs: "Any") -> None:
+    def __init__(self, functionType: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
         self.base.attributes.set("functionType", functionType)
