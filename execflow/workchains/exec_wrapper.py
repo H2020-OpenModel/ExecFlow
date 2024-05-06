@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from io import StringIO
 
-import chevron
 from aiida.engine import ToContext, WorkChain, calcfunction
 from aiida.orm import Dict, SinglefileData, Str
 from aiida_shell import ShellJob
 from aiida_shell.launch import prepare_code
+import chevron
 
 
 @calcfunction

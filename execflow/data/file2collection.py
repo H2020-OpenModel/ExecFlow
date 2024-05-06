@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Annotated, Any
 
-import dlite
 from aiida.orm import Dict
+import dlite
 from oteapi.models import AttrDict, DataCacheConfig, FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection

@@ -91,9 +91,7 @@ fail-on-change = true
 line-length = 120
 
 [tool.isort]
-force_sort_within_sections = true
 include_trailing_comma = true
-line_length = 120
 multi_line_output = 3  # this configuration is compatible with yapf
 
 [tool.pydocstyle]
@@ -118,6 +116,9 @@ execflow = [
     "entities/*.json"
 ]
 
+[tool.ruff]
+line-length = 120
+
 [tool.ruff.lint]
 extend-select = [
     "E",  # pycodestyle
@@ -140,14 +141,17 @@ extend-select = [
     "YTT",  # flake8-2020
     "EXE",  # flake8-executable
     "PYI",  # flake8-pyi
+    "FLY",  # flynt
 ]
 ignore = [
     "PLR",  # Design related pylint codes
     "PLW0127",  # pylint: Self-assignment of variables
 ]
 
+[tool.ruff.lint.isort]
 # Import __future__.annotations for all Python files.
-isort.required-imports = ["from __future__ import annotations"]
+required-imports = ["from __future__ import annotations"]
+force-sort-within-sections = true
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = [

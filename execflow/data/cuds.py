@@ -5,12 +5,12 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 
-import dlite
-import numpy as np
 from aiida.common.exceptions import MissingEntryPointError
 from aiida.orm import Dict, load_code, load_node
 from aiida.plugins import DataFactory
 from aiida.plugins.entry_point import get_entry_point_from_class
+import dlite
+import numpy as np
 from oteapi.models import FunctionConfig, SessionUpdate
 from oteapi_dlite.models import DLiteSessionUpdate
 from oteapi_dlite.utils import get_collection, update_collection

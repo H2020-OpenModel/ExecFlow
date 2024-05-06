@@ -39,8 +39,8 @@ def test_initialization_strategies_value(value_type: type[dict | str | bytes] | 
     """
     from copy import deepcopy
 
-    import yaml
     from aiida.plugins import DataFactory
+    import yaml
 
     from execflow.data.oteapi.declarative_pipeline import DeclarativePipeline
 
@@ -123,8 +123,8 @@ def test_initialization_strategies_file(input_type: type[str] | str, samples: Pa
         samples: Path to test directory with sample files.
 
     """
-    import yaml
     from aiida.plugins import DataFactory
+    import yaml
 
     OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
@@ -167,8 +167,8 @@ def test_initialization_strategies_explicit(samples: Path) -> None:
     """
     from copy import deepcopy
 
-    import yaml
     from aiida.plugins import DataFactory
+    import yaml
 
     OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
@@ -218,8 +218,8 @@ def test_validate_valid_cases(input_keys: tuple[str, ...], samples: Path) -> Non
     """
     from copy import deepcopy
 
-    import yaml
     from aiida.plugins import DataFactory
+    import yaml
 
     OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
@@ -250,9 +250,9 @@ def test_validate_invalid_cases(input_keys: tuple[str, ...], samples: Path) -> N
     """
     from copy import deepcopy
 
-    import yaml
     from aiida.common.exceptions import ValidationError
     from aiida.plugins import DataFactory
+    import yaml
 
     OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())

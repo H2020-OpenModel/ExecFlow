@@ -6,7 +6,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, Union
 
-import yaml
 from aiida.common.exceptions import (
     NotExistent,
     NotExistentAttributeError,
@@ -23,6 +22,7 @@ from oteapi.models import (
     TransformationConfig,
 )
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
+import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Generator, Iterable
