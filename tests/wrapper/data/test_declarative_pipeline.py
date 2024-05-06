@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 @pytest.mark.parametrize(
     "value_type",
-    (
+    [
         dict,
         "execflow.oteapi_pipeline",
         "core.dict",
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
         str,
         bytes,
         "core.str",
-    ),
+    ],
 )
 def test_initialization_strategies_value(value_type: type[dict | str | bytes] | str, samples: Path) -> None:
     """Ensure the different intended initialization strategies work.
@@ -104,12 +104,12 @@ def test_initialization_strategies_value(value_type: type[dict | str | bytes] | 
 
 @pytest.mark.parametrize(
     "input_type",
-    (
+    [
         "Path",
         str,
         "core.str",
         "core.singlefile",
-    ),
+    ],
 )
 def test_initialization_strategies_file(input_type: type[str] | str, samples: Path) -> None:
     """Ensure the different intended initialization strategies work.

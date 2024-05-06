@@ -116,7 +116,7 @@ class OTEPipeline(WorkChain):
                 "'run_pipeline' input."
             )
         else:
-            run_pipeline_name = list(pipeline.pipelines)[0]
+            run_pipeline_name = next(iter(pipeline.pipelines))
 
         strategies = []
         # Initialization
@@ -204,7 +204,7 @@ class OTEPipeline(WorkChain):
         self.out("session", self.ctx.ote_session)
 
         if "to_results" in self.ctx.ote_session:
-            results = dict()
+            results = {}
             for k in self.ctx.ote_session["to_results"]:
                 results[k] = orm.load_node(self.ctx.ote_session["to_results"][k])
 

@@ -43,7 +43,7 @@ def get_input_variants() -> dict[str, tuple[str, Path | bytes | dict]]:
 
 
 @pytest.mark.parametrize(
-    ["entry_point", "node_input"],
+    ("entry_point", "node_input"),
     get_input_variants().values(),
     ids=get_input_variants().keys(),
 )

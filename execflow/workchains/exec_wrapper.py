@@ -33,8 +33,8 @@ class ExecWrapper(WorkChain):
 
     def setup(self):
 
-        self.ctx.filenodes = dict()
-        self.ctx.filenames = dict()
+        self.ctx.filenodes = {}
+        self.ctx.filenames = {}
         for k, f in self.inputs.files.items():
             if "node" in f:
                 self.ctx.filenodes[k] = f["node"]

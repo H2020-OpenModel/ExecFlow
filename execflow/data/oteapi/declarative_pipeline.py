@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Annotated, Union
 from aiida.common.exceptions import (
     NotExistent,
     NotExistentAttributeError,
-    ValidationError,
+)
+from aiida.common.exceptions import (
+    ValidationError as AiiDAValidationError,
 )
 from aiida.orm import Dict as DictNode
 from aiida.orm import SinglefileData
@@ -21,7 +23,8 @@ from oteapi.models import (
     ResourceConfig,
     TransformationConfig,
 )
-from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import ValidationError as PydanticValidationError
 import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -165,7 +168,7 @@ class DeclarativePipeline(BaseModel):
                 if strategy_type in strategy:
                     try:
                         type_casted_strategies.append(strategy_cls(**strategy))
-                    except ValidationError as exc:
+                    except PydanticValidationError as exc:
                         exc_message = str(exc).replace("\n", "\n  ")
                         raise ValueError(
                             "Strategy cannot be validated as a "
@@ -322,7 +325,7 @@ class OTEPipelineData(DictNode):
         dictionary = dictionary or {}
 
         if not isinstance(dictionary, (dict, DictNode)):
-            raise ValidationError(
+            raise AiiDAValidationError(
                 "dictionary should now be a Python/AiiDA dict. Instead it is a "
                 f"{type(dictionary)!r}. Content:\n\n{dictionary}"
             )
@@ -372,10 +375,10 @@ class OTEPipelineData(DictNode):
             self._pydantic_model = self._pydantic_model_class(**self.get_dict())
             self._pydantic_model_hash = hash(self._pydantic_model)
         elif strict:
-            raise ValidationError(
+            raise AiiDAValidationError(
                 "Cannot validate, missing"
                 f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"  # noqa: E501
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
@@ -536,7 +539,7 @@ class OTEPipelineData(DictNode):
             raise NotExistent(
                 "Cannot instantiate a pydantic model, missing"
                 f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"  # noqa: E501
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
@@ -545,7 +548,7 @@ class OTEPipelineData(DictNode):
             self._pydantic_model_hash = hash(self._pydantic_model)
 
         if not isinstance(self._pydantic_model, self._pydantic_model_class):
-            raise ValidationError("Internal pydantic model not set!")
+            raise AiiDAValidationError("Internal pydantic model not set!")
 
         return self._pydantic_model
 

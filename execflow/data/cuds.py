@@ -50,7 +50,7 @@ class CUDS2DataNodeStrategy:
     def get(self, session=None):
         coll = get_collection(session)
         names = load_node(session[self.config.configuration["names"]])
-        results = session.get("to_results", dict())
+        results = session.get("to_results", {})
         for n in names:
             i = coll[n]
             d = CUDS2DataNode(i)
@@ -198,10 +198,7 @@ def gen_property(props, dims, dimnames, dim, curid, attributename, attribute, at
                 # Since by now we are in the lowest nesting level, we know the dimensions of
                 # the multidim array we are part of (kept in dims).
                 dims_ = dims[attributename]
-                if attype == str:
-                    arr = np.empty(dims_, object)
-                else:
-                    arr = np.empty(dims_, attype)
+                arr = np.empty(dims_, object) if attype == str else np.empty(dims_, attype)
 
                 arr[tuple([0 for x in dims_])] = attribute
                 attributes_dict[attributename] = arr
@@ -232,7 +229,7 @@ def CUDS2DataNode(cuds):
     if cuds.meta.name == "core.singlefile":
         from aiida.orm import SinglefileData
 
-        with open(cuds.properties["filename"]) as f:
+        with Path(cuds.properties["filename"]).open() as f:
             return SinglefileData(StringIO(f.read()))
 
     # Instantiate the nested datastructure as a basic dict for later use
@@ -256,12 +253,9 @@ def CUDS2DataNode(cuds):
     ndef = 0 if argspec.defaults is None else len(argspec.defaults)
     last_arg = nargs - ndef - 1
 
-    args = [to_node[n] if n in to_node else None for n in argspec.args[:last_arg]]
+    args = [to_node.get(n) for n in argspec.args[:last_arg]]
 
-    if len(args) != 0:
-        t = d(*args)
-    else:
-        t = d()
+    t = d(*args) if len(args) != 0 else d()
 
     if isinstance(t, Dict) and cuds.meta.name != "core.dict":
         t["meta"] = cuds.meta.uri
@@ -282,7 +276,7 @@ def construct_attributes(attributes, propertyname, property):
         else:
             attributes[propertyname] = property
     else:
-        if isinstance(property, list) or isinstance(property, np.ndarray):
+        if isinstance(property, (list, np.ndarray)):
             if sname[0] not in attributes:
                 attributes[sname[0]] = [{} for p in property]
 

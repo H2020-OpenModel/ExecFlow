@@ -17,8 +17,8 @@ import pytest
 pytest_plugins = ["aiida.manage.tests.pytest_fixtures"]
 
 
-@pytest.fixture(scope="function", autouse=True)
-def aiida_profile_clean_auto(aiida_profile_clean):
+@pytest.fixture(autouse=True)
+def _aiida_profile_clean_auto(aiida_profile_clean):  # noqa: ARG001
     """Automatically clear the AiiDA profile's DB and storage after each test."""
 
 
@@ -51,10 +51,7 @@ def generate_calcjob_node(fixture_localhost):
         """
         from aiida import orm
 
-        node = orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
-
-        # node.store()
-        return node
+        return orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
 
     return _generate_calc_job_node
 
@@ -76,9 +73,7 @@ def generate_workchain():
 
         process_class = WorkflowFactory(entry_point)
         runner = get_manager().get_runner()
-        process = instantiate_process(runner, process_class, **inputs)
-
-        return process
+        return instantiate_process(runner, process_class, **inputs)
 
     return _generate_workchain
 
@@ -109,8 +104,6 @@ def generate_declarative_workchain(generate_workchain):
         elif not isinstance(input, SinglefileData):
             raise ValueError("input needs to be SinglefileData or a str")
 
-        process = generate_workchain(entry_point, {"workchain_specification": input})
-
-        return process
+        return generate_workchain(entry_point, {"workchain_specification": input})
 
     return _generate_declarative_workchain

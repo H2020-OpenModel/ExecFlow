@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from aiida import load_profile
-
-profile = load_profile()
-
 import sys
 
+from aiida import load_profile
 from aiida.orm import load_node
 from aiida.tools.visualization import Graph
+
+load_profile()
 
 
 def graph_node(node):
