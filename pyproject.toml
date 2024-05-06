@@ -24,14 +24,14 @@ classifiers = [
 requires-python = '>=3.9,<3.12'
 
 dependencies = [
-    'aiida-core~=2.5',
+    'aiida-core~=2.4',
     'aiida-pseudo~=1.5',
     'aiida-shell>=0.7.0,<1',
     'cachecontrol>=0.14.0,<1',
     'chevron>=0.14.0,<1',
     'DLite-Python>=0.5.1,<1',
     'jsonref==1.1.0',
-    'jsonschema~=4.22',
+    # 'jsonschema~=4.22',  # dependency from aiida-core 2.4
     'oteapi-core>=0.6.1,<1',
     'oteapi-dlite>=0.2.0,<1',
 ]
