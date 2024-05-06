@@ -31,9 +31,11 @@ jobs:
       # Ignore some safety warnings:
       # - 63227: paramiko. Subdependency of aiida-core.
       # - 59901: aio-pika. Subdependency of aiida-core.
+      # - 65193: paramiko. Subdependency of aiida-core.
       safety_options: |
         --ignore=63227
         --ignore=59901
+        --ignore=65193
 
       # Build package
       run_build_package: true
