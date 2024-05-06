@@ -6,7 +6,11 @@ build-backend = 'flit_core.buildapi'
 [project]
 name = 'execflow'
 dynamic = ['version']
-authors = [{name = 'louisponet', email = 'louisponet@epfl.ch'}]
+authors = [
+    {name = 'louisponet', email = 'louisponet@epfl.ch'},
+    {name = 'Francesca L. Bleken', email = 'francesca.l.bleken@sintef.no'},
+    {name = 'Casper Welzel Andersen', email = 'casper.w.andersen@sintef.no'},
+]
 readme = 'README.md'
 license = {file = 'LICENSE'}
 description = "openmodel execflow"
@@ -17,21 +21,19 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
 ]
-requires-python = '>=3.9'
+requires-python = '>=3.9,<3.12'
 
 dependencies = [
-    'aiida-core>=2.1.0,<3',
-    'oteapi-core>=0.6.1,<1',
-    'oteapi-dlite>=0.2.0,<1',
-    'DLite-Python>=0.5.1,<1',
-    'jsonschema~=4.21',
+    'aiida-core~=2.5',
+    'aiida-pseudo~=1.5',
+    'aiida-shell>=0.7.0,<1',
     'cachecontrol>=0.14.0,<1',
     'chevron>=0.14.0,<1',
-    'aiida-shell>=0.3.0',
-    'aiida-pseudo>=1.5.0,<2',
-    'jsonref>=1.1.0,<1.1.1',
-    'ruamel.yaml>=0.17.23,<0.17.33',
-
+    'DLite-Python>=0.5.1,<1',
+    'jsonref==1.1.0',
+    'jsonschema~=4.22',
+    'oteapi-core>=0.6.1,<1',
+    'oteapi-dlite>=0.2.0,<1',
 ]
 
 [project.urls]
