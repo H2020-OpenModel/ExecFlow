@@ -164,3 +164,18 @@ jobs:
       with:
         files: coverage.xml
         flags: windows-extra_libs
+
+  build-docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Test building Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
