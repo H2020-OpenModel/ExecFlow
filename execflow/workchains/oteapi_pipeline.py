@@ -83,7 +83,7 @@ class OTEPipeline(WorkChain):
         self.ctx.pipeline = result["result"]
         self.ctx.strategy_configs = result["strategy_configs"]
 
-    def setup(self) -> None:  # pylint: disable=too-many-branches
+    def setup(self) -> None:
         """Setup WorkChain
 
         Steps:

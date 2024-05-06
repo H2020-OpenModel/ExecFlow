@@ -1,6 +1,5 @@
 """OTEAPI Transformation strategy config AiiDA Data Node class."""
 
-# pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
 from oteapi.models.transformationconfig import TransformationConfig, TransformationStatus
@@ -32,7 +31,7 @@ class TransformationConfigData(GenericConfigData, SecretConfigData):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         transformationType: str,
         name: "Optional[str]" = None,
@@ -114,9 +113,9 @@ class TransformationStatusData(ExtendedData):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
-        id: str,  # pylint: disable=redefined-builtin
+        id: str,
         status: "Optional[str]" = None,
         messages: "Optional[list[str]]" = None,
         created: "Optional[datetime]" = None,

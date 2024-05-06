@@ -1,6 +1,4 @@
 """OTEAPI Function strategy config AiiDA Data Node class."""
-
-# pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
 from execflow.data.oteapi.genericconfig import GenericConfigData

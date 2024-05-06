@@ -252,10 +252,10 @@ class OTEPipelineData(DictNode):
     _pydantic_model_hash = None
     _pydantic_model = None
 
-    def __init__(  # pylint: disable=too-many-branches,too-many-statements
+    def __init__(
         self,
         # From dict
-        value: "Optional[Union[Dict[str, Any], OTEPipelineData, DictNode, DeclarativePipeline, str, bytes, StrNode]]" = None,  # pylint: disable=line-too-long
+        value: "Optional[Union[Dict[str, Any], OTEPipelineData, DictNode, DeclarativePipeline, str, bytes, StrNode]]" = None,
         # From file
         filepath: "Optional[Union[Path, str, StrNode]]" = None,
         single_file: "Optional[SinglefileData]" = None,
@@ -359,8 +359,8 @@ class OTEPipelineData(DictNode):
         elif strict:
             raise ValidationError(
                 "Cannot validate, missing"
-                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"  # pylint: disable=line-too-long
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"  # pylint: disable=line-too-long
+                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
@@ -520,8 +520,8 @@ class OTEPipelineData(DictNode):
         if self.base.attributes.get("strategies", None) is None or self.base.attributes.get("pipelines", None) is None:
             raise NotExistent(
                 "Cannot instantiate a pydantic model, missing"
-                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"  # pylint: disable=line-too-long
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"  # pylint: disable=line-too-long
+                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 

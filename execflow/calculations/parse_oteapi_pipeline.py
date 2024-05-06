@@ -18,7 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 @calcfunction
 def parse_oteapi_pipeline(
-    pipeline_input: "Union[ExecFlowOTEPipelineData, orm.Dict, orm.SinglefileData, orm.Str]",  # pylint: disable=line-too-long
+    pipeline_input: "Union[ExecFlowOTEPipelineData, orm.Dict, orm.SinglefileData, orm.Str]",
 ) -> "Dict[str, Union[ExecFlowOTEPipelineData, Dict[str, GenericConfigData]]]":
     """Calculation function for parsing a declarative pipeline.
 
@@ -30,7 +30,6 @@ def parse_oteapi_pipeline(
         AiiDA Data Nodes.
 
     """
-    # pylint: disable=invalid-name
     AiiDADict: "Type[orm.Dict]" = DataFactory("core.dict")
     AiiDAStr: "Type[orm.Str]" = DataFactory("core.str")
     OTEPipelineData: "Type[ExecFlowOTEPipelineData]" = DataFactory("execflow.oteapi_pipeline")

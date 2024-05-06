@@ -1,6 +1,5 @@
 """Test execflow.data.oteapi.declarative_pipeline"""
 
-# pylint: disable=too-many-locals,invalid-name
 from typing import TYPE_CHECKING
 
 import pytest

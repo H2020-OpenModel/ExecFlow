@@ -1,6 +1,4 @@
 """OTEAPI Filter strategy config AiiDA Data Node class."""
-
-# pylint: disable=invalid-name
 from typing import TYPE_CHECKING
 
 from oteapi.models import FilterConfig

@@ -1,6 +1,5 @@
 """OTEAPI Download, Parse, and Resource strategy config AiiDA Data Node class."""
 
-# pylint: disable=line-too-long,invalid-name
 from typing import TYPE_CHECKING
 
 from aiida.common.exceptions import ValidationError
@@ -54,13 +53,13 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         downloadUrl: "Optional[str]" = None,
         mediaType: "Optional[str]" = None,
         accessUrl: "Optional[str]" = None,
         accessService: "Optional[str]" = None,
-        license: "Optional[str]" = None,  # pylint: disable=redefined-builtin
+        license: "Optional[str]" = None,
         accessRights: "Optional[str]" = None,
         publisher: "Optional[str]" = None,
         **kwargs: "Any",
