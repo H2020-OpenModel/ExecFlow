@@ -5,7 +5,6 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from aiida import orm
-from aiida.common.exceptions import AiidaException
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
 from aiida.orm import (
@@ -253,26 +252,26 @@ class DeclarativeChain(WorkChain):
         self.ctx.results = {}
         if isinstance(self.inputs["workchain_specification"], Str):
             full_file = Path(self.inputs["workchain_specification"].value).resolve()
-            d = full_file.parent
+            directory = str(full_file.parent)
             ext = full_file.suffix
 
-            with full_file.open() as f:
-                s = f.read()
-                s = s.replace("__DIR__", d)
+            with full_file.open() as handle:
+                file_content = handle.read()
+                file_content = file_content.replace("__DIR__", directory)
                 if ext in (".yaml", ".yml"):
-                    tspec = yaml.safe_load(s)
+                    tspec = yaml.safe_load(file_content)
                     spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
                 else:
-                    spec = jsonref.load(s)
+                    spec = jsonref.load(file_content)
 
         else:
             ext = Path(self.inputs["workchain_specification"].filename).suffix
-            with self.inputs["workchain_specification"].open(mode="r") as f:
+            with self.inputs["workchain_specification"].open(mode="r") as handle:
                 if ext in (".yaml", ".yml"):
-                    tspec = yaml.safe_load(f.read())
+                    tspec = yaml.safe_load(handle.read())
                     spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
                 else:
-                    spec = jsonref.load(f)
+                    spec = jsonref.load(handle)
 
         validate(instance=spec, schema=schema)
         self.ctx.steps = spec["steps"]
@@ -378,16 +377,17 @@ class DeclarativeChain(WorkChain):
 
                 if isinstance(valid_type, tuple):
                     inval = None
-                    c = 0
-                    while inval is None and c < len(valid_type):
+                    for inner_type in valid_type:
                         try:
-                            inval = dict2datanode(val, valid_type[c], isinstance(i, plumpy.PortNamespace))
-                        except AiidaException:
+                            inval = dict2datanode(val, inner_type, isinstance(i, plumpy.PortNamespace))
+                        except Exception:  # noqa: BLE001
                             inval = None
-                        c += 1
 
-                    if inval is None:
+                        if inval is not None:
+                            break
+                    else:
                         ValueError(f"Couldn't resolve type of input {k}")
+
                 else:
                     inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
                     if inval is None:
@@ -406,7 +406,7 @@ class DeclarativeChain(WorkChain):
             if "value" in input and "type" in input:
                 try:
                     valid_type = DataFactory(input["type"])
-                except AiidaException:
+                except Exception:  # noqa: BLE001
                     valid_type = ast.literal_eval(input["type"])  # Other classes
 
                 return dict2datanode(self.resolve_input(input["value"]), valid_type)
