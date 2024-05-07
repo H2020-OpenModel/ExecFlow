@@ -2,7 +2,7 @@ version: 1
 
 strategies:
   - dataresource: json_file
-    downloadUrl: "https://raw.githubusercontent.com/H2020-OpenModel/ExecFlow/cwa/close-21-migrate-to-pydantic-v2/tests/samples/sample2.json"
+    downloadUrl: "https://raw.githubusercontent.com/H2020-OpenModel/ExecFlow/main/tests/samples/sample2.json"
     mediaType: application/json
 
   - mapping: map_json_file

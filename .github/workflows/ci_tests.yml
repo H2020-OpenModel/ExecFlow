@@ -28,9 +28,11 @@ jobs:
       # Ignore some safety warnings:
       # - 63227: paramiko. Subdependency of aiida-core.
       # - 59901: aio-pika. Subdependency of aiida-core.
+      # - 65193: paramiko. Subdependency of aiida-core.
       safety_options: |
         --ignore=63227
         --ignore=59901
+        --ignore=65193
 
       # Build package
       run_build_package: true
@@ -161,3 +163,18 @@ jobs:
       with:
         files: coverage.xml
         flags: windows-extra_libs
+
+  build-docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Test building Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
