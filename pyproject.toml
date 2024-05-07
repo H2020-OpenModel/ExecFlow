@@ -156,7 +156,21 @@ ignore = [
 required-imports = ["from __future__ import annotations"]
 force-sort-within-sections = true
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = [
-    # "BLE",  # flake8-blind-except
+[tool.pytest.ini_options]
+minversion = "8.2"
+addopts = "-rs --cov=execflow --cov-report=term-missing:skip-covered --no-cov-on-fail"
+filterwarnings = [
+    # Treat all warnings as errors
+    "error",
+
+    # Ignore warnings from the aiida-core package
+    "ignore::UserWarning:aiida.*",
+    "ignore::aiida.common.warnings.AiidaDeprecationWarning:",
+
+    # Ignore warnings from the SQLAlchemy package
+    "ignore::sqlalchemy.exc.SAWarning:",
+
+    # Ignore generic warnings
+    "ignore::ResourceWarning:",
+    "ignore::DeprecationWarning:",
 ]
