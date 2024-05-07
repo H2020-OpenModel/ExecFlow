@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def test_list(generate_declarative_workchain, samples):
     process = generate_declarative_workchain(samples / "declarative_chain" / "list.yaml")
     process.setup()

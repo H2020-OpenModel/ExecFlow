@@ -1,5 +1,7 @@
 """AiiDA WorkChain for the OTE Pipeline."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida import orm
@@ -48,7 +50,7 @@ class OTEPipeline(WorkChain):
     """
 
     @classmethod
-    def define(cls, spec: "WorkChainSpec") -> None:
+    def define(cls, spec: WorkChainSpec) -> None:
         super().define(spec)
 
         # Inputs
@@ -83,7 +85,7 @@ class OTEPipeline(WorkChain):
         self.ctx.pipeline = result["result"]
         self.ctx.strategy_configs = result["strategy_configs"]
 
-    def setup(self) -> None:  # pylint: disable=too-many-branches
+    def setup(self) -> None:
         """Setup WorkChain
 
         Steps:
@@ -114,7 +116,7 @@ class OTEPipeline(WorkChain):
                 "'run_pipeline' input."
             )
         else:
-            run_pipeline_name = list(pipeline.pipelines)[0]
+            run_pipeline_name = next(iter(pipeline.pipelines))
 
         strategies = []
         # Initialization
@@ -171,10 +173,8 @@ class OTEPipeline(WorkChain):
         self.to_context(
             current=run_get_node(
                 strategy_process_cls,
-                **{
-                    "config": strategy_config,
-                    "session": self.ctx.ote_session,
-                },
+                config=strategy_config,
+                session=self.ctx.ote_session,
             )[1]
         )
 
@@ -204,7 +204,7 @@ class OTEPipeline(WorkChain):
         self.out("session", self.ctx.ote_session)
 
         if "to_results" in self.ctx.ote_session:
-            results = dict()
+            results = {}
             for k in self.ctx.ote_session["to_results"]:
                 results[k] = orm.load_node(self.ctx.ote_session["to_results"][k])
 

@@ -1,6 +1,7 @@
 """OTEAPI Filter strategy config AiiDA Data Node class."""
 
-# pylint: disable=invalid-name
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from oteapi.models import FilterConfig
@@ -8,7 +9,7 @@ from oteapi.models import FilterConfig
 from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Optional, Union
+    from typing import Any
 
 
 class FilterConfigData(GenericConfigData):
@@ -26,10 +27,10 @@ class FilterConfigData(GenericConfigData):
     def __init__(
         self,
         filterType: str,
-        query: "Optional[str]" = None,
-        condition: "Optional[str]" = None,
-        limit: "Optional[int]" = None,
-        **kwargs: "Any",
+        query: str | None = None,
+        condition: str | None = None,
+        limit: int | None = None,
+        **kwargs: Any,
     ) -> None:
         if query is None:
             query = FilterConfig.model_fields["query"].default
@@ -61,28 +62,28 @@ class FilterConfigData(GenericConfigData):
         self.set_attribute("filterType", value)
 
     @property
-    def query(self) -> "Union[str, None]":
+    def query(self) -> str | None:
         """Define a query operation."""
         return self.base.attributes.get("query")
 
     @query.setter
-    def query(self, value: "Union[str, None]") -> None:
+    def query(self, value: str | None) -> None:
         self.set_attribute("query", value)
 
     @property
-    def condition(self) -> "Union[str, None]":
+    def condition(self) -> str | None:
         """Logical statement indicating when a filter should be applied."""
         return self.base.attributes.get("condition")
 
     @condition.setter
-    def condition(self, value: "Union[str, None]") -> None:
+    def condition(self, value: str | None) -> None:
         self.set_attribute("condition", value)
 
     @property
-    def limit(self) -> "Union[int, None]":
+    def limit(self) -> int | None:
         """Number of items remaining after a filter expression."""
         return self.base.attributes.get("limit")
 
     @limit.setter
-    def limit(self, value: "Union[int, None]") -> None:
+    def limit(self, value: int | None) -> None:
         self.set_attribute("limit", value)

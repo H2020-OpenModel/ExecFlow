@@ -8,6 +8,8 @@ Look inside aiida.manage.tests.pytest_fixtures to see which fixtures are provide
 https://aiida.readthedocs.io/projects/aiida-core/en/latest/reference/apidoc/aiida.manage.tests.html#module-aiida.manage.tests.pytest_fixtures
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import pytest
@@ -15,13 +17,13 @@ import pytest
 pytest_plugins = ["aiida.manage.tests.pytest_fixtures"]
 
 
-@pytest.fixture(scope="function", autouse=True)
-def aiida_profile_clean_auto(aiida_profile_clean):
+@pytest.fixture(autouse=True)
+def _aiida_profile_clean_auto(aiida_profile_clean):  # noqa: ARG001
     """Automatically clear the AiiDA profile's DB and storage after each test."""
 
 
 @pytest.fixture(scope="session")
-def samples() -> "Path":
+def samples() -> Path:
     """Return path to 'samples' folder."""
 
     path = (Path(__file__).resolve().parent / "samples").resolve()
@@ -30,7 +32,7 @@ def samples() -> "Path":
     return path
 
 
-@pytest.fixture
+@pytest.fixture()
 def fixture_localhost(aiida_localhost):
     """Return a localhost `Computer`."""
     localhost = aiida_localhost
@@ -38,7 +40,7 @@ def fixture_localhost(aiida_localhost):
     return localhost
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_calcjob_node(fixture_localhost):
     """Fixture to generate a mock `CalcJobNode` for testing parsers."""
 
@@ -49,15 +51,12 @@ def generate_calcjob_node(fixture_localhost):
         """
         from aiida import orm
 
-        node = orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
-
-        # node.store()
-        return node
+        return orm.CalcJobNode(computer=fixture_localhost, process_type=entry_point)
 
     return _generate_calc_job_node
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_workchain():
     """Generate an instance of a `WorkChain`."""
 
@@ -74,14 +73,12 @@ def generate_workchain():
 
         process_class = WorkflowFactory(entry_point)
         runner = get_manager().get_runner()
-        process = instantiate_process(runner, process_class, **inputs)
-
-        return process
+        return instantiate_process(runner, process_class, **inputs)
 
     return _generate_workchain
 
 
-@pytest.fixture
+@pytest.fixture()
 def generate_declarative_workchain(generate_workchain):
     """Generate an instance of a ``PwBaseWorkChain``."""
 
@@ -107,8 +104,6 @@ def generate_declarative_workchain(generate_workchain):
         elif not isinstance(input, SinglefileData):
             raise ValueError("input needs to be SinglefileData or a str")
 
-        process = generate_workchain(entry_point, {"workchain_specification": input})
-
-        return process
+        return generate_workchain(entry_point, {"workchain_specification": input})
 
     return _generate_declarative_workchain

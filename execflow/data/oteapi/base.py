@@ -5,19 +5,21 @@ but has some extra methods or functionalities that is useful for the ExecFlow Da
 classes.
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida.common.exceptions import ModificationNotAllowed
 from aiida.orm import Data
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Dict
+    from typing import Any
 
 
 class ExtendedData(Data):
     """Equivalent to aiida.orm.Data but with extended functionality."""
 
-    def set_attribute(self, attribute_name: str, value: "Any") -> None:
+    def set_attribute(self, attribute_name: str, value: Any) -> None:
         """Set an attribute, ensuring the Node is not yet stored.
 
         Args:
@@ -32,6 +34,6 @@ class ExtendedData(Data):
 
         self.base.attributes.set(attribute_name, value)
 
-    def get_dict(self) -> "Dict[str, Any]":
+    def get_dict(self) -> dict[str, Any]:
         """Return all attributes as a Python dictionary."""
         return dict(self.base.attributes.all)

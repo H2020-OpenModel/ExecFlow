@@ -1,19 +1,35 @@
 """A Data Node representing a declarative OTE pipeline."""
 
+from __future__ import annotations
+
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, Dict, List, Type, Union
+from typing import TYPE_CHECKING, Annotated, Union
 
-from aiida.common.exceptions import NotExistent, NotExistentAttributeError, ValidationError
+from aiida.common.exceptions import (
+    NotExistent,
+    NotExistentAttributeError,
+)
+from aiida.common.exceptions import (
+    ValidationError as AiiDAValidationError,
+)
 from aiida.orm import Dict as DictNode
 from aiida.orm import SinglefileData
 from aiida.orm import Str as StrNode
-from oteapi.models import FilterConfig, FunctionConfig, MappingConfig, ResourceConfig, TransformationConfig
-from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
+from oteapi.models import (
+    FilterConfig,
+    FunctionConfig,
+    MappingConfig,
+    ResourceConfig,
+    TransformationConfig,
+)
+from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import ValidationError as PydanticValidationError
 import yaml
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple, Union
+    from collections.abc import Generator, Iterable
+    from typing import Any, Union
 
 
 class DeclarativeStrategyBase(BaseModel):
@@ -34,7 +50,7 @@ class DeclarativeStrategyBase(BaseModel):
         """Get the name of the strategy."""
         return getattr(self, self.get_type())
 
-    def get_config(self) -> "Dict[str, Any]":
+    def get_config(self) -> dict[str, Any]:
         """Get the model as a ready-to-parse config for AiiDA calculations."""
         return self.model_dump(exclude={self.get_type()}, mode="json")
 
@@ -112,21 +128,21 @@ class DeclarativePipeline(BaseModel):
 
     version: Annotated[int, Field(description="The declarative pipeline syntax version.")] = 1
     strategies: Annotated[
-        List[
-            Union[
-                DeclarativeDataResource,
-                DeclarativeFilter,
-                DeclarativeFunction,
-                DeclarativeMapping,
-                DeclarativeTransformation,
-            ]
+        list[
+            (
+                DeclarativeDataResource
+                | DeclarativeFilter
+                | DeclarativeFunction
+                | DeclarativeMapping
+                | DeclarativeTransformation
+            )
         ],
         Field(
             description=("List of strategies to be used in the pipeline(s), including their configuration."),
         ),
     ]
     pipelines: Annotated[
-        Dict[str, str],
+        dict[str, str],
         Field(
             description="Dict of the pipeline(s) defined as part of the overall pipeline.",
         ),
@@ -134,25 +150,25 @@ class DeclarativePipeline(BaseModel):
 
     @field_validator("strategies", mode="before")
     @classmethod
-    def type_cast_strategies(cls, value: "Any") -> "List[DeclarativeStrategy]":
+    def type_cast_strategies(cls, value: Any) -> list[DeclarativeStrategy]:
         """Sort strategies into "correct" types."""
         if not isinstance(value, list):
             raise ValueError(f"strategies must be a list of strategy dictionaries. Got {value!r} instead.")
 
-        type_mapping: "Dict[str, Type[DeclarativeStrategy]]" = {
+        type_mapping: dict[str, type[DeclarativeStrategy]] = {
             "dataresource": DeclarativeDataResource,
             "filter": DeclarativeFilter,
             "function": DeclarativeFunction,
             "mapping": DeclarativeMapping,
             "transformation": DeclarativeTransformation,
         }
-        type_casted_strategies: "List[DeclarativeStrategy]" = []
+        type_casted_strategies: list[DeclarativeStrategy] = []
         for strategy in value:
             for strategy_type, strategy_cls in type_mapping.items():
                 if strategy_type in strategy:
                     try:
                         type_casted_strategies.append(strategy_cls(**strategy))
-                    except ValidationError as exc:
+                    except PydanticValidationError as exc:
                         exc_message = str(exc).replace("\n", "\n  ")
                         raise ValueError(
                             "Strategy cannot be validated as a "
@@ -168,7 +184,7 @@ class DeclarativePipeline(BaseModel):
         return type_casted_strategies
 
     @model_validator(mode="after")
-    def ensure_steps_exist(self) -> "DeclarativePipeline":
+    def ensure_steps_exist(self) -> DeclarativePipeline:
         """Ensure the listed steps in the pipelines exist within the same data model."""
         strategy_names = [strategy.get_name() for strategy in self.strategies]
         pipeline_names = list(self.pipelines)
@@ -181,7 +197,7 @@ class DeclarativePipeline(BaseModel):
                 )
         return self
 
-    def _strategy_names(self) -> "List[str]":
+    def _strategy_names(self) -> list[str]:
         """Utility function to return list of strategy names.
 
         Returns:
@@ -190,7 +206,7 @@ class DeclarativePipeline(BaseModel):
         """
         return [strategy.get_name() for strategy in self.strategies]
 
-    def get_strategy(self, strategy_name: str) -> "DeclarativeStrategy":
+    def get_strategy(self, strategy_name: str) -> DeclarativeStrategy:
         """Get a strategy based on its given name.
 
         Parameters:
@@ -205,7 +221,7 @@ class DeclarativePipeline(BaseModel):
                 return strategy
         raise ValueError(f"Strategy {strategy_name!r} does not exist among {self._strategy_names()}")
 
-    def parse_pipeline(self, pipeline: str) -> "List[DeclarativeStrategy]":
+    def parse_pipeline(self, pipeline: str) -> list[DeclarativeStrategy]:
         """Resolve a pipeline into its strategy parts.
 
         Parameters:
@@ -252,19 +268,21 @@ class OTEPipelineData(DictNode):
     _pydantic_model_hash = None
     _pydantic_model = None
 
-    def __init__(  # pylint: disable=too-many-branches,too-many-statements
+    def __init__(
         self,
         # From dict
-        value: "Optional[Union[Dict[str, Any], OTEPipelineData, DictNode, DeclarativePipeline, str, bytes, StrNode]]" = None,  # pylint: disable=line-too-long
+        value: None | (
+            dict[str, Any] | OTEPipelineData | DictNode | DeclarativePipeline | str | bytes | StrNode
+        ) = None,
         # From file
-        filepath: "Optional[Union[Path, str, StrNode]]" = None,
-        single_file: "Optional[SinglefileData]" = None,
+        filepath: Path | str | StrNode | None = None,
+        single_file: SinglefileData | None = None,
         # Explicitly - top keywords
-        version: "Optional[Union[int, str]]" = None,
-        strategies: "Optional[List[Dict[str, Any]]]" = None,
-        pipelines: "Optional[Dict[str, str]]" = None,
+        version: int | str | None = None,
+        strategies: list[dict[str, Any]] | None = None,
+        pipelines: dict[str, str] | None = None,
         # AiiDA-specific extra keyword-arguments
-        **kwargs: "Any",
+        **kwargs: Any,
     ) -> None:
         # Update
         dictionary = None
@@ -307,7 +325,7 @@ class OTEPipelineData(DictNode):
         dictionary = dictionary or {}
 
         if not isinstance(dictionary, (dict, DictNode)):
-            raise ValidationError(
+            raise AiiDAValidationError(
                 "dictionary should now be a Python/AiiDA dict. Instead it is a "
                 f"{type(dictionary)!r}. Content:\n\n{dictionary}"
             )
@@ -337,7 +355,7 @@ class OTEPipelineData(DictNode):
 
         if pipelines is not None:
             if "pipelines" in dictionary:
-                updated_pipelines: "Dict[str, str]" = dictionary["pipelines"]
+                updated_pipelines: dict[str, str] = dictionary["pipelines"]
                 updated_pipelines.update(pipelines)
                 dictionary["pipelines"] = updated_pipelines
             else:
@@ -357,10 +375,10 @@ class OTEPipelineData(DictNode):
             self._pydantic_model = self._pydantic_model_class(**self.get_dict())
             self._pydantic_model_hash = hash(self._pydantic_model)
         elif strict:
-            raise ValidationError(
+            raise AiiDAValidationError(
                 "Cannot validate, missing"
-                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"  # pylint: disable=line-too-long
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"  # pylint: disable=line-too-long
+                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines', None) is None else ''}"  # noqa: E501
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
@@ -397,7 +415,7 @@ class OTEPipelineData(DictNode):
         self["version"] = value
 
     @property
-    def strategies(self) -> "List[Dict[str, Any]]":
+    def strategies(self) -> list[dict[str, Any]]:
         """Return a stand-alone list of strategies.
 
         By "stand-alone" it is meant that mutating the returned list, will not result
@@ -434,7 +452,7 @@ class OTEPipelineData(DictNode):
             raise NotExistentAttributeError("strategies is not defined.") from exc
 
     @strategies.setter
-    def strategies(self, value: "Iterable[Dict[str, Any]]") -> None:
+    def strategies(self, value: Iterable[dict[str, Any]]) -> None:
         """Set the list of strategies.
 
         Parameters:
@@ -448,7 +466,7 @@ class OTEPipelineData(DictNode):
         self["strategies"] = value
 
     @property
-    def pipelines(self) -> "Dict[str, Any]":
+    def pipelines(self) -> dict[str, Any]:
         """Return a stand-alone dictionary of pipelines.
 
         By "stand-alone" it is meant that mutating the returned dictionary, will not
@@ -496,7 +514,7 @@ class OTEPipelineData(DictNode):
             raise NotExistentAttributeError("pipelines is not defined.") from exc
 
     @pipelines.setter
-    def pipelines(self, value: "Union[Dict[str, str], Iterable[Tuple[str, str]]]") -> None:
+    def pipelines(self, value: dict[str, str] | Iterable[tuple[str, str]]) -> None:
         """Set the dictionary of pipelines.
 
         Parameters:
@@ -510,7 +528,7 @@ class OTEPipelineData(DictNode):
         self["pipelines"] = value
 
     @property
-    def pydantic_model(self) -> "DeclarativePipeline":
+    def pydantic_model(self) -> DeclarativePipeline:
         """Instantiate and return a pydantic model of the declarative pipeline.
 
         Returns:
@@ -520,8 +538,8 @@ class OTEPipelineData(DictNode):
         if self.base.attributes.get("strategies", None) is None or self.base.attributes.get("pipelines", None) is None:
             raise NotExistent(
                 "Cannot instantiate a pydantic model, missing"
-                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"  # pylint: disable=line-too-long
-                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"  # pylint: disable=line-too-long
+                f"{' strategies' if self.base.attributes.get('strategies', None) is None else ''}"
+                f"{' and' if self.base.attributes.get('strategies', None) is None and self.base.attributes.get('pipelines') is None else ''}"  # noqa: E501
                 f"{' pipelines' if self.base.attributes.get('pipelines', None) is None else ''}"
             )
 
@@ -530,11 +548,11 @@ class OTEPipelineData(DictNode):
             self._pydantic_model_hash = hash(self._pydantic_model)
 
         if not isinstance(self._pydantic_model, self._pydantic_model_class):
-            raise ValidationError("Internal pydantic model not set!")
+            raise AiiDAValidationError("Internal pydantic model not set!")
 
         return self._pydantic_model
 
-    def get_strategies(self, pipeline: str, reverse: bool = False) -> "Generator[DeclarativeStrategy, None, None]":
+    def get_strategies(self, pipeline: str, reverse: bool = False) -> Generator[DeclarativeStrategy, None, None]:
         """Yield pipeline strategies as pydantic models.
 
         Parameters:
@@ -550,8 +568,6 @@ class OTEPipelineData(DictNode):
             raise NotExistent(f"Pipeline {pipeline!r} does not exist among {list(self.pipelines)}")
 
         if reverse:
-            for strategy in reversed(self.pydantic_model.parse_pipeline(pipeline)):
-                yield strategy
+            yield from reversed(self.pydantic_model.parse_pipeline(pipeline))
         else:
-            for strategy in self.pydantic_model.parse_pipeline(pipeline):
-                yield strategy
+            yield from self.pydantic_model.parse_pipeline(pipeline)

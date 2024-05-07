@@ -1,6 +1,7 @@
 """OTEAPI Download, Parse, and Resource strategy config AiiDA Data Node class."""
 
-# pylint: disable=line-too-long,invalid-name
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiida.common.exceptions import ValidationError
@@ -10,7 +11,7 @@ from execflow.data.oteapi.genericconfig import GenericConfigData
 from execflow.data.oteapi.secretconfig import SecretConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Optional, Union
+    from typing import Any
 
 
 class ResourceConfigData(GenericConfigData, SecretConfigData):
@@ -54,16 +55,16 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
-        downloadUrl: "Optional[str]" = None,
-        mediaType: "Optional[str]" = None,
-        accessUrl: "Optional[str]" = None,
-        accessService: "Optional[str]" = None,
-        license: "Optional[str]" = None,  # pylint: disable=redefined-builtin
-        accessRights: "Optional[str]" = None,
-        publisher: "Optional[str]" = None,
-        **kwargs: "Any",
+        downloadUrl: str | None = None,
+        mediaType: str | None = None,
+        accessUrl: str | None = None,
+        accessService: str | None = None,
+        license: str | None = None,
+        accessRights: str | None = None,
+        publisher: str | None = None,
+        **kwargs: Any,
     ) -> None:
         if downloadUrl is None:
             downloadUrl = ResourceConfig.model_fields["downloadUrl"].default
@@ -101,7 +102,7 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         self.base.attributes.set_many(attr_dict)
 
     @property
-    def downloadUrl(self) -> "Union[str, None]":
+    def downloadUrl(self) -> str | None:
         """Definition: The URL of the downloadable file in a given format. E.g. CSV
         file or RDF file.
 
@@ -112,11 +113,11 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         return self.base.attributes.get("downloadUrl")
 
     @downloadUrl.setter
-    def downloadUrl(self, value: "Union[str, None]") -> None:
+    def downloadUrl(self, value: str | None) -> None:
         self.set_attribute("downloadUrl", value)
 
     @property
-    def mediaType(self) -> "Union[str, None]":
+    def mediaType(self) -> str | None:
         """The media type of the distribution as defined by IANA
         [[IANA-MEDIA-TYPES](https://www.w3.org/TR/vocab-dcat-2/#bib-iana-media-types)].
 
@@ -127,11 +128,11 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         return self.base.attributes.get("mediaType")
 
     @mediaType.setter
-    def mediaType(self, value: "Union[str, None]") -> None:
+    def mediaType(self, value: str | None) -> None:
         self.set_attribute("mediaType", value)
 
     @property
-    def accessUrl(self) -> "Union[str, None]":
+    def accessUrl(self) -> str | None:
         """A URL of the resource that gives access to a distribution of
         the dataset. E.g. landing page, feed, SPARQL endpoint.
 
@@ -146,43 +147,43 @@ class ResourceConfigData(GenericConfigData, SecretConfigData):
         return self.base.attributes.get("accessUrl")
 
     @accessUrl.setter
-    def accessUrl(self, value: "Union[str, None]") -> None:
+    def accessUrl(self, value: str | None) -> None:
         self.set_attribute("accessUrl", value)
 
     @property
-    def accessService(self) -> "Union[str, None]":
+    def accessService(self) -> str | None:
         """A data service that gives access to the distribution of the dataset."""
         return self.base.attributes.get("accessService")
 
     @accessService.setter
-    def accessService(self, value: "Union[str, None]") -> None:
+    def accessService(self, value: str | None) -> None:
         self.set_attribute("accessService", value)
 
     @property
-    def license(self) -> "Union[str, None]":
+    def license(self) -> str | None:
         """A legal document under which the distribution is made available."""
         return self.base.attributes.get("license")
 
     @license.setter
-    def license(self, value: "Union[str, None]") -> None:
+    def license(self, value: str | None) -> None:
         self.set_attribute("license", value)
 
     @property
-    def accessRights(self) -> "Union[str, None]":
+    def accessRights(self) -> str | None:
         """A rights statement that concerns how the distribution is accessed."""
         return self.base.attributes.get("accessRights")
 
     @accessRights.setter
-    def accessRights(self, value: "Union[str, None]") -> None:
+    def accessRights(self, value: str | None) -> None:
         self.set_attribute("accessRights", value)
 
     @property
-    def publisher(self) -> "Union[str, None]":
+    def publisher(self) -> str | None:
         """The entity responsible for making the resource/item available."""
         return self.base.attributes.get("publisher")
 
     @publisher.setter
-    def publisher(self, value: "Union[str, None]") -> None:
+    def publisher(self, value: str | None) -> None:
         self.set_attribute("publisher", value)
 
     def _validate(self) -> bool:

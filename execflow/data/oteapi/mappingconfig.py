@@ -1,6 +1,7 @@
 """OTEAPI Mapping strategy config AiiDA Data Node class."""
 
-# pylint: disable=invalid-name
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from oteapi.models import MappingConfig
@@ -8,7 +9,7 @@ from oteapi.models import MappingConfig
 from execflow.data.oteapi.genericconfig import GenericConfigData
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Optional, Union
+    from typing import Any
 
     RDFTriple = tuple[str, str, str]
 
@@ -28,9 +29,9 @@ class MappingConfigData(GenericConfigData):
     def __init__(
         self,
         mappingType: str,
-        prefixes: "Optional[dict[str, str]]" = None,
-        triples: "Optional[list[RDFTriple]]" = None,
-        **kwargs: "Any",
+        prefixes: dict[str, str] | None = None,
+        triples: list[RDFTriple] | None = None,
+        **kwargs: Any,
     ) -> None:
         if prefixes is None:
             prefixes = MappingConfig.model_fields["prefixes"].default
@@ -58,20 +59,20 @@ class MappingConfigData(GenericConfigData):
         self.set_attribute("mappingType", value)
 
     @property
-    def prefixes(self) -> "Union[dict[str, str], None]":
+    def prefixes(self) -> dict[str, str] | None:
         """List of shortnames that expands to an IRI given as local
         value/IRI-expansion-pairs."""
         return self.base.attributes.get("prefixes")
 
     @prefixes.setter
-    def prefixes(self, value: "Union[dict[str, str], None]") -> None:
+    def prefixes(self, value: dict[str, str] | None) -> None:
         self.set_attribute("prefixes", value)
 
     @property
-    def triples(self) -> "Union[RDFTriple, None]":
+    def triples(self) -> RDFTriple | None:
         """List of RDF triples given as (subject, predicate, object)."""
         return self.base.attributes.get("triples")
 
     @triples.setter
-    def triples(self, value: "Union[RDFTriple, None]") -> None:
+    def triples(self, value: RDFTriple | None) -> None:
         self.set_attribute("triples", value)

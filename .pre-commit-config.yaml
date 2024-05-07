@@ -19,20 +19,37 @@ repos:
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
 
-  # isort is a tool to sort and group import statements in Python files
+  # pyupgrade is a tool for automatically upgrading Python syntax for newer versions of
+  # the language
   # It works on files in-place
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.13.2
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.2
     hooks:
-    - id: isort
-      args: ["--profile", "black", "--filter-files", "--skip-gitignore"]
+    - id: pyupgrade
+      args: [--py39-plus]
 
   # Black is a code style and formatter
   # It works on files in-place
-  - repo: https://github.com/ambv/black
+  - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
     - id: black
+
+  # ruff is a Python linter, incl. import sorter and formatter
+  # It works partly on files in-place
+  # More information can be found in its documentation:
+  # https://docs.astral.sh/ruff/
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.3
+    hooks:
+    - id: ruff
+      # Fix what can be fixed in-place and exit with non-zero status if files were
+      # changed and/or there are rules violations.
+      args:
+      - "--fix"
+      - "--exit-non-zero-on-fix"
+      - "--show-fixes"
+      - "--no-unsafe-fixes"
 
   # Bandit is a security linter
   # More information can be found in its documentation:

@@ -1,15 +1,16 @@
 """Test execflow.workchains.oteapi_pipeline"""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Dict, Tuple, Union
 
 
-def get_input_variants() -> "Dict[str, Tuple[str, Union[Path, bytes, dict]]]":
+def get_input_variants() -> dict[str, tuple[str, Path | bytes | dict]]:
     """Input for 'test_run_pipeline'.
 
     Must pass AiiDA input variants as tuples of entry point entries and initialization
@@ -42,11 +43,11 @@ def get_input_variants() -> "Dict[str, Tuple[str, Union[Path, bytes, dict]]]":
 
 
 @pytest.mark.parametrize(
-    ["entry_point", "node_input"],
+    ("entry_point", "node_input"),
     get_input_variants().values(),
     ids=get_input_variants().keys(),
 )
-def test_run_pipeline(entry_point: str, node_input: "Union[Path, str, dict]") -> None:
+def test_run_pipeline(entry_point: str, node_input: Path | str | dict) -> None:
     """Run a simple pipeline.
 
     Parameters:
@@ -63,7 +64,7 @@ def test_run_pipeline(entry_point: str, node_input: "Union[Path, str, dict]") ->
     run(OTEPipeline, pipeline=input_variant)
 
 
-def test_result_pipeline(samples: "Path") -> None:
+def test_result_pipeline(samples: Path) -> None:
     """Run a simple pipeline and check result.
 
     Parameters:

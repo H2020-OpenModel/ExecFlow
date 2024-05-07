@@ -1,11 +1,23 @@
-from os.path import dirname, splitext
+from __future__ import annotations
+
+import ast
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from aiida import orm
 from aiida.engine import ExitCode, ToContext, WorkChain, run_get_node, while_
 from aiida.engine.utils import is_process_function
-from aiida.orm import Data, Dict, List, Node, SinglefileData, Str, load_code, load_group, load_node
+from aiida.orm import (
+    Data,
+    Dict,
+    List,
+    Node,
+    SinglefileData,
+    Str,
+    load_code,
+    load_group,
+    load_node,
+)
 from aiida.plugins import CalculationFactory, DataFactory, WorkflowFactory
 from aiida_pseudo.data.pseudo.upf import UpfData
 import cachecontrol
@@ -31,8 +43,8 @@ def my_fancy_loader(uri):
             response.raise_for_status()
             content = response.content
         return yaml.safe_load(content)
-    else:
-        return jsonref.load_uri(uri)
+
+    return jsonref.load_uri(uri)
 
 
 # from jinja2.nativetypes import NativeEnvironment
@@ -152,7 +164,7 @@ def dict2upf(d):
 
 
 # TODO: implement for old upfs?
-def dict2upf_deprecated(d):
+def dict2upf_deprecated(_):
     return None
 
 
@@ -168,7 +180,7 @@ def dict2kpoints(d):
 def dict2datanode(dat, typ, dynamic=False):
     # Resolve recursively
     if dynamic:
-        out = dict()
+        out = {}
         for k in dat:
             # Is there only 1 level of dynamisism?
             out[k] = dict2datanode(dat[k], typ, False)
@@ -181,42 +193,44 @@ def dict2datanode(dat, typ, dynamic=False):
     # Else resolve DataNode from value
     if typ is orm.AbstractCode:
         return dict2code(dat)
-    elif typ is orm.StructureData:
+    if typ is orm.StructureData:
         return dict2structure(dat)
-    elif typ is UpfData or typ is orm.nodes.data.upf.UpfData:
+    if typ is UpfData or typ is orm.nodes.data.upf.UpfData:
         return dict2upf(dat)
-    elif typ is orm.KpointsData:
+    if typ is orm.KpointsData:
         return dict2kpoints(dat)
-    elif typ is Dict:
+    if typ is Dict:
         return Dict(dict=dat)
-    elif typ is List:
+    if typ is List:
         return List(list=dat)
-    elif typ is Data:
+    if typ is Data:
         return dat
-    else:
-        return typ(dat)
+    return typ(dat)
 
 
 def get_dot2index(d, key):
     if isinstance(key, str):
         return get_dot2index(d, key.split("."))
-    elif len(key) == 1:
+
+    if len(key) == 1:
         return d[key[0]]
-    else:
-        return get_dot2index(d[key[0]], key[1:])
+
+    return get_dot2index(d[key[0]], key[1:])
 
 
 def set_dot2index(d, key, val):
     if isinstance(key, str):
         return set_dot2index(d, key.split("."), val)
-    elif len(key) == 1:
-        d[key[0]] = val
-    else:
-        t = key[0]
-        if t not in d.keys():
-            d[t] = dict()
 
-        return set_dot2index(d[t], key[1:], val)
+    if len(key) == 1:
+        d[key[0]] = val
+        return None
+
+    t = key[0]
+    if t not in d:
+        d[t] = {}
+
+    return set_dot2index(d[t], key[1:], val)
 
 
 class DeclarativeChain(WorkChain):
@@ -235,29 +249,29 @@ class DeclarativeChain(WorkChain):
 
     def setup(self):
         self.ctx.current_id = 0
-        self.ctx.results = dict()
+        self.ctx.results = {}
         if isinstance(self.inputs["workchain_specification"], Str):
-            full_file = self.inputs["workchain_specification"].value
-            d = dirname(full_file)
-            ext = splitext(full_file)[1]
+            full_file = Path(self.inputs["workchain_specification"].value).resolve()
+            directory = str(full_file.parent)
+            ext = full_file.suffix
 
-            with open(full_file, mode="r") as f:
-                s = f.read()
-                s = s.replace("__DIR__", d)
+            with full_file.open() as handle:
+                file_content = handle.read()
+                file_content = file_content.replace("__DIR__", directory)
                 if ext in (".yaml", ".yml"):
-                    tspec = yaml.safe_load(s)
+                    tspec = yaml.safe_load(file_content)
                     spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
                 else:
-                    spec = jsonref.load(s)
+                    spec = jsonref.load(file_content)
 
         else:
-            ext = splitext(self.inputs["workchain_specification"].filename)[1]
-            with self.inputs["workchain_specification"].open(mode="r") as f:
+            ext = Path(self.inputs["workchain_specification"].filename).suffix
+            with self.inputs["workchain_specification"].open(mode="r") as handle:
                 if ext in (".yaml", ".yml"):
-                    tspec = yaml.safe_load(f.read())
+                    tspec = yaml.safe_load(handle.read())
                     spec = jsonref.JsonRef.replace_refs(tspec, loader=my_fancy_loader)
                 else:
-                    spec = jsonref.load(f)
+                    spec = jsonref.load(handle)
 
         validate(instance=spec, schema=schema)
         self.ctx.steps = spec["steps"]
@@ -279,12 +293,12 @@ class DeclarativeChain(WorkChain):
 
         if isinstance(n, Node):
             self.ctx.current = n
-        else:
-            cjob, inputs = n
-            if is_process_function(cjob):
-                return ToContext(current=run_get_node(cjob, **inputs)[1])
-            else:
-                return ToContext(current=self.submit(cjob, **inputs))
+            return None
+
+        cjob, inputs = n
+        if is_process_function(cjob):
+            return ToContext(current=run_get_node(cjob, **inputs)[1])
+        return ToContext(current=self.submit(cjob, **inputs))
 
     def next_step(self):
 
@@ -295,7 +309,7 @@ class DeclarativeChain(WorkChain):
             self.ctx.current_id += 1
             return self.next_step()
 
-        elif "while" in step:
+        if "while" in step:
             if self.eval_template(step["while"]):
                 if not self.ctx.in_while:
                     # Enter the while loop
@@ -316,30 +330,31 @@ class DeclarativeChain(WorkChain):
 
             return self.next_step()
 
-        else:
-            if "node" in step:
-                return load_node(step["node"])
+        if "node" in step:
+            return load_node(step["node"])
 
-            elif "calcjob" in step or "workflow" in step or "calculation" in step or "calcfunction" in step:
-                # This needs to happen because no dict 2 node for now.
-                # M inputs = dict()
-                if "calcjob" in step:
-                    cjob = CalculationFactory(step["calcjob"])
-                elif "calcfunction" in step:
-                    cjob = CalculationFactory(step["calcfunction"])
-                elif "calculation" in step:
-                    cjob = CalculationFactory(step["calculation"])
-                elif "workflow" in step:
-                    cjob = WorkflowFactory(step["workflow"])
-                else:
-                    ValueError(f"Unrecognized step {step}")
+        if any(_ in step for _ in ("calcjob", "workflow", "calculation", "calcfunction")):
+            # This needs to happen because no dict 2 node for now.
+            # M inputs = dict()
+            if "calcjob" in step:
+                cjob = CalculationFactory(step["calcjob"])
+            elif "calcfunction" in step:
+                cjob = CalculationFactory(step["calcfunction"])
+            elif "calculation" in step:
+                cjob = CalculationFactory(step["calculation"])
+            elif "workflow" in step:
+                cjob = WorkflowFactory(step["workflow"])
+            else:
+                ValueError(f"Unrecognized step {step}")
 
-                spec_inputs = cjob.spec().inputs
-                inputs = self.resolve_inputs(step["inputs"], spec_inputs)
-                return cjob, inputs
+            spec_inputs = cjob.spec().inputs
+            inputs = self.resolve_inputs(step["inputs"], spec_inputs)
+            return cjob, inputs
+
+        raise ValueError(f"Unrecognized step {step}")
 
     def resolve_inputs(self, inputs, spec_inputs):
-        out = dict()
+        out = {}
         for k in inputs:
 
             # First resolve enforced types with 'type' and 'value', and dereference ctx vars
@@ -362,16 +377,17 @@ class DeclarativeChain(WorkChain):
 
                 if isinstance(valid_type, tuple):
                     inval = None
-                    c = 0
-                    while inval is None and c < len(valid_type):
+                    for inner_type in valid_type:
                         try:
-                            inval = dict2datanode(val, valid_type[c], isinstance(i, plumpy.PortNamespace))
-                        except:
+                            inval = dict2datanode(val, inner_type, isinstance(i, plumpy.PortNamespace))
+                        except Exception:  # noqa: BLE001
                             inval = None
-                        c += 1
 
-                    if inval is None:
+                        if inval is not None:
+                            break
+                    else:
                         ValueError(f"Couldn't resolve type of input {k}")
+
                 else:
                     inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
                     if inval is None:
@@ -390,7 +406,7 @@ class DeclarativeChain(WorkChain):
             if "value" in input and "type" in input:
                 try:
                     valid_type = DataFactory(input["type"])
-                except:
+                except Exception:  # noqa: BLE001
                     valid_type = ast.literal_eval(input["type"])  # Other classes
 
                 return dict2datanode(self.resolve_input(input["value"]), valid_type)
@@ -431,6 +447,8 @@ class DeclarativeChain(WorkChain):
 
         if self.ctx.in_while and self.ctx.current_id == len(self.ctx.steps):
             self.ctx.current_id = self.ctx.while_entry_id
+
+        return None
 
     # Jinja evaluation
     def eval_template(self, s):
