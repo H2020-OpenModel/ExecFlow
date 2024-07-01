@@ -1,0 +1,16 @@
+{
+  "16995928-77ca-4713-81f7-df7faa37bf8a":   {
+    "meta": "http://onto-ns.com/meta/0.1/Reaction",
+    "dimensions": {
+      "nreactants": 1,
+      "nproducts": 2
+    },
+    "properties": {
+      "reactants": ["C2H6"],
+      "products": ["C2H4", "H2"],
+      "reactant_stoichiometric_coefficient": [1],
+      "product_stoichiometric_coefficient": [1, 1],
+      "energy": 0.89568
+    }
+  }
+}
