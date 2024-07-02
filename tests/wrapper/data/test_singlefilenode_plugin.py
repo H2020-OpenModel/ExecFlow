@@ -26,7 +26,7 @@ singlefileinst.content = content
 
 
 # save the instance as a file to use the singlefiledatanode plugin directly
-singlefileinst.save("json", "instance.json", options="mode=w")
+singlefileinst.save("yaml", "instance.yaml", options="mode=w")
 # load it back inn
 # inst0 = dlite.Instance.from_location("json",
 #                                      "instance.json")
@@ -34,9 +34,10 @@ singlefileinst.save("json", "instance.json", options="mode=w")
 
 # step 3, load the instance directly from file
 dlite.storage_path.append(sampledir / "DLiteDataModelReaction.json")
+print(pkgdir / "execflow" / "data" / "dlite_plugins")
 dlite.python_storage_plugin_path.append(pkgdir / "execflow" / "data" / "dlite_plugins")
 # load with json after havin made singlenodefile available
-inst1 = dlite.Instance.from_location("json", "instance.json")
+inst1 = dlite.Instance.from_location("yaml2", "instance.yaml")
 
 
 inst2 = dlite.Instance.from_location("singlefiledatanode", "instance.json", options="driver=json")
