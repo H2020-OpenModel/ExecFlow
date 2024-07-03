@@ -8,8 +8,8 @@
     "properties": {
       "reactants": ["C2H6"],
       "products": ["C2H4", "H2"],
-      "reactant_stoichiometric_coefficient": [1],
-      "product_stoichiometric_coefficient": [1, 1],
+      "reactant_stoichiometric_coefficient": [1.0],
+      "product_stoichiometric_coefficient": [1.0,1.0],
       "energy": 0.89568
     }
   }
