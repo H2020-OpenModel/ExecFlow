@@ -34,7 +34,7 @@ dependencies = [
     'jsonref==1.1.0',
     'jsonschema>=3.2.0,<5',
     'oteapi-core>=0.6.1,<1',
-    'oteapi-dlite>=0.2.0,<1',
+    'oteapi-dlite>=0.2.2,<1',
 ]
 
 [project.optional-dependencies]

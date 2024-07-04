@@ -26,7 +26,7 @@ class singlefiledatanode(dlite.DLiteStorageBase):
         self.options = Options(options, defaults="driver=json")
         self.location = location
 
-    def load(self) -> dlite.Instance:
+    def load(self, id=None) -> dlite.Instance:  # noqa: ARG002
         """
         Load a state file and return it as a DLite instance
 
@@ -37,14 +37,14 @@ class singlefiledatanode(dlite.DLiteStorageBase):
         return dlite.Instance.from_location(self.options.driver, self.location)
 
     @classmethod
-    def from_bytes(cls, buffer):
+    def from_bytes(cls, buffer, id=None):  # noqa: ARG003
         """
         From the content of the Abaqus output file
         generate documented DLite output instance of
         http://www.sintef.no/calm/0.1/AbaqusDeformationHistory
 
         Arguments:
-            buffer: Bytes of bytearray to load instance from.
+            buffer: Bytes, id=None of bytearray to load instance from.
             id: ID of instance to load. May be omitted if `buffer`
                 only holds one instance.
         Returns:
