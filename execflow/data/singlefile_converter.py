@@ -19,7 +19,19 @@ setup_dlite()
 
 
 def singlefile_converter(singlefile_instance, parse_driver="json", options=None):
-    """The converter function"""
+    """The converter function
+
+    Argsuments:
+        singlefile_instance: an AiiDA singlefiledatanode instance
+        parse_driver: the driver to be used to parse the buffer which is
+            the value of the "content" property of the singlefiledatanode intsance.
+            This is the driver that would be used to parse the content if parsed directly
+            from a file.
+        options: the options to be passed to the driver that will parse the buffer.
+
+    Returns:
+        An instance of DLite instance that is parsed from the buffer of the singlefiledatanode instance.
+    """
 
     if singlefile_instance.meta.uri != "http://onto-ns.com/meta/2.0/core.singlefile":
         raise ValueError(f"Expected a singlefile instance, got {singlefile_instance.meta.uri}")
