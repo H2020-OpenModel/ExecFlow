@@ -19,8 +19,11 @@ class singlefiledatanode(dlite.DLiteStorageBase):
         """Open storage.
 
         Arguments:
-            location:
-            options: Additional options for this storage driver.
+            location: location of the file
+            options: The options define which driver should be
+                used to parse the content of the singlefiledatanode,
+                and additional options to this driver.
+                e.g. (options="driver=json;mode=w")
         """
 
         self.options = Options(options, defaults="driver=json")
