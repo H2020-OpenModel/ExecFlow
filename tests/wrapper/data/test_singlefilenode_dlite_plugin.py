@@ -18,16 +18,35 @@ pkgdir = testdir.parent
 sampledir = testdir / "samples"
 
 
-# if True:
-def test_singlefilenode_plugin():
+def test_singlefilenode_plugin_no_extra_options():
     """
-    The using the singlefile_coverter
+    The using the singlefiledatanode plugin
     """
 
     dlite.storage_path.append(sampledir / "DLiteDataModelReaction.json")
     sample = sampledir / "dlite_instance_reaction.json"
 
-    instance = dlite.Instance.from_location("singlefiledatanode", sample, options="parse_driver=json")
+    instance = dlite.Instance.from_location("singlefiledatanode", sample, options="driver=json")
+
+    assert instance.properties.keys() == {
+        "reactants",
+        "products",
+        "reactant_stoichiometric_coefficient",
+        "product_stoichiometric_coefficient",
+        "energy",
+    }
+
+
+def test_singlefilenode_plugin_w_options():
+    """
+    The using the singlefiledatanode plugin including extra options for
+    the secondary driver.
+    """
+
+    dlite.storage_path.append(sampledir / "DLiteDataModelReaction.json")
+    sample = sampledir / "dlite_instance_reaction.json"
+
+    instance = dlite.Instance.from_location("singlefiledatanode", sample, options="driver=json;mode=r")
 
     assert instance.properties.keys() == {
         "reactants",

@@ -43,9 +43,8 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
         temp_file = temp_dir + "/temp_file"
         with Path.open(Path(temp_file), "wb") as f:
             f.write(buffer)
-        parse_options = (
-            ";".join([f"driver={parse_driver}", f"options={options}"]) if options else f"driver={parse_driver}"
-        )
+        parse_options = ";".join([f"driver={parse_driver}", f"{options}"]) if options else f"driver={parse_driver}"
+        print(parse_options)
         return dlite.Instance.from_location(driver="singlefiledatanode", location=temp_file, options=parse_options)
     # """The converter function"""
     # When it will be possible to pass options to the

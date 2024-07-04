@@ -28,7 +28,11 @@ class singlefiledatanode(dlite.DLiteStorageBase):
 
         options = Options(options, defaults="driver=json")
         self.driver = options.pop("driver")
-        self.options = options
+        if options:
+            opts = [f"{key}={value}" for key, value in options.items()]
+            self.options = ";".join(opts)
+        else:
+            self.options = None
         self.location = location
 
     def load(self, id=None) -> dlite.Instance:  # noqa: ARG002
