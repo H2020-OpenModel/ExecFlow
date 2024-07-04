@@ -8,6 +8,8 @@ from pathlib import Path
 
 import dlite
 
+from execflow.data.singlefile_converter import singlefile_converter
+
 testdir = Path(__file__).resolve().parent.parent.parent
 pkgdir = testdir.parent
 sampledir = testdir / "samples"
@@ -18,7 +20,6 @@ def test_singlefilenode_using_converter_w_options():
     """
     The using the singlefile_coverter
     """
-    from execflow.data.singlefile_converter import singlefile_converter
 
     dlite.storage_path.append(sampledir / "DLiteDataModelReaction.json")
     sample = sampledir / "dlite_instance_reaction.json"
@@ -51,7 +52,6 @@ def test_singlefilenode_using_converter_no_options():
     """
     The using the singlefile_coverter
     """
-    from execflow.data.singlefile_converter import singlefile_converter
 
     dlite.storage_path.append(sampledir / "DLiteDataModelReaction.json")
     sample = sampledir / "dlite_instance_reaction.json"

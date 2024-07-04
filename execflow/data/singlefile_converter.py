@@ -15,8 +15,6 @@ import dlite
 
 from execflow.data.setup_dlite import setup_dlite
 
-setup_dlite()
-
 
 def singlefile_converter(singlefile_instance, parse_driver="json", options=None):
     """The converter function
@@ -32,7 +30,7 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
     Returns:
         An instance of DLite instance that is parsed from the buffer of the singlefiledatanode instance.
     """
-
+    setup_dlite()
     if singlefile_instance.meta.uri != "http://onto-ns.com/meta/2.0/core.singlefile":
         raise ValueError(f"Expected a singlefile instance, got {singlefile_instance.meta.uri}")
     buffer = singlefile_instance.content.tobytes()
@@ -44,7 +42,6 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
         with Path.open(Path(temp_file), "wb") as f:
             f.write(buffer)
         parse_options = ";".join([f"driver={parse_driver}", f"{options}"]) if options else f"driver={parse_driver}"
-        print(parse_options)
         return dlite.Instance.from_location(driver="singlefiledatanode", location=temp_file, options=parse_options)
     # """The converter function"""
     # When it will be possible to pass options to the
