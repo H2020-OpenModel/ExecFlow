@@ -37,7 +37,7 @@ class singlefiledatanode(dlite.DLiteStorageBase):
             A DLite Instance corresponding to the given filename.
 
         """
-        return dlite.Instance.from_location(self.options.driver, self.location)
+        return dlite.Instance.from_location(self.driver, self.location, options=self.options)
 
     @classmethod
     def from_bytes(cls, buffer, id=None):  # noqa: ARG003
