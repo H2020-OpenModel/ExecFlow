@@ -26,7 +26,9 @@ class singlefiledatanode(dlite.DLiteStorageBase):
                 e.g. (options="driver=json;mode=w")
         """
 
-        self.options = Options(options, defaults="driver=json")
+        options = Options(options, defaults="driver=json")
+        self.driver = options.pop("driver") 
+        self.options = options
         self.location = location
 
     def load(self, id=None) -> dlite.Instance:  # noqa: ARG002
