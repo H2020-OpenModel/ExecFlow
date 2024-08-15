@@ -22,7 +22,7 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
     Argsuments:
         singlefile_instance: an AiiDA singlefiledatanode instance
         parse_driver: the driver to be used to parse the buffer which is
-            the value of the "content" property of the singlefiledatanode intsance.
+            the value of the "content" property of the singlefiledatanode instance.
             This is the driver that would be used to parse the content if parsed directly
             from a file.
         options: the options to be passed to the driver that will parse the buffer.
@@ -36,19 +36,23 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
     buffer = singlefile_instance.content.tobytes()
     # save buffer to temporary file and load it as a DLite instance
     # use a temporary directory
+    parse_options = ";".join([f"driver={parse_driver}", f"{options}"]) if options else f"driver={parse_driver}"
+    try:
+        return dlite.Instance.from_bytes(
+            driver="singlefiledatanode", buffer=singlefile_instance.content.tobytes(), options=parse_options
+        )
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp_file = temp_dir + "/temp_file"
-        with Path.open(Path(temp_file), "wb") as f:
-            f.write(buffer)
-        parse_options = ";".join([f"driver={parse_driver}", f"{options}"]) if options else f"driver={parse_driver}"
-        return dlite.Instance.from_location(driver="singlefiledatanode", location=temp_file, options=parse_options)
-    # """The converter function"""
-    # When it will be possible to pass options to the
-    # from_bytes method of the DLite instance, the following
-    # code can be used.
-    # return dlite.Instance.from_bytes(
-    #    driver='singlefiledatanode',
-    #    buffer=singlefile_instance.content.tobytes(),
-    #    options=parse_options
-    # )
+    # Versions of DLite-Pyhon<0.5.21 do not allow for options in the
+    # to_bytes and from_bytes class methods in the plugins.
+    # Many plugins might also not have a from_bytes method.
+    except (
+        dlite.DLiteTypeError,
+        TypeError,
+        Exception,  # if from_bytes() in parse_driver does not accept options
+        dlite.DLiteAttributeError,  # if parse driver does not support from_bytes
+    ):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_file = temp_dir + "/temp_file"
+            with Path.open(Path(temp_file), "wb") as f:
+                f.write(buffer)
+            return dlite.Instance.from_location(driver="singlefiledatanode", location=temp_file, options=parse_options)
