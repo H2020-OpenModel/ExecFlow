@@ -31,6 +31,9 @@ def singlefile_converter(singlefile_instance, parse_driver="json", options=None)
         An instance of DLite instance that is parsed from the buffer of the singlefiledatanode instance.
     """
     setup_dlite()
+    print("--------------")
+    print(dlite.python_storage_plugin_path)
+    print("----------------")
     if singlefile_instance.meta.uri != "http://onto-ns.com/meta/2.0/core.singlefile":
         raise ValueError(f"Expected a singlefile instance, got {singlefile_instance.meta.uri}")
     buffer = singlefile_instance.content.tobytes()
