@@ -9,5 +9,5 @@ import dlite
 
 def setup_dlite():
     """Setup DLite search paths for datamodels and storage plugins."""
-    pkgdir = Path(__file__).resolve().parent.parent.parent
+    pkgdir = Path(__file__).resolve().parent.parent
     dlite.python_storage_plugin_path.append(pkgdir / "dlite_plugins")
