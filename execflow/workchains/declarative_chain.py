@@ -345,7 +345,7 @@ class DeclarativeChain(WorkChain):
             elif "workflow" in step:
                 cjob = WorkflowFactory(step["workflow"])
             else:
-                ValueError(f"Unrecognized step {step}")
+                raise ValueError(f"Unrecognized step {step}")
 
             spec_inputs = cjob.spec().inputs
             inputs = self.resolve_inputs(step["inputs"], spec_inputs)
@@ -386,12 +386,12 @@ class DeclarativeChain(WorkChain):
                         if inval is not None:
                             break
                     else:
-                        ValueError(f"Couldn't resolve type of input {k}")
+                        raise ValueError(f"Couldn't resolve type of input {k}")
 
                 else:
                     inval = dict2datanode(val, valid_type, isinstance(i, plumpy.PortNamespace))
                     if inval is None:
-                        ValueError(f"Couldn't resolve input {k}")
+                        raise ValueError(f"Couldn't resolve input {k}")
 
                 set_dot2index(out, k, inval)
 

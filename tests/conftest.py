@@ -32,7 +32,7 @@ def samples() -> Path:
     return path
 
 
-@pytest.fixture()
+@pytest.fixture
 def fixture_localhost(aiida_localhost):
     """Return a localhost `Computer`."""
     localhost = aiida_localhost
@@ -40,7 +40,7 @@ def fixture_localhost(aiida_localhost):
     return localhost
 
 
-@pytest.fixture()
+@pytest.fixture
 def generate_calcjob_node(fixture_localhost):
     """Fixture to generate a mock `CalcJobNode` for testing parsers."""
 
@@ -56,7 +56,7 @@ def generate_calcjob_node(fixture_localhost):
     return _generate_calc_job_node
 
 
-@pytest.fixture()
+@pytest.fixture
 def generate_workchain():
     """Generate an instance of a `WorkChain`."""
 
@@ -78,7 +78,7 @@ def generate_workchain():
     return _generate_workchain
 
 
-@pytest.fixture()
+@pytest.fixture
 def generate_declarative_workchain(generate_workchain):
     """Generate an instance of a ``PwBaseWorkChain``."""
 
