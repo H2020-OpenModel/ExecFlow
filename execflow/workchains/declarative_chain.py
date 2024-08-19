@@ -187,23 +187,23 @@ def dict2datanode(dat, typ, dynamic=False):
         return out
 
     # If node is specified, just load node
-    if dat is dict and "node" in dat:
+    if isinstance(dat, dict) and "node" in dat:
         return load_node(dat["node"])
 
     # Else resolve DataNode from value
-    if typ is orm.AbstractCode:
+    if issubclass(typ, orm.Code):
         return dict2code(dat)
-    if typ is orm.StructureData:
+    if issubclass(typ, orm.StructureData):
         return dict2structure(dat)
-    if typ is UpfData or typ is orm.nodes.data.upf.UpfData:
+    if issubclass(typ, (UpfData, orm.nodes.data.upf.UpfData)):
         return dict2upf(dat)
-    if typ is orm.KpointsData:
+    if issubclass(typ, orm.KpointsData):
         return dict2kpoints(dat)
-    if typ is Dict:
+    if issubclass(typ, Dict):
         return Dict(dict=dat)
-    if typ is List:
+    if issubclass(typ, List):
         return List(list=dat)
-    if typ is Data:
+    if issubclass(typ, Data):
         return dat
     return typ(dat)
 
