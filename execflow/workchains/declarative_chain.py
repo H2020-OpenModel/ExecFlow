@@ -191,7 +191,7 @@ def dict2datanode(dat, typ, dynamic=False):
         return load_node(dat["node"])
 
     # Else resolve DataNode from value
-    if issubclass(typ, orm.Code):
+    if issubclass(typ, orm.AbstractCode):
         return dict2code(dat)
     if issubclass(typ, orm.StructureData):
         return dict2structure(dat)
