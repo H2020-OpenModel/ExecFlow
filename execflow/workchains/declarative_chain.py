@@ -195,6 +195,8 @@ def dict2datanode(dat, typ, dynamic=False):
         return dict2code(dat)
     if issubclass(typ, orm.StructureData):
         return dict2structure(dat)
+    if issubclass(typ, orm.Code):
+        return dict2structure(dat)
     if issubclass(typ, (UpfData, orm.nodes.data.upf.UpfData)):
         return dict2upf(dat)
     if issubclass(typ, orm.KpointsData):
