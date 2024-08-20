@@ -165,9 +165,10 @@ filterwarnings = [
     # Treat all warnings as errors
     "error",
 
-    # Ignore warnings from the aiida-core package
+    # Ignore warnings from or related to the aiida-core package
     "ignore::UserWarning:aiida.*",
     "ignore::aiida.common.warnings.AiidaDeprecationWarning:",
+    "ignore::cryptography.utils.CryptographyDeprecationWarning:",
 
     # Ignore warnings from the SQLAlchemy package
     "ignore::sqlalchemy.exc.SAWarning:",
