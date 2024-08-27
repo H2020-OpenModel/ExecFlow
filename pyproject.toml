@@ -160,7 +160,7 @@ force-sort-within-sections = true
 
 [tool.pytest.ini_options]
 minversion = "8.2"
-addopts = "-rs"# --cov=execflow --cov-report=term-missing:skip-covered --no-cov-on-fail"
+addopts = "-rs --cov=execflow --cov-report=term-missing:skip-covered --no-cov-on-fail"
 filterwarnings = [
     # Treat all warnings as errors
     "error",
