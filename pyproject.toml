@@ -24,7 +24,7 @@ classifiers = [
 requires-python = '>=3.9,<3.12'
 
 dependencies = [
-    'aiida-core==2.4.3',
+    'aiida-core==2.1.0',
     'cryptography~=42.0',
     'aiida-pseudo~=1.5.0',
     'aiida-shell~=0.6.0',
@@ -160,7 +160,7 @@ force-sort-within-sections = true
 
 [tool.pytest.ini_options]
 minversion = "8.2"
-addopts = "-rs --cov=execflow --cov-report=term-missing:skip-covered --no-cov-on-fail"
+addopts = "-rs"# --cov=execflow --cov-report=term-missing:skip-covered --no-cov-on-fail"
 filterwarnings = [
     # Treat all warnings as errors
     "error",
