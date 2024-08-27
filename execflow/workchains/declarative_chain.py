@@ -205,7 +205,7 @@ def dict2datanode(dat, typ, dynamic=False):
         return Dict(dict=dat)
     if issubclass(typ, List):
         return List(list=dat)
-    if issubclass(typ, Data):
+    if isinstance(dat, Data):
         return dat
     return typ(dat)
 

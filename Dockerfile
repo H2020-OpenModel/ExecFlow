@@ -1,4 +1,4 @@
-FROM aiidalab/base-with-services:aiida-2.1.2
+FROM aiidalab/base-with-services:aiida-2.4.3
 
 USER root
 

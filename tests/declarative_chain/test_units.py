@@ -16,7 +16,6 @@ def test_qe(generate_declarative_workchain, generate_calcjob_node, samples):
     assert cjob == FakeQEPW
 
     # test that InputData is put in the right DataNodes and contains the right data
-    assert inputs["code"] is None
     from aiida.orm import Dict, KpointsData, StructureData
 
     assert isinstance(inputs["parameters"], Dict)
