@@ -116,7 +116,7 @@ steps:
       - "{{ (ctx.count + 1) | to_ctx('count') }}"
 ```
 
-will run the same calcjob 4 times
+will run the same calcjob 4 times.
 
 > **Note** Don't forget to set the ctx.count variable to something in the setup step of the workchain or the postprocessing step of the previous calcjob.
 

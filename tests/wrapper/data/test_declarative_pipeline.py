@@ -48,14 +48,14 @@ def test_initialization_strategies_value(value_type: type[dict | str | bytes] | 
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
     if isinstance(value_type, type):
-        if value_type == dict:
+        if value_type is dict:
             pipeline_input = deepcopy(declarative_pipeline_file)
             assert isinstance(pipeline_input, dict)
             node = OTEPipelineData(value=pipeline_input)
-        elif value_type == str:
+        elif value_type is str:
             node = OTEPipelineData(value=(samples / "pipe.yml").read_text(encoding="utf8"))
         else:
-            assert value_type == bytes, f"Unknown value_type type: {value_type}"
+            assert value_type is bytes, f"Unknown value_type type: {value_type}"
             node = OTEPipelineData(value=(samples / "pipe.yml").read_bytes())
     else:
         # value_type is a string
@@ -129,7 +129,7 @@ def test_initialization_strategies_file(input_type: type[str] | str, samples: Pa
     OTEPipelineData: type[OTEPipelineDataNode] = DataFactory("execflow.oteapi_pipeline")
     declarative_pipeline_file: dict[str, Any] = yaml.safe_load((samples / "pipe.yml").read_bytes())
 
-    if input_type == str:
+    if input_type is str:
         # filepath
         node = OTEPipelineData(filepath=str(samples / "pipe.yml"))
     else:

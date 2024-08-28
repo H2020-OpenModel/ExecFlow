@@ -552,7 +552,7 @@ class OTEPipelineData(DictNode):
 
         return self._pydantic_model
 
-    def get_strategies(self, pipeline: str, reverse: bool = False) -> Generator[DeclarativeStrategy, None, None]:
+    def get_strategies(self, pipeline: str, reverse: bool = False) -> Generator[DeclarativeStrategy]:
         """Yield pipeline strategies as pydantic models.
 
         Parameters:

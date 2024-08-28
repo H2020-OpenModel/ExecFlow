@@ -2,7 +2,6 @@
 steps:
 - calcjob: execflow.fake_qe_pw
   inputs:
-    code: pw-6.8@localhost
     parameters:
       CONTROL:
         verbosity: high
@@ -26,13 +25,6 @@ steps:
         resources:
           num_machines: 1
           num_mpiprocs_per_machine: 14
-    pseudos:
-      Ni:
-        group: SSSP/1.1/PBE/efficiency
-        element: Ni
-      O:
-        group: SSSP/1.1/PBE/efficiency
-        element: O
     structure:
       atoms:
       - symbols: Ni

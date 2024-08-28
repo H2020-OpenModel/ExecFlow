@@ -198,7 +198,7 @@ def gen_property(props, dims, dimnames, dim, curid, attributename, attribute, at
                 # Since by now we are in the lowest nesting level, we know the dimensions of
                 # the multidim array we are part of (kept in dims).
                 dims_ = dims[attributename]
-                arr = np.empty(dims_, object) if attype == str else np.empty(dims_, attype)
+                arr = np.empty(dims_, object) if attype is str else np.empty(dims_, attype)
 
                 arr[tuple([0 for x in dims_])] = attribute
                 attributes_dict[attributename] = arr

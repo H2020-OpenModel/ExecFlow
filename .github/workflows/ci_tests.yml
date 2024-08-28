@@ -10,7 +10,7 @@ on:
 jobs:
   basic_tests:
     name: External
-    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.7.2
+    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.8.0
     with:
       # Generic
       install_extras: "[dev]"
@@ -30,11 +30,13 @@ jobs:
       # - 59901: aio-pika. Subdependency of aiida-core.
       # - 65193: paramiko. Subdependency of aiida-core.
       # - 70612: Jinja2: dependecy of aiida-core.
+      # - 51668: sqalchemy: dependecy of aiida-core.
       safety_options: |
         --ignore=63227
         --ignore=59901
         --ignore=65193
         --ignore=70612
+        --ignore=51668
 
       # Build package
       run_build_package: true
@@ -80,10 +82,10 @@ jobs:
           - 15672:15672
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version}}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version}}
 
@@ -119,10 +121,10 @@ jobs:
         python-version: ["3.9", "3.10", "3.11"]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version}}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version}}
 
@@ -177,6 +179,6 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Test building Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
