@@ -6,8 +6,6 @@ To be included in ExecFlow.
 
 from __future__ import annotations
 
-import json
-
 import dlite
 from dlite.options import Options
 
@@ -26,13 +24,7 @@ class singlefiledatanode(dlite.DLiteStorageBase):
                 e.g. (options="driver=json;mode=w")
         """
 
-        options = Options(options, defaults="driver=json")
-        self.driver = options.pop("driver")
-        if options:
-            opts = [f"{key}={value}" for key, value in options.items()]
-            self.options = ";".join(opts)
-        else:
-            self.options = None
+        self.driver, self.options = self.set_options(options)
         self.location = location
 
     def load(self, id=None) -> dlite.Instance:  # noqa: ARG002
@@ -46,12 +38,8 @@ class singlefiledatanode(dlite.DLiteStorageBase):
         return dlite.Instance.from_location(self.driver, self.location, options=self.options)
 
     @classmethod
-    def from_bytes(cls, buffer, id=None):  # noqa: ARG003
+    def from_bytes(cls, buffer, id=None, options=None):  # noqa: ARG003
         """
-        From the content of the Abaqus output file
-        generate documented DLite output instance of
-        http://www.sintef.no/calm/0.1/AbaqusDeformationHistory
-
         Arguments:
             buffer: Bytes, id=None of bytearray to load instance from.
             id: ID of instance to load. May be omitted if `buffer`
@@ -60,14 +48,18 @@ class singlefiledatanode(dlite.DLiteStorageBase):
            New instance
 
         """
-        return cls.create_instance(buffer)
+        driver, options = cls.set_options(options)
+
+        return dlite.Instance.from_bytes(driver, buffer, options=options)
 
     @staticmethod
-    def create_instance(content):
-        """
-        read a state file and populate a DLite instance base on it
-        """
-        # read the file as a dictionary
-        dict_output = json.loads(content)
+    def set_options(optionsstring):
+        options = Options(optionsstring, defaults="driver=json")
+        driver = options.pop("driver")
+        if options:
+            opts = [f"{key}={value}" for key, value in options.items()]
+            optionsfordriver = ";".join(opts)
+        else:
+            optionsfordriver = None
 
-        return dlite.Instance.from_dict(dict_output)
+        return driver, optionsfordriver

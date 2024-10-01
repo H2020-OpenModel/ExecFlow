@@ -55,3 +55,10 @@ def test_singlefilenode_plugin_w_options():
         "product_stoichiometric_coefficient",
         "energy",
     }
+
+
+def test_singlefilenode_plugin_from_bytes():
+    """
+    The singlefiledatanode plugin with from_bytes is
+    tested as part of the converter test.
+    """
